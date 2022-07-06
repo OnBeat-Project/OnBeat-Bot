@@ -18,7 +18,13 @@ module.exports = {
   .setDescription("Request a music!")
   .addStringOption(o => o.setName("query").setDescription("Music to be requested").setRequired(true)),
   run: async (interaction) => {
-
+    const channeldb = await interaction.client.db.get(`channel_${interaction.guild.id}`);
+    if(!channeldb) return interaction.reply({content: `Please, use \`/set channel\` to set a log channel.`});
+    if(!interaction.guild.channels.cache.get( channeldb)) {
+     await interaction.client.db.delete(`channel_${interaction.guild.id}`);
+      return interaction.reply("The log channel don't exists anymore.")
+    }
+    // await interaction.deferReply();
     const player = interaction.client.player;
     if (!(interaction.member instanceof GuildMember) || !interaction.member.voice.channel) {
       return void interaction.reply({
@@ -32,7 +38,16 @@ module.exports = {
       });
     }
     const query = interaction.options.get("query").value;
-    const track = await interaction.client.spotify.search({ type: 'track', query: query});
+    var track;
+    try {
+      track = await interaction.client.spotify.search({ type: 'track', query: query});
+    } catch(e) {
+      track = {
+        tracks: {
+          items: []
+        }
+      }
+    }
      // console.log()
     const searchResult = await player
     .search(track.tracks.items[0]?track.tracks.items[0].external_urls.spotify:query, {
@@ -43,9 +58,10 @@ module.exports = {
     if (!searchResult || !searchResult.tracks.length) return void interaction.reply({
       content: "No results were found, try put artist name (e.g. Saturday - Norma Jean Wright) or try put Spotify Link URL!"
     });
-
+    console.log(channeldb)
     const queue = await player.createQueue(interaction.guild, {
-      metadata: interaction.channel
+      metadata: interaction.guild.channels.cache.get( channeldb),
+      i: interaction
     });
 
     try {
@@ -56,10 +72,9 @@ module.exports = {
         content: "I can't join in your Voice Channel!"
       });
     }
-
-    await interaction.reply({
-      content: `Wait...`
-    });
+    queue.setVolume(75);
+   // await interaction.deferReply({ephemeral:true});
+    interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!`, ephemeral: true})
     searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
   }

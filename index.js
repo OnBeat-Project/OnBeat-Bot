@@ -7,6 +7,7 @@ const { Player } = require("discord-player");
 const slash = require('./src/util/slash');
 const fs = require('node:fs');
 const Spotify = require('node-spotify-api');
+const { QuickDB } = require("quick.db");
 
 
 const client = new Client({ intents: ["GUILDS", "GUILD_VOICE_STATES"] });
@@ -19,6 +20,7 @@ const spotify = new Spotify({
 client.player = new Player(client);
 client.commands = new Collection();
 client.spotify = spotify;
+client.db = new QuickDB();
 
 require('./src/util/player.js')(client);
 

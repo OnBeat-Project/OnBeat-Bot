@@ -3,7 +3,7 @@ module.exports = {
   oneTime: false,
   run: async (i) => {
     if (!i.isCommand()) return;
-    
+
     const commandCheck = i.client.commands.get(i.commandName);
 
     if (!commandCheck) {
