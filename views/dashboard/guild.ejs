@@ -1,0 +1,49 @@
+<%-include("../include/head.ejs", {
+  title: "OnBeat - Music Guild Dashboard",
+  description: "Dashboard :0"
+})%>
+<%-include("../include/nav.ejs")%>
+  <%if(!channeldb) return;%>
+  <div class="p-1 flex justify-center gap-x-1 w-full">
+   <form id="requestMusic">
+    <input class="text-slate-900 text-center p-1 m-3 drop-shadow rounded-xl" id="search" placeholder="Search a music for <%=guild.name%>"></input>
+   </form>
+  </div>
+  <div id="queue" class="flex flex-col justify-center items-center content-center text-center w-full h-[90vh]">
+    Nothing playing...
+  </div>
+  <script>
+   const form = document.getElementById("requestMusic")
+   const search = document.getElementById("search");
+   
+   form.onsubmit = (e) => {
+     
+     socket.emit("musicRequest", {guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"});
+     search.value=""
+     e.preventDefault();
+    return false;
+      search.disabled = true;
+   }
+    socket.on("connect", (connected) => {
+      console.log(connected)
+    });
+    
+    
+    const queue = document.getElementById("queue");
+    
+    socket.on("currentMusic", (info) => {
+      if(!info.queue) return queue.innerHTML = "";
+      search.disabled = false;
+      console.log(info.perc.progress)
+      queue.innerHTML = `<img src="${info.info.image}" class="w-64 rounded-2xl drop-shadow-lg"/><br><p class="text-xl">${info.info.title}</p><p class="text-lg text-slate-700 dark:text-slate-300">${info.info.artist}</p><br><p>${info.perc.current}/${info.perc.end}</p><div class="w-96 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+          <div class="bg-purple-600 h-2.5 rounded-full" style="width: ${info.perc.progress}%"></div>
+        </div>`
+    })
+    
+    /*socket.on("musicQueue", (info) => {
+      console.log(info)
+    const tracks = info.queue.tracks.slice(0, 10);
+    queue.innerHTML += `<p>${tracks.title}</p><br>`
+    });*/
+  </script>
+<%-include('../include/footer.ejs')%>

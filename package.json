@@ -22,15 +22,26 @@
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.10.0",
     "better-sqlite3": "^7.5.3",
+    "connect-mongo": "^4.6.0",
     "discord-player": "^5.2.2",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "ffmpeg-static": "^4.4.1",
     "is-empty": "^1.2.0",
+    "isomorphic-unfetch": "^3.1.0",
     "libsodium-wrappers": "^0.7.10",
+    "memorystore": "^1.6.7",
     "node-spotify-api": "^1.1.1",
     "opusscript": "^0.0.8",
     "ora": "^5.4.1",
-    "quick.db": "^9.0.5"
+    "passport": "^0.6.0",
+    "passport-discord": "^0.1.4",
+    "quick.db": "^9.0.5",
+    "socket.io": "^4.5.1",
+    "spotify-url-info": "^3.1.2",
+    "string-toolkit": "^1.6.7"
   }
 }

@@ -74,7 +74,7 @@ module.exports = {
     }
     queue.setVolume(75);
    // await interaction.deferReply({ephemeral:true});
-    interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!`, ephemeral: true})
+    void interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!`, ephemeral: true})
     searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
   }

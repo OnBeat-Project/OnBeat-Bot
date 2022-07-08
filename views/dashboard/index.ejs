@@ -1,0 +1,33 @@
+<%-include("../include/head.ejs", {
+  title: "OnBeat - Dashboard",
+  description: "Dashboard :0"
+})%>
+<%-include("../include/nav.ejs")%>
+  <div id="icons" class="flex flex-col justify-center items-center w-full h-screen gap-y-2">
+  <%req.user.guilds.forEach(guild => {%>
+  <%if(!cli.guilds.cache.get(guild.id)) return;%>
+  <form id="guild-form" method="post">
+  <%if(guild.icon) {%>
+  <button name="guild" value="<%=guild.id%>">
+   <img src="<%=cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true})%>" class="w-[100px] h-[100px] rounded-full"/>
+   </button>
+  <%} else {%>
+  <button name="guild" value="<%=guild.id%>">
+   <canvas id="myCanvas-<%=guild.id%>" width="100px" height="100px" class="w-[100px] h-[100px] rounded-full mb-2
+   bg-slate-600 text-white"></canvas>
+  <script>
+					var canvas = document.getElementById("myCanvas-<%=guild.id%>");
+					console.log(canvas.width + " " + canvas.height);
+          var ctx = canvas.getContext("2d");
+          ctx.font = "30px sans-serif";
+					ctx.fillStyle = "white";
+          ctx.textAlign = "center"
+					var name = "<%=stringTools.toAbbreviation(guild.name);%>"
+          ctx.fillText(name,50,59.5);
+				</script>
+				</button>
+  <%}%>
+  </form>
+  <%})%>
+  </div>
+<%-include('../include/footer.ejs')%>

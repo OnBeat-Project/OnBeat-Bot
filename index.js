@@ -38,3 +38,7 @@ events.forEach(event => {
 })
 
 client.login()
+
+module.exports = client;
+
+require('./app.js')

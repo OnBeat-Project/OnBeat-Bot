@@ -1,0 +1,22 @@
+<%-include("./include/head.ejs", {
+  title: "OnBeat - Home",
+  description: "Home page for stinkies :D"
+})%>
+<%-include("./include/nav.ejs")%>
+<div class="bg-purple-300 dark:bg-purple-700 flex flex-col items-center justify-center w-full h-[70vh] lg:h-[50vh] transition-all" id="home-center">
+  <p class="text-xl">
+    Welcome<%=req.user?" "+ req.user.username: ""%>, to <span class="drop-shadow text-pink-700 dark:text-pink-300 underline bold decoration-dashed antialiased font-['Poppins, sans-serif'] hover:uppercase hover:dark:lowercase hover:drop-shadow-lg hover:-translate-y-2 transition-all">OnBeat</span>!
+  </p>
+  <p class="text-gray-800 dark:text-gray-300">
+    A simple music bot for Discord!
+  </p>
+  <div class="mt-3 flex gap-x-3">
+    <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-purple-700 dark:bg-purple-500 dark:text-slate-900 hover:bg-purple-700/80 hover:dark:bg-purple-500/80 rounded-lg transition-all">Add Bot</button>
+    <button onclick="location.href='/dashboard';" class="p-2 text-white bg-pink-700 dark:bg-pink-500 dark:text-slate-900 hover:bg-pink-700/80 hover:dark:bg-pink-500/80 rounded-lg transition-all">Dashboard</button>
+  </div>
+</div>
+<div class="bg-pink-300 dark:bg-pink-700 transition-all h-[32vh]">
+  <%-include("./include/Waves/1.ejs", {
+    color: "fill-purple-300 dark:fill-purple-700 drop-shadow-2xl transition-all"
+  })%>
+<%-include('./include/footer.ejs')%>
