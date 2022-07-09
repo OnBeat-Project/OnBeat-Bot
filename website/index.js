@@ -43,8 +43,14 @@ const {
   QueryType,
   QueueRepeatMode
 } = require("discord-player");
-socket.on("connection", async (io) => {
+socket.sockets.on("connection", async (io) => {
+  io.on("create", (guild) => {
+    console.log(guild)
+    io.join(guild)
+  })
+   console.log(io.rooms)
   io.on("musicRequest", async (info) => {
+    
     const guild = client.guilds.cache.get(info.guild);
     const channeldb = await client.db.get(`channel_${guild.id}`)
     var query = info.music;
@@ -80,21 +86,28 @@ socket.on("connection", async (io) => {
       }
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
      if (!queue.playing) await queue.play();
-     io.emit("musicQueue", {
+     socket.emit("musicQueue", {
        queue
      })
   })
   client.player.on("trackAdd", async(queue, track) => {
-    io.emit("musicQueue", {
-       queue
+    socket.emit("musicQueue", {
+       queue,
+       track
      })
   });
+  client.player.on("queueEnd", async(queue,track) => {
+    socket.emit("queueEnd", {queue, track})
+  })
+  var interval;
   client.player.on("trackStart", async(queue,track) => {
-    setInterval(async() => {
-    const perc = queue.getPlayerTimestamp();
-    const info = await getPreview(track.url)
+    interval = setInterval(async() => {
+    var perc;
+     perc = queue.getPlayerTimestamp();
 
-    io.emit("currentMusic", {
+    const info = await getPreview(track.url)
+   // console.log(interval)
+    socket.emit("currentMusic", {
        queue,
        track,
        perc,
@@ -102,5 +115,8 @@ socket.on("connection", async (io) => {
      })
     },1000)
   });
+  client.player.on("trackEnd", () => {
+    clearInterval(interval)
+  })
   console.log(`connected to ${io.id}`)
 })
