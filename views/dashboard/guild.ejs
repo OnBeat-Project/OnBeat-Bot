@@ -5,22 +5,23 @@
 <%-include("../include/nav.ejs")%>
   <%if(!channeldb) return;%>
   <div class="p-1 flex justify-center gap-x-1 w-full">
-   <form id="requestMusic">
-    <input class="text-slate-900 text-center p-1 m-3 drop-shadow rounded-xl" id="search" placeholder="Search a music for <%=guild.name%>"></input>
+   <form id="requestMusic" class="fixed">
+    <input name="music" class="text-slate-900 text-center p-1 m-3 drop-shadow rounded-xl" id="music" placeholder="Search a music for <%=guild.name%>"></input>
    </form>
   </div>
-  <div id="queue" class="flex flex-col justify-center items-center content-center text-center w-full h-[80vh]">
+  <div id="queue" class="flex flex-col justify-center items-center content-center text-center w-full h-[100vh]">
     Nothing playing...
   </div>
   <script>
   var room = io.connect()
-  room.emit("create", "<%=guild.id%>")
+  socket.emit("create", "<%=guild.id%>")
+  
    const form = document.getElementById("requestMusic")
-   const search = document.getElementById("search");
+   const search = document.getElementById("music");
    this.click = 0
    form.onsubmit = (e) => {
-     if(this.click < 1) this.click += 1;
-     if(this.click === 1) {
+     this.click += 1
+     if(this.click  === 1) {
        alert("This feature stills in beta!")
      }
      socket.emit("musicRequest", {guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"});
@@ -41,17 +42,40 @@
       UIkit.notification("Queue ends!");
     });
     const queue = document.getElementById("queue");
-    
+    this.paused = false;
     socket.on("currentMusic", (info) => {
-      console.log(info)
-      if(!info.queue) return queue.innerHTML = "";
+      // console.log(info)
+      if(!info.queue) return queue.innerHTML = "Nothing playing...";
       search.disabled = false;
+      // console.log(info.members)
       //console.log(info.perc.progress)
       queue.innerHTML = `<img src="${info.info.image}" class="w-64 rounded-2xl drop-shadow-lg"/><br><p class="text-xl">${info.info.title}</p><p class="text-lg text-slate-700 dark:text-slate-300">${info.info.artist}</p><br><p>${info.perc.current}/${info.perc.end}</p><div class="w-96 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
           <div class="bg-purple-600 h-2.5 rounded-full" style="width: ${info.perc.progress}%"></div>
-        </div><br><div class="absolute inset-x-0 bottom-0 flex bg-slate-100 dark:bg-slate-600 w-full h-16 text-white items-center justify-center text-center rounded-t-xl"><button id="play"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg></button><button id="skip"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-skip-forward"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg></button></div>`
+        </div><br><div class="fixed inset-x-0 flex bottom-0 bg-slate-200 dark:text-slate-100 dark:bg-slate-600 w-full h-16 dark:text-slate-900 items-center justify-between text-center rounded-t-xl"><div id="users" class="flex ml-1 -space-x-4">${info.members.slice(0,2).map((i,m) => `<img class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600" src="${i.displayAvatarURL}" alt="Member">${info.members.length > 2?`<a class="flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-slate-200 rounded-full hover:bg-gray-600 dark:border-slate-600" href="#">+${info.members.length - 2}</a>`:""}`)}</div><div id="player" class="flex dark:text-white text-center"><button onclick="pause(this)" id="play">${this.paused === true?`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`:`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`}</button><button onclick="skip(this)" id="skip"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-skip-forward"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg></button></div><div class="w-16"></div></div>`;
+        
     })
     
+   // const play = document.querySelectorAll("#play");
+     
+    function pause(play) {
+    //  console.log(e)
+      // e.preventDefault();
+     if(this.paused === false) { this.paused = true } else { this.paused = false };
+     socket.emit("pauseTrack", {
+        guild: "<%=guild.id%>", user: "<%=req.user.id%>", paused: this.paused
+      });
+    socket.on("trackUpdate", (update) => {
+      console.log(update)
+      //if(update.pause === true) { //this.paused = true; 
+     // play.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-play"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>` } else if(update.pause === false) {//this.paused = false; 
+     // play.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-pause"><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>`};
+    })
+    }
+    function skip(music) {
+      socket.emit("skipTrack", {
+        guild: "<%=guild.id%>", user: "<%=req.user.id%>"
+      });
+    }
     /*socket.on("musicQueue", (info) => {
       console.log(info)
     const tracks = info.queue.tracks.slice(0, 10);

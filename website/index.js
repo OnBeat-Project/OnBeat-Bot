@@ -43,12 +43,14 @@ const {
   QueryType,
   QueueRepeatMode
 } = require("discord-player");
-socket.sockets.on("connection", async (io) => {
+socket.on("connection", async (io) => {
   io.on("create", (guild) => {
+   // io.set('room', guild, function() {});
     console.log(guild)
     io.join(guild)
+    console.log(io.rooms)
   })
-   console.log(io.rooms)
+   
   io.on("musicRequest", async (info) => {
     
     const guild = client.guilds.cache.get(info.guild);
@@ -86,35 +88,50 @@ socket.sockets.on("connection", async (io) => {
       }
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
      if (!queue.playing) await queue.play();
-     socket.emit("musicQueue", {
+     socket.to(guild.id).emit("musicQueue", {
        queue
      })
   })
   client.player.on("trackAdd", async(queue, track) => {
-    socket.emit("musicQueue", {
+    socket.to(queue.guild.id).emit("musicQueue", {
        queue,
        track
      })
   });
   client.player.on("queueEnd", async(queue,track) => {
-    socket.emit("queueEnd", {queue, track})
+    socket.to(queue.guild.id).emit("queueEnd", {queue, track})
   })
   var interval;
   client.player.on("trackStart", async(queue,track) => {
     interval = setInterval(async() => {
     var perc;
      perc = queue.getPlayerTimestamp();
-
+    //const guild = client.guilds.cache.get(queue.guild);
+   const voiceChannel = queue.guild.channels.cache.filter(c => c.type === "GUILD_VOICE").get(queue.connection.channel.id)
+    const members = voiceChannel.members;
     const info = await getPreview(track.url)
    // console.log(interval)
-    socket.emit("currentMusic", {
+    socket.to(queue.guild.id).emit("currentMusic", {
        queue,
        track,
        perc,
-       info
+       info,
+       voiceChannel,
+       members
      })
     },1000)
   });
+  io.on("pauseTrack", (info) => {
+    const queue = player.getQueue(info.guild);
+    console.log(info)
+    const paused = queue.setPaused(info.paused);
+    // console.log(paused)
+    socket.to(info.guild).emit("trackUpdate", {pause: info.paused});
+  })
+  io.on("skipTrack", (info) => {
+    const queue = player.getQueue(info.guild);
+    queue.skip();
+  })
   client.player.on("trackEnd", () => {
     clearInterval(interval)
   })
