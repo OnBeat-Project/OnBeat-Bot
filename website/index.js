@@ -124,6 +124,9 @@ socket.on("connection", async (io) => {
   client.player.on("queueEnd", async(queue,track) => {
     socket.in(queue.guild.id).emit("queueEnd", {queue, track})
   })
+  client.player.on("trackEnd", async(queue,track) => {
+    socket.in(queue.guild.id).emit("trackEnd", {queue, track})
+  })
   var interval;
   client.player.on("trackStart", async(queue,track) => {
     interval = setInterval(async() => {

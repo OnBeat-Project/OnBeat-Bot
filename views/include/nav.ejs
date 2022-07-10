@@ -2,7 +2,7 @@
   <%if (req.user) {
     %>
     <img class="w-10 h-10 rounded-full" src="<%=req.user.avatar?`https://cdn.discordapp.com/avatars/${req.user.id}/${req.user.avatar}.png`:"https://cdn.discordapp.com/embed/avatars/0.png"%>" alt=""/> 
-    <span class="bottom-0 left-7 absolute  w-3.5 h-3.5 bg-green-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
+    <span class="bottom-0 left-7 absolute  w-3.5 h-3.5 bg-gray-400 border-2 border-white dark:border-gray-800 rounded-full" id="status"></span>
     <%} else {%>
     <img class="w-10 h-10 rounded-full" src="https://cdn.discordapp.com/embed/avatars/0.png" alt=""/>
     <span class="bottom-0 left-7 absolute w-3.5 h-3.5 bg-gray-400 border-2 border-white dark:border-gray-800 rounded-full"></span>
@@ -24,3 +24,31 @@
     </li>
     </ul>
     </div>
+    <script>
+    const status = document.getElementById("status")
+     socket.on("connect", () => {
+      status.classList.add("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.remove("bg-red-400")
+     })
+     socket.io.on("disconnect", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.add("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.remove("bg-red-400")
+     })
+     socket.on("connect_error", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.add("bg-red-400")
+     });
+     socket.io.on("reconnect", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.add("bg-orange-400")
+      status.classList.remove("bg-red-400")
+     })
+     
+    </script>
