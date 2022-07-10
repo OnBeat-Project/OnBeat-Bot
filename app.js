@@ -30,6 +30,7 @@ passport.use(new Strategy({
   prompt: prompt
 }, function(accessToken, refreshToken, profile, done) {
   process.nextTick(function() {
+    if (profile.guilds == undefined) return done(null, false);
     return done(null, profile);
   });
 }));

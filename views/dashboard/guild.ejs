@@ -8,6 +8,7 @@
   <p>Please, set a log channel</p>
 </div>
 <%} else {%>
+
 <div class="p-1 flex justify-center gap-x-1 w-full">
   <form id="requestMusic" class="fixed">
     <input name="music" class="text-slate-900 text-center p-1 m-3 drop-shadow rounded-xl" id="music" placeholder="Search a music for <%=guild.name%>"></input>
@@ -34,7 +35,7 @@
 </div>
 <br>
 <div class="fixed inset-x-0 flex bottom-0 bg-slate-200 dark:text-slate-100 dark:bg-slate-600 w-full h-16 dark:text-slate-900 items-center justify-between text-center rounded-t-xl" id="player">
-  <div id="users" class="flex ml-1 -space-x-4">
+  <div id="users" class="flex ml-1 -space-x-4" data-tooltip-target="tooltip-top" data-tooltip-placement="top" type="button">
     <img src="" alt="user-1" class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600" id="user1" />
   <img src="" alt="user-2" class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600" id="user2" />
   <a class="hidden flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-slate-200 rounded-full hover:bg-gray-600 dark:border-slate-600" id="otherusers">+0</a>
@@ -50,6 +51,13 @@
 <div class="w-16"></div>
 </div>
 </div>
+<div id="tooltip-top" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+    <div id="connected-users" class="flex ml-1 -space-x-4">
+      
+    </div>
+    <div class="tooltip-arrow" data-popper-arrow></div>
+</div>
+
 <script>
 var room = io.connect()
 socket.emit("create", "<%=guild.id%>")
@@ -107,6 +115,10 @@ music.time.textContent = `${info.perc.current}/${info.perc.end}`;
 music.progress.style.width = `${info.perc.progress}%`
 
 const seenUsers = info.members.slice(0, 3)
+
+info.members.forEach((i)=> {
+  document.getElementById("connected-users").innerHTML += `<img src="${i.displayAvatarURL}" class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600"/>`
+})
 
 const avatar1 = document.getElementById("user1")
 const avatar2 = document.getElementById("user2")

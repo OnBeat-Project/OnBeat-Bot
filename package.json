@@ -24,6 +24,7 @@
     "better-sqlite3": "^7.5.3",
     "connect-mongo": "^4.6.0",
     "discord-player": "^5.2.2",
+    "discord-rpc": "^4.0.1",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",

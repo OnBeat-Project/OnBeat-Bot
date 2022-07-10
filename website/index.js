@@ -7,11 +7,16 @@ const {
   checkAuth
 } = require('../app')
 
+const RPC = require('discord-rpc')
+
+// const rpcClient = new RPC.Client({ transport: 'ipc' })
+
+
 // Login
 
 app.get('/auth/callback',
   passport.authenticate('discord', {
-    failureRedirect: '/', prompt: "none"
+    failureRedirect: '/'
   }), function(req, res) {
     if(!req.session.checkURL) req.session.checkURL = "/";
     var hour = 3600000
@@ -20,9 +25,11 @@ req.session.cookie.maxAge = hour
     res.redirect(req.session.checkURL)
   }
 );
-app.get('/auth/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
+app.post('/auth/logout', function(req, res) {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
 });
 app.get('/auth/info', checkAuth, function(req, res) {
   //console.log(req.user)
@@ -32,6 +39,21 @@ app.get('/auth/info', checkAuth, function(req, res) {
 // Home
 app.use("/", require('./Routers'));
 app.use("/dashboard", checkAuth, require('./Routers/dashboard'));
+
+// Set errors
+app.use(function(req, res, next)  {
+  res.render("404.ejs", {
+    req,res
+  });
+  res.sendStatus(404)
+})
+
+app.use(function(err, req, res, next)  {
+  res.render("500.ejs", {
+    req,res, error: err
+  });
+  res.sendStatus(500)
+})
 
 // Socket
 const fetch = require('isomorphic-unfetch')
@@ -60,22 +82,22 @@ socket.on("connection", async (io) => {
     const member = guild.members.cache.get(info.user)
     if(!member.voice.channel) return;
     try {
-      track = await client.spotify.search({ type: 'track', query: query});
+      track = await client.spotify.search({ type:"track", query: query});
     } catch(e) {
+      // console.log(e)
       track = {
         tracks: {
-          items: []
+         items: []
         }
       }
     }
-     // console.log()
+     console.log(track.tracks.items)
     const searchResult = await player
-    .search(track.tracks.items[0]?track.tracks.items[0].external_urls.spotify:query, {
+    .search(track.tracks.items === []?query:track.tracks.items[0].external_urls.spotify, {
       requestedBy: member,
       searchEngine: QueryType.SPOTIFY_SONG
     })
     .catch(() => {});
-    
     const queue = await player.createQueue(guild, {
       metadata: guild.channels.cache.get( channeldb)
     });
@@ -88,18 +110,19 @@ socket.on("connection", async (io) => {
       }
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
      if (!queue.playing) await queue.play();
-     socket.to(guild.id).emit("musicQueue", {
-       queue
+     socket.in(guild.id).emit("musicQueue", {
+       queue,
+       track: queue.track
      })
   })
   client.player.on("trackAdd", async(queue, track) => {
-    socket.to(queue.guild.id).emit("musicQueue", {
+    socket.in(queue.guild.id).emit("musicQueue", {
        queue,
        track
      })
   });
   client.player.on("queueEnd", async(queue,track) => {
-    socket.to(queue.guild.id).emit("queueEnd", {queue, track})
+    socket.in(queue.guild.id).emit("queueEnd", {queue, track})
   })
   var interval;
   client.player.on("trackStart", async(queue,track) => {
@@ -111,7 +134,7 @@ socket.on("connection", async (io) => {
     const members = voiceChannel.members;
     const info = await getPreview(track.url)
    // console.log(interval)
-    socket.to(queue.guild.id).emit("currentMusic", {
+    socket.in(queue.guild.id).emit("currentMusic", {
        queue,
        track,
        perc,
@@ -126,7 +149,7 @@ socket.on("connection", async (io) => {
     console.log(info)
     const paused = queue.setPaused(info.paused);
     // console.log(paused)
-    socket.to(info.guild).emit("trackUpdate", {pause: info.paused});
+    socket.in(info.guild).emit("trackUpdate", {pause: info.paused});
   })
   io.on("skipTrack", (info) => {
     const queue = player.getQueue(info.guild);
