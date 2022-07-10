@@ -3,7 +3,11 @@
   description: "Dashboard :0"
 })%>
 <%-include("../include/nav.ejs")%>
-<%if (!channeldb) return; %>
+<%if (!channeldb) {%>
+<div class="p-1 flex justify-center items-center gap-x-1 h-full w-full">
+  <p>Please, set a log channel</p>
+</div>
+<%} else {%>
 <div class="p-1 flex justify-center gap-x-1 w-full">
   <form id="requestMusic" class="fixed">
     <input name="music" class="text-slate-900 text-center p-1 m-3 drop-shadow rounded-xl" id="music" placeholder="Search a music for <%=guild.name%>"></input>
@@ -63,16 +67,18 @@ guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"
 });
 search.value = ""
 e.preventDefault();
-return false;
 search.disabled = true;
+return false;
 }
 socket.on("connect", (connected) => {
 console.log(connected)
 });
 
-socket.on("musicQueue", (music)=> {
+socket.on("musicQueue", (music) => {
 console.log(music)
-UIkit.notification(`Song ${music.track.title} has been queued!`)
+this.queueNotify += 1;
+// if(this.queueNotify > 1) {  return this.queueNotify=0; } else { return UIkit.notification(`Song ${music.track.title} has been queued!`) }
+
 })
 socket.on("queueEnd", music => {
 UIkit.notification("Queue ends!");
@@ -162,5 +168,6 @@ guild: "<%=guild.id%>", user: "<%=req.user.id%>"
     });*/
 twemoji.parse(document.body);
 </script>
+<%}%>
 <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 <%-include('../include/footer.ejs')%>

@@ -74,7 +74,7 @@ module.exports = {
     }
     queue.setVolume(75);
    // await interaction.deferReply({ephemeral:true});
-    void interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!`, ephemeral: true})
+    void interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!\nHey, you can now use our dashboard!\n<https://onbeat.ml/dashboard>`, ephemeral: true})
     searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
   }
