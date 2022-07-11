@@ -1,0 +1,19 @@
+<%-include("./include/head.ejs", {
+  title: "OnBeat - Not Found",
+  description: "Not found"
+})%>
+<%-include("./include/nav.ejs")%>
+<div class="flex flex-col items-center justify-center w-full h-screen lg:h-screen transition-all" id="500">
+  <p class="text-2xl">Internal server error</p>
+  <p>If the error persists, please <a class="text-blue-600" href="https://github.com/OnBeat-Project/OnBeat-Bot/issues/new">report</a> it to us.</p>
+  <br>
+  <button class="" onclick="expand()" id="expandbtn">Expand error</button>
+  <p id="error" class="hidden text-red-600"><%= error.message %></p>
+</div>
+<script>
+  function expand() {
+    document.getElementById("error").classList.remove("hidden");
+    document.getElementById("expandbtn").classList.add("hidden")
+  }
+</script>
+<%-include('./include/footer.ejs')%>
