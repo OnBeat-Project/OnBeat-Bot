@@ -34,6 +34,7 @@
       status.classList.remove("bg-gray-400")
       status.classList.remove("bg-orange-400")
       status.classList.remove("bg-red-400")
+      status.classList.remove("animate-ping")
      })
      socket.io.on("disconnect", () => {
       status.classList.remove("bg-green-400")
@@ -46,11 +47,13 @@
       status.classList.remove("bg-gray-400")
       status.classList.remove("bg-orange-400")
       status.classList.add("bg-red-400")
+      status.classList.add("animate-ping")
      });
      socket.io.on("reconnect", () => {
       status.classList.remove("bg-green-400")
       status.classList.remove("bg-gray-400")
       status.classList.add("bg-orange-400")
+      status.classList.add("animate-ping")
       status.classList.remove("bg-red-400")
      })
      

@@ -3,18 +3,18 @@
   description: "Dashboard :0"
 })%>
 <%-include("../include/nav.ejs")%>
-  <div id="icons" class="grid grid-cols-1 md:grid-cols-3 justify-items-center items-center w-full gap-y-2 md:h-screen">
+  <div id="icons" class="grid grid-cols-1 md:grid-cols-3 justify-items-center items-center w-full md:h-screen gap-y-1">
   <%req.user.guilds.forEach(guild => {%>
   <%if(!cli.guilds.cache.get(guild.id)) return;%>
   <form id="guild-form" method="post">
   <%if(guild.icon) {%>
   <button name="guild" value="<%=guild.id%>">
-   <img src="<%=cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true})%>" class="w-[100px] h-[100px] md:h-[200px] md:w-[200px] rounded-full"/>
+   <img src="<%=cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true})%>" class="w-[100px] h-[100px] md:h-[150px] md:w-[150px] rounded-full"/>
    </button>
   <%} else {%>
   <button name="guild" value="<%=guild.id%>">
-   <canvas id="myCanvas-<%=guild.id%>" width="100px" height="100px" class="w-[100px] h-[100px] md:h-[200px] md:w-[200px] rounded-full mb-2
-   bg-slate-600 text-white"></canvas>
+   <canvas id="myCanvas-<%=guild.id%>" width="100px" height="100px" class="w-[100px] h-[100px] md:h-[150px] md:w-[150px] rounded-full mb-2
+   bg-slate-600 hover:bg-blue-600 transition-all text-white"></canvas>
   <script>
 					var canvas = document.getElementById("myCanvas-<%=guild.id%>");
 					console.log(canvas.width + " " + canvas.height);
@@ -29,9 +29,12 @@
   <%}%>
   </form>
   <%})%>
-  <div class="relative flex flex-col text-center w-full justify-center">
+  <div onclick="window.open('https://top.gg/bot/930117271802773514/invite');" class="flex justify-center items-center border-4 border-gray-600 hover:border-green-600 border-dashed hover:border-solid hover:bg-green-600 w-[100px] h-[100px] md:h-[150px] md:w-[150px] rounded-full duration-300 transition-all">
+    <p class="text-4xl">+</p>
+  </div>
+  <!--<div class="relative flex flex-col text-center w-full justify-center">
     <p>In case you didn't find your server amazing</p>
     <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-purple-700 dark:bg-purple-500 dark:text-slate-900 hover:bg-purple-700/80 hover:dark:bg-purple-500/80 rounded-lg transition-all">Add Bot</button>
-  </div>
+  </div>-->
   </div>
 <%-include('../include/footer.ejs')%>
