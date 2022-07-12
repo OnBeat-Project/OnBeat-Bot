@@ -30,7 +30,7 @@ module.exports = (client) => {
     await client.db.add(`track.${track.title}`, 1);
     console.log(await client.db.get("track"))
     queue.metadata.send({
-      content: `🎶 | Track **${track.title}** queued!\n🙆 | Requested by ${track.requestedBy.username}#${track.requestedBy.tag}`,
+      content: `🎶 | Track **${track.title}** queued!\n🙆 | Requested by ${track.requestedBy.tag}`,
       ephemeral:true
     });
   });

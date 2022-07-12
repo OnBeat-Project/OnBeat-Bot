@@ -3,17 +3,17 @@
   description: "Dashboard :0"
 })%>
 <%-include("../include/nav.ejs")%>
-  <div id="icons" class="flex flex-col justify-center items-center w-full h-screen gap-y-2">
+  <div id="icons" class="grid grid-cols-1 md:grid-cols-3 justify-items-center items-center w-full gap-y-2 md:h-screen">
   <%req.user.guilds.forEach(guild => {%>
   <%if(!cli.guilds.cache.get(guild.id)) return;%>
   <form id="guild-form" method="post">
   <%if(guild.icon) {%>
   <button name="guild" value="<%=guild.id%>">
-   <img src="<%=cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true})%>" class="w-[100px] h-[100px] rounded-full"/>
+   <img src="<%=cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true})%>" class="w-[100px] h-[100px] md:h-[200px] md:w-[200px] rounded-full"/>
    </button>
   <%} else {%>
   <button name="guild" value="<%=guild.id%>">
-   <canvas id="myCanvas-<%=guild.id%>" width="100px" height="100px" class="w-[100px] h-[100px] rounded-full mb-2
+   <canvas id="myCanvas-<%=guild.id%>" width="100px" height="100px" class="w-[100px] h-[100px] md:h-[200px] md:w-[200px] rounded-full mb-2
    bg-slate-600 text-white"></canvas>
   <script>
 					var canvas = document.getElementById("myCanvas-<%=guild.id%>");
@@ -29,11 +29,9 @@
   <%}%>
   </form>
   <%})%>
-  </div>
-  <div class="flex  text-center w-full justify-center">
-    <p>In case you didn't find your server amazing:</p>
-    <div class="mt-3 flex gap-x-3">
+  <div class="relative flex flex-col text-center w-full justify-center">
+    <p>In case you didn't find your server amazing</p>
     <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-purple-700 dark:bg-purple-500 dark:text-slate-900 hover:bg-purple-700/80 hover:dark:bg-purple-500/80 rounded-lg transition-all">Add Bot</button>
-    </div>
+  </div>
   </div>
 <%-include('../include/footer.ejs')%>

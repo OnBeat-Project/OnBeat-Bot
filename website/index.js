@@ -18,11 +18,13 @@ app.get('/auth/callback',
   passport.authenticate('discord', {
     failureRedirect: '/'
   }), function(req, res) {
+    // req.session.checkURL = req.originalUrl;
     if (!req.session.checkURL) req.session.checkURL = "/";
     var hour = 3600000
     req.session.cookie.expires = new Date(Date.now() + hour)
     req.session.cookie.maxAge = hour
-    res.redirect(req.session.checkURL)
+    res.redirect("/dashboard")
+    // res.redirect(req.session.checkURL)
   }
 );
 app.post('/auth/logout', function(req, res) {
@@ -106,7 +108,7 @@ socket.on("connection", async (io) => {
       }
       console.log(track.tracks.items)
       const searchResult = await player
-      .search(track.tracks.items === []?query: track.tracks.items[0].external_urls.spotify, {
+      .search(!track.tracks.items[0]?query: track.tracks.items[0].external_urls.spotify, {
         requestedBy: member,
         searchEngine: QueryType.SPOTIFY_SONG
       })
@@ -132,7 +134,8 @@ socket.on("connection", async (io) => {
     async(queue, track) => {
       socket.in(queue.guild.id).emit("musicQueue", {
         queue,
-        track
+        track,
+        requestedBy: client.users.cache.get(track.requestedBy.id)
       })
     });
   client.player.on("queueEnd",
@@ -144,7 +147,9 @@ socket.on("connection", async (io) => {
   var interval;
   client.player.on("trackStart",
     async(queue, track) => {
+      
       interval = setInterval(async() => {
+        if(!queue.playing) return;
         var perc;
         perc = queue.getPlayerTimestamp();
         //const guild = client.guilds.cache.get(queue.guild);
@@ -180,7 +185,7 @@ socket.on("connection", async (io) => {
       queue.skip();
     })
   client.player.on("trackEnd",
-    () => {
+    (queue,track) => {
       socket.in(queue.guild.id).emit("trackEnd", {
         queue, track
       })
