@@ -17,7 +17,7 @@ const spotify = new Spotify({
 });
 
 
-client.player = new Player(client);
+client.player = new Player(client, {leaveOnEmptyCooldown: 5000});
 client.commands = new Collection();
 client.spotify = spotify;
 client.db = new QuickDB();
