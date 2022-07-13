@@ -1,4 +1,4 @@
-<img width="100" src="/images/favicon.ico"/>
+<img width="200" src="/public/images/favicon.ico"/>
 
 # OnBeat
 *Just beat your heart.*
