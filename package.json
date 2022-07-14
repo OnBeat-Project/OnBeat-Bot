@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/OnBeat-Project/OnBeat-Bot#readme",
   "dependencies": {
+    "@discord-player/extractor": "^3.0.2",
     "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.5.0",
     "@discordjs/voice": "^0.10.0",

@@ -93,7 +93,14 @@ socket.on("connection", async (io) => {
       var query = info.music;
       var track;
       const member = guild.members.cache.get(info.user)
-      if (!member.voice.channel) return;
+      if (!member.voice.channel) return socket.in(guild.id).emit("error", {
+        message: "Please, join in a voice channel!"
+      });
+      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+        return void socket.in(guild.id).emit("error", {
+          message: "You are not on my voice channel!"
+        });
+      }
       try {
         track = await client.spotify.search({
           type: "track", query: query
@@ -106,16 +113,15 @@ socket.on("connection", async (io) => {
           }
         }
       }
-      console.log(track.tracks.items)
       const searchResult = await player
       .search(!track.tracks.items[0]?query: track.tracks.items[0].external_urls.spotify, {
         requestedBy: member,
-        searchEngine: QueryType.SPOTIFY_SONG
+        searchEngine: QueryType.SPOTIFY_SONG || QueryType.SPOTIFY_PLAYLIST
       })
       .catch(() => {});
       const queue = await player.createQueue(guild, {
         metadata: guild.channels.cache.get(channeldb)
-      });
+      }) || player.getQueue(guild.id);
 
       try {
         if (!queue.connection) await queue.connect(member.voice.channel);
@@ -123,8 +129,10 @@ socket.on("connection", async (io) => {
         void player.deleteQueue(guild.id);
         return console.log(e)
       }
+      console.log(searchResult)
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
       if (!queue.playing) await queue.play();
+      queue.setFilters({"fadein": true})
       socket.in(guild.id).emit("musicQueue", {
         queue,
         track: queue.track
@@ -147,9 +155,9 @@ socket.on("connection", async (io) => {
   var interval;
   client.player.on("trackStart",
     async(queue, track) => {
-      
+
       interval = setInterval(async() => {
-        if(!queue.playing) return;
+        if (!queue.playing) return;
         var perc;
         perc = queue.getPlayerTimestamp();
         //const guild = client.guilds.cache.get(queue.guild);
@@ -165,12 +173,23 @@ socket.on("connection", async (io) => {
           voiceChannel,
           members
         })
-      }, 1000)
+      },
+        1000)
     });
   io.on("pauseTrack",
     (info) => {
       const queue = player.getQueue(info.guild);
       if (!queue.playing) return;
+      const guild = client.guilds.cache.get(info.guild);
+      const member = guild.members.cache.get(info.user)
+      if (!member.voice.channel) return socket.in(guild.id).emit("error", {
+        message: "Please, join in a voice channel!"
+      });
+      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+        return void socket.in(guild.id).emit("error", {
+          message: "You are not on my voice channel!"
+        });
+      }
       console.log(info)
       const paused = queue.setPaused(info.paused);
       // console.log(paused)
@@ -182,10 +201,20 @@ socket.on("connection", async (io) => {
     (info) => {
       const queue = player.getQueue(info.guild);
       if (!queue.playing) return;
+      const guild = client.guilds.cache.get(info.guild);
+      const member = guild.members.cache.get(info.user)
+      if (!member.voice.channel) return socket.in(guild.id).emit("error", {
+        message: "Please, join in a voice channel!"
+      });
+      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+        return void socket.in(guild.id).emit("error", {
+          message: "You are not on my voice channel!"
+        });
+      }
       queue.skip();
     })
   client.player.on("trackEnd",
-    (queue,track) => {
+    (queue, track) => {
       socket.in(queue.guild.id).emit("trackEnd", {
         queue, track
       })

@@ -19,10 +19,10 @@ module.exports = {
   .addStringOption(o => o.setName("query").setDescription("Music to be requested").setRequired(true)),
   run: async (interaction) => {
     const channeldb = await interaction.client.db.get(`channel_${interaction.guild.id}`);
-    if(!channeldb) return interaction.reply({content: `Please, use \`/set channel\` to set a log channel.`});
+    // if(!channeldb) return interaction.reply({content: `Please, use \`/set channel\` to set a log channel.`});
     if(!interaction.guild.channels.cache.get( channeldb)) {
      await interaction.client.db.delete(`channel_${interaction.guild.id}`);
-      return interaction.reply("The log channel don't exists anymore.")
+      // return interaction.reply("The log channel don't exists anymore.")
     }
     // await interaction.deferReply();
     const player = interaction.client.player;
@@ -74,7 +74,7 @@ module.exports = {
     }
     queue.setVolume(75);
    // await interaction.deferReply({ephemeral:true});
-    void interaction.reply({content: `Your music will be playing soon, stay tuned at <#${channeldb}>!\nHey, you can now use our dashboard!\n<https://onbeat.me/dashboard>`, ephemeral: true})
+    void interaction.reply({content: `Your music will be playing soon, stay tuned!\nHey, you can now use our dashboard!\n<https://onbeat.me/dashboard>`, ephemeral: true})
     searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
   }

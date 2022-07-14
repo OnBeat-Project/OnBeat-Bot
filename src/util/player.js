@@ -20,6 +20,7 @@ module.exports = (client) => {
     })
     .setColor("RANDOM");
     
+    if(!queue.metadata) return;
     
     queue.metadata.send({
       embeds: [embed] }).then(message => {
@@ -29,6 +30,7 @@ module.exports = (client) => {
   client.player.on("trackAdd", async(queue, track) => {
     await client.db.add(`track.${track.title}`, 1);
     console.log(await client.db.get("track"))
+    if(!queue.metadata) return;
     queue.metadata.send({
       content: `🎶 | Track **${track.title}** queued!\n🙆 | Requested by ${track.requestedBy.tag}`,
       ephemeral:true
