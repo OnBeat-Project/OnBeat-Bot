@@ -60,7 +60,7 @@ app.use(session({
     maxAge: 60000 * 60 * 24
   },
   store: MongoStore.create({
-    mongoUrl: process.env.db
+    mongoUrl: process.env.MONGODB_URL
   })
 }));
 app.use(passport.initialize());

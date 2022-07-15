@@ -14,8 +14,8 @@ const { Lyrics } = require("@discord-player/extractor");
 const lyricsClient = Lyrics.init();
 const client = new Client({ intents: ["GUILDS", "GUILD_VOICE_STATES"] });
 const spotify = new Spotify({
-  id: process.env.spotifyId,
-  secret: process.env.spotifyAccess
+  id: process.env.spotifyID,
+  secret: process.env.spotifySecret
 });
 
 // AudioFilters.define("fadein", "afade=t=in:s=0:d=15")
