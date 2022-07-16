@@ -1,5 +1,5 @@
 <%-include("./include/head.ejs", {
-  title: "OnBeat - Home",
+  title: "OnBeat | Home",
   description: "OnBeat is a simple music bot for Discord. With an advanced, yet simple to use dashboard, OnBeat is extremely easy to modify and control."
 })%>
 <%-include("./include/nav.ejs")%>
@@ -8,7 +8,7 @@
     Welcome<%=req.user?" "+ req.user.username: ""%> to <span class="drop-shadow text-slate-700 dark:text-slate-300 underline bold decoration-dashed antialiased font-['Poppins, sans-serif'] hover:uppercase hover:dark:lowercase hover:drop-shadow-lg hover:-translate-y-2 transition-all">OnBeat</span>!
   </p>
   <p class="text-gray-800 dark:text-gray-300">
-    A simple music bot for Discord!
+    Play high quality music in your Discord server for free!
   </p>
   <div class="mt-3 flex gap-x-3">
     <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all">Add Bot</button>
