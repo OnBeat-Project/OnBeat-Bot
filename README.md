@@ -1,7 +1,5 @@
-<img width="200" src="/public/images/favicon.ico"/>
-
-# OnBeat
-*Just beat your heart.*
+<img width="200" src="/public/images/header.png"/>
+Just beat your heart.
 
 ----
 OnBeat is a music bot for Discord made with JS and other stuff.
