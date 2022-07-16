@@ -1,6 +1,7 @@
 const http = require('node:http'), express = require('express'), io = require('socket.io'), session = require('express-session'), passport = require('passport'), Strategy = require('passport-discord').Strategy;
 const https = require('https');
 const fs = require('node:fs');
+const Topgg = require("@top-gg/sdk")
 
 const MongoStore = require('connect-mongo');
 
@@ -21,6 +22,8 @@ const app = express();
 const httpsServer = https.createServer(credentials,app);
 
 const server = http.createServer(app);
+
+
 
 const socket = io(server)
 socket.listen(httpsServer)
@@ -72,6 +75,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json())
 app.use(express.static(__dirname + "/public"))
 
+const webhook = new Topgg.Webhook(process.env.TOPGGauth)
+
+app.post("/webhook/topgg", webhook.listener(vote => {
+   console.log(vote)
+   const user = client.users.cache.get(vote.user)
+   if(!user) return;
+   console.log(`${user.tag} voted!`)
+}))
 
 module.exports = {
   app,

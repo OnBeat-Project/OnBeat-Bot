@@ -48,13 +48,13 @@
 
 
 <div class="p-1 flex justify-center gap-x-1 w-full">
-  <form id="requestMusic" class="flex fixed mt-3" onsubmit="submit(this, '<%=guild.id%>')">
-    <input name="music" class="text-slate-900 text-center p-1 drop-shadow rounded-l-xl" id="music" placeholder="Search a music for <%=guild.name%>" autocomplete="off"></input>
-    <button type="submit" class="bg-slate-200 dark:bg-slate-600 p-1 rounded-r-xl drop-shadow"><i data-feather="search"></i></button>
+  <form id="requestMusic" class="flex fixed ml-3 mt-3 mr-3" onsubmit="submit(this, '<%=guild.id%>')">
+    <input name="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" id="music" placeholder="Search a music for <%=guild.name%>" autocomplete="off"></input>
+    <!--<button type="submit" class="bg-slate-200 dark:bg-slate-600 p-1 rounded-r-xl drop-shadow"><i data-feather="search"></i></button>--->
   </form>
 </div>
 <div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[95vh] overflow-hidden" id="stopped">
-  <img src="" id="img-error" class="w-64"/>
+  <!--<img src="" id="img-error" class="w-64"/>-->
   <p class="text-2xl">Nothing playing...</p>
 </div>
 <div id="loading" class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full overflow-hidden h-[95vh]">
@@ -106,13 +106,26 @@
   <p id="toast-music-text">{user} requested {music}</p>
 </div>
 <script>
+var is_mobile = !!navigator.userAgent.match(/iphone|android|blackberry/ig) || false;
+    /*setInterval(() => {
+    console.log(is_mobile);
+    });*/
+    if(is_mobile) { document.body.innerHTML = `
+     <div class="flex flex-col w-full h-[95vh] justify-center items-center text-center">
+      <p class="text-2xl font-bold">Smartphones do not support dashboard</p>
+      <br>
+      <p class="text-lg">OnBeat doesn't yet support the dashboard on mobile, log into a computer, or use the Discord bot itself.</p>
+      <br>
+      <p>We are still creating a better experience for mobile users!</p>
+     </div>
+    ` }
 var gif = [
   "https://distok.top/stickers/751604115435421716/751606014054236261.gif",
   "https://distok.top/stickers/748286863302852648/748293785997279323.gif",
   "https://distok.top/stickers/754103543786504244/754108811354046554.gif"
   ]
   const random = gif[Math.floor(Math.random() * gif.length)]
-  document.getElementById("img-error").src=random;
+  // document.getElementById("img-error").src=random;
 socket.emit("create", "<%=guild.id%>")
 const form = document.getElementById("requestMusic")
 const search = document.getElementById("music");
@@ -228,7 +241,8 @@ socket.on("currentMusic", (info) => {
   document.getElementById("loading").classList.add("hidden")
   // console.log(info)
   if (!info.queue) {
-    notrack.classList.remove("hidden"); trackEl.classList.add("hidden");
+    notrack.classList.remove("hidden"); 
+    trackEl.classList.add("hidden");
   }
   notrack.classList.add("hidden");
   trackEl.classList.remove("hidden");
@@ -297,5 +311,7 @@ function skip(music, guild, user) {
       user: user
     });
 }
+
+
 </script>
 <%-include('../include/footer.ejs')%>

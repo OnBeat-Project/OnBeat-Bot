@@ -39,10 +39,21 @@ app.get('/auth/info', checkAuth, function(req, res) {
   //console.log(req.user)
   res.json(req.user);
 });
+function maintance() {
+  app.get("*", (req,
+    res,
+    next) => {
+    if (!req.user) return res.redirect("/auth/callback");
+    if (req.user.id === "407859300527243275") return next();
+    res.render("maintance.ejs", {
+      req, res
+    })
+  })
+}
 
 // Home
 app.use("/", require('./Routers'));
-app.use("/dashboard", checkAuth, require('./Routers/dashboard'));
+app.use("/dashboard", require('./Routers/dashboard'));
 
 // Set errors
 app.use(function(req, res, next) {
@@ -132,7 +143,9 @@ socket.on("connection", async (io) => {
       console.log(searchResult)
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
       if (!queue.playing) await queue.play();
-      queue.setFilters({"fadein": true})
+      queue.setFilters({
+        "fadein": true
+      })
       socket.in(guild.id).emit("musicQueue", {
         queue,
         track: queue.track
@@ -176,6 +189,10 @@ socket.on("connection", async (io) => {
       },
         1000)
     });
+  io.on("broadcastNotify", (info) => {
+    io.sockets.emit("notification",
+      info)
+  })
   io.on("pauseTrack",
     (info) => {
       const queue = player.getQueue(info.guild);
