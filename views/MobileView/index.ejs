@@ -11,7 +11,7 @@
       %>
       <%if (!cli.guilds.cache.get(g.id)) return; %>
       <form method="post" onsubmit="this.preventDefault()" action="/mobile/dashboard/guild">
-      <button class="reveal fade-left relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 bg-zinc-200 text-black dark:bg-gray-800 dark:text-white drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all" name="guild" value="<%=g.id%>" type="submit">
+      <button class="relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 bg-zinc-200 text-black dark:bg-gray-800 dark:text-white drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all" name="guild" value="<%=g.id%>" type="submit">
         <%if (g.icon) {
           %>
           <img src="<%=cli.guilds.cache.get(g.id).iconURL({ size: 4096, dynamic: true })%>" class="w-24 rounded-full drop-shadow-lg" />
