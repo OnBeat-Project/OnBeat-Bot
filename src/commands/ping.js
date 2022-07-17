@@ -1,8 +1,13 @@
 const {
   SlashCommandBuilder
 } = require("@discordjs/builders");
+/*const {
+  EmbedBuilder
+} = require("discord.js");
+*/
 const {
-  MessageEmbed
+  MessageEmbed,
+  GuildMember
 } = require("discord.js");
 
 module.exports = {
@@ -13,7 +18,7 @@ module.exports = {
     const embed = new MessageEmbed()
     .setTitle("Getting ping...")
     .setDescription("Wait a second...\nAPI Ping: " + interaction.client.ws.ping + " ms")
-    .setColor("RANDOM");
+    .setColor("BLURPLE");
     interaction.reply({
       embeds: [embed], fetchReply: true
     }).then(m => {

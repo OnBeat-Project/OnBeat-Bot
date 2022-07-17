@@ -50,10 +50,11 @@ function maintance() {
     })
   })
 }
-
+ // maintance();
 // Home
 app.use("/", require('./Routers'));
 app.use("/dashboard", require('./Routers/dashboard'));
+app.use("/mobile", require('./Routers/mobile'));
 
 // Set errors
 app.use(function(req, res, next) {
@@ -95,7 +96,7 @@ socket.on("connection", async (io) => {
       io.join(guild)
       console.log(io.rooms)
     })
-
+  console.log(io.rooms)
   io.on("musicRequest",
     async (info) => {
 
@@ -184,7 +185,8 @@ socket.on("connection", async (io) => {
           perc,
           info,
           voiceChannel,
-          members
+          members,
+          requestedBy: client.users.cache.get(track.requestedBy.id)
         })
       },
         1000)

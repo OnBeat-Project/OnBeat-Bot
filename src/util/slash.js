@@ -7,9 +7,9 @@ const slash = {
     const loadSlash = ora(`Registering Slash Commands`).start();
 
     const { REST } = require("@discordjs/rest");
-    const { Routes } = require("discord-api-types/v9");
+    const { Routes } = require("discord-api-types/v10");
 
-    const rest = new REST({ version: "9" }).setToken(config?.bot?.token);
+    const rest = new REST({ version: "10" }).setToken(config?.bot?.token);
 
     try {
       const guildId = config.bot?.guildId;

@@ -1,4 +1,4 @@
-<button class="fixed m-2 mr-2 right-0 drop-shadow-md" id="dropdownDefault" data-dropdown-toggle="dropdown" type="button">
+<button class="fixed z-[3] m-2 mr-2 right-0 drop-shadow-md" id="dropdownDefault" data-dropdown-toggle="dropdown" type="button">
   <%if (req.user) {
     %>
     <img class="w-10 h-10 rounded-full" src="<%=req.user.avatar?`${process.env.cdnurl}/avatars/${req.user.id}/${req.user.avatar}`:"https://cdn.discordapp.com/embed/avatars/0.png"%>" alt=""/> 

@@ -1,0 +1,46 @@
+<%-include("../include/head.ejs", {
+  title: "OnBeat - Music Guild Dashboard",
+  description: "Dashboard :0"
+})%>
+<%-include("./includes/nav.ejs")%>
+<%if (req.user) {
+  %>
+  <center><p class="p-3 text-xl">Look for your preferred server!</p></center>
+  <div class="grid grid-cols-1 gap-4 justify-items-center">
+    <%req.user.guilds.forEach(g => {
+      %>
+      <%if (!cli.guilds.cache.get(g.id)) return; %>
+      <form method="post" onsubmit="this.preventDefault()" action="/mobile/dashboard/guild">
+      <button class="reveal fade-left relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 bg-zinc-200 text-black dark:bg-gray-800 dark:text-white drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all" name="guild" value="<%=g.id%>" type="submit">
+        <%if (g.icon) {
+          %>
+          <img src="<%=cli.guilds.cache.get(g.id).iconURL({ size: 4096, dynamic: true })%>" class="w-24 rounded-full drop-shadow-lg" />
+        <%} else {%>
+          <div class="flex w-24 h-24 rounded-full bg-slate-600 hover:bg-blue-600 transition-all items-center justify-center text-white text-4xl drop-shadow-lg">
+            <%=stringTools.toAbbreviation(g.name); %>
+          </div>
+          <%}%>
+            <br>
+            <p>
+              <%=g.name%>
+            </p>
+          </button>
+          </form>
+          <%})%>
+          </div>
+          
+          <%} else {%>
+            <div class="flex flex-col w-full h-[95vh] justify-center items-center">
+              <p>
+                Please connect with one of these plataforms:
+              </p>
+              <br>
+              <a href="/auth/callback" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
+            </div>
+            <%}%>
+              <script>
+                var is_mobile = !!navigator.userAgent.match(/iphone|android|blackberry/ig) || false;
+                if (is_mobile === false) { location.href = "/dashboard" }
+              </script>
+
+              <%-include('../include/footer.ejs')%>

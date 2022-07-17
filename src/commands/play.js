@@ -1,6 +1,10 @@
 const {
   SlashCommandBuilder
 } = require("@discordjs/builders");
+/*const {
+  Embed,
+  GuildMember
+} = require("discord.js");*/
 const {
   MessageEmbed,
   GuildMember
@@ -49,6 +53,7 @@ module.exports = {
       }
     }
      // console.log()
+     console.log(track.tracks.items[0]?track.tracks.items[0].external_urls.spotify:query)
     const searchResult = await player
     .search(track.tracks.items[0]?track.tracks.items[0].external_urls.spotify:query, {
       requestedBy: interaction.user,
