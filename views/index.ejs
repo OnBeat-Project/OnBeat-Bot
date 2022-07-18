@@ -3,7 +3,7 @@
   description: "OnBeat is a simple music bot for Discord. With an advanced, yet simple to use dashboard, OnBeat is extremely easy to modify and control."
 })%>
 <%-include("./include/nav.ejs")%>
-<div class="bg-slate-300 dark:bg-slate-700 flex flex-col items-center justify-center w-full h-[70vh] lg:h-[50vh] transition-all" id="home-center" style="">
+<div class="bg-slate-300 dark:bg-slate-900 flex flex-col items-center justify-center w-full h-[70vh] lg:h-[50vh] transition-all" id="home-center" style="">
   <p class="text-xl">
     Welcome<%=req.user?" "+ req.user.username: ""%> to <span class="drop-shadow text-slate-700 dark:text-slate-300 underline bold decoration-dashed antialiased font-['Poppins, sans-serif'] hover:uppercase hover:dark:lowercase hover:drop-shadow-lg hover:-translate-y-2 transition-all">OnBeat</span>!
   </p>
@@ -17,7 +17,7 @@
 </div>
 <div class="bg-gray-300 dark:bg-gray-700 transition-all">
   <%-include("./include/Waves/1.ejs", {
-    color: "fill-slate-300 dark:fill-slate-700 drop-shadow-2xl transition-all"
+    color: "fill-slate-300 dark:fill-slate-900 drop-shadow-2xl transition-all"
   })%>
   <div class="p-2">
   <div class="reveal fade-left text-center w-full">
