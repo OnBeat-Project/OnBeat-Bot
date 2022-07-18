@@ -179,6 +179,8 @@ socket.on("connection", async (io) => {
         const members = voiceChannel.members;
         const info = await getPreview(track.url)
         // console.log(interval)
+        const lyrics = await client.lyrics.search(`${track.title}`);
+        console.log(lyrics)
         socket.in(queue.guild.id).emit("currentMusic", {
           queue,
           track,
@@ -186,6 +188,8 @@ socket.on("connection", async (io) => {
           info,
           voiceChannel,
           members,
+          lyrics,
+          tracks: queue.tracks,
           requestedBy: client.users.cache.get(track.requestedBy.id)
         })
       },
