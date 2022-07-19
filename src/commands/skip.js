@@ -6,7 +6,7 @@ const { Player, QueryType, QueueRepeatMode } = require("discord-player");
 module.exports = {
   data: new SlashCommandBuilder()
   .setName("skip")
-  .setDescription("Skip current music!"),
+  .setDescription("Skip current song!"),
   run: async (interaction) => {
     const player = interaction.client.player
     const queue = player.getQueue(interaction.guildId);
