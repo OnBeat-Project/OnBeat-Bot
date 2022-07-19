@@ -1,264 +1,231 @@
 <%-include("../include/head.ejs", {
   title: "OnBeat - Music Guild Dashboard",
-  description: "Dashboard :0"
+  description: "Music guild dashboard."
 })%>
 <%-include("../include/nav.ejs")%>
-<!--<button class="fixed z-[4] m-5  top-0 left-0" id="dropdownServers" data-dropdown-toggle="servers" type="button">
-  <img src="<%=guild.icon?cli.guilds.cache.get(guild.id).iconURL({size:4096, dynamic: true}):"https://cdn.discordapp.com/embed/avatars/0.png"%>" class="w-10 h-10 rounded-full"/>
-</button>
-<div id="servers" class="ml-2 z-[4] hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
-  <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownServers">
-    <%req.user.guilds.forEach(g => {%>
-  <%if(!cli.guilds.cache.get(g.id)) return;%>
-  <form id="guild-form" method="post">
-  <%if(g.icon) {%>
-  <li><button name="guild" class="flex m-2 text-center justify-center items-center gap-x-2" value="<%=g.id%>">
-   <img src="<%=cli.guilds.cache.get(g.id).iconURL({size:4096, dynamic: true})%>" class="w-10 h-10 rounded-full"/>
-   <%if(g.name.length > 9) {%>
-    <%=g.name.slice(0,10)%>...
-   <%} else {%>
-    <%=g.name.slice(0,10)%>
-   <%}%>
-   </button></li>
-  <%} else {%>
-  <li><button name="guild" class="flex m-2 text-center justify-center items-center gap-x-2" value="<%=g.id%>">
-   <canvas id="myCanvas-<%=g.id%>" width="100px" height="100px" class="w-10 h-10 rounded-full
-   bg-slate-600 hover:bg-blue-600 transition-all text-white"></canvas>
-   <%if(g.name.length > 9) {%>
-    <%=g.name.slice(0,10)%>...
-   <%} else {%>
-    <%=g.name.slice(0,10)%>
-   <%}%>
-  <script>
-					var canvas = document.getElementById("myCanvas-<%=g.id%>");
-					console.log(canvas.width + " " + canvas.height);
-          var ctx = canvas.getContext("2d");
-          ctx.font = "30px sans-serif";
-					ctx.fillStyle = "white";
-          ctx.textAlign = "center"
-					var name = "<%=stringTools.toAbbreviation(g.name);%>"
-          ctx.fillText(name,50,59.5);
-				</script>
-				</button></li>
-  <%}%>
-  </form>
-  <%})%>
-  </ul>
-</div>
---->
 
-<div class="p-1 flex justify-center gap-x-1 w-full">
-  <form id="requestMusic" class="flex z-[4] fixed top-0 ml-3 mt-5 mr-3" onsubmit="submit(this, '<%=guild.id%>')">
-    <input name="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" id="music" placeholder="Search for music for <%=guild.name%>" autocomplete="off"></input>
-    <!--<button type="submit" class="bg-slate-200 dark:bg-slate-600 p-1 rounded-r-xl drop-shadow"><i data-feather="search"></i></button>--->
-  </form>
-</div>
-<div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="stopped">
-  <!--<img src="" id="img-error" class="w-64"/>-->
-  <p class="text-2xl">There is nothing playing...</p>
-</div>
-<div id="loading" class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full overflow-hidden h-[80vh]">
-  <svg role="status" class="w-12 h-12 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-purple-600 stroke-pink-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <!--
-    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-    --->
-    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
-</svg>
-</div>
-<div id="track" class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden">
-  <img class="w-64 rounded-2xl drop-shadow-lg" id="track-image" src="" />
-  <br>
-<p class="text-xl" id="track-name">
-  null
-</p>
-<p class="text-lg text-slate-700 dark:text-slate-300" id="track-artist">
-  null
-</p>
-<br>
-<div class="fixed inset-x-0 flex bottom-0 bg-slate-200 dark:text-slate-100 dark:bg-slate-600 w-full h-16 dark:text-slate-900 items-center justify-between text-center rounded-t-xl" id="player">
-  <div id="users" class="flex ml-1 -space-x-4" data-tooltip-target="tooltip-top" data-tooltip-placement="top" type="button">
-    <img src="" alt="user-1" class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600" id="user1" />
-  <img src="" alt="user-2" class="w-10 h-10 border-2 border-slate-200 rounded-full dark:border-slate-600" id="user2" />
-  <a class="hidden flex items-center justify-center w-10 h-10 text-xs font-medium text-white bg-gray-700 border-2 border-slate-200 rounded-full hover:bg-gray-600 dark:border-slate-600" id="otherusers">+0</a>
-</div>
-<div id="player-buttons" class="flex dark:text-white text-center">
-<button onclick="pause(this, '<%=guild.id%>', '<%=req.user.id%>')" id="play">
-<i id="icon" data-feather="pause"></i>
-</button>
-<button onclick="skip(this, '<%=guild.id%>', '<%=req.user.id%>')" id="skip">
-<i data-feather="skip-forward"></i>
-</button>
-</div>
-<div class="text-slate-900 dark:text-slate-100 w-16"><p id="time">00:00</p></div>
-</div>
- <div class="w-full fixed bottom-0 bg-gray-200 rounded-full h-1 dark:bg-gray-700">
-   <div class="bg-purple-600 h-1 rounded-full" id="time-progress" style="width: 0%"></div>
-   </div>
-</div>
-<div id="tooltip-top" role="tooltip" class="inline-block absolute invisible z-10 py-2 px-3 text-sm font-medium text-white bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
-    <p><span id="connected-users">
-      0
-    </span> users connected</p>
-    <div class="tooltip-arrow" data-popper-arrow></div>
-</div>
-<div id="toast-music" class="fixed flex justify-center items-center top-0 m-2 bg-gray-100 text-black dark:bg-gray-700 dark:text-white text-center opacity-0 -translate-x-full transition-all duration-500 p-2">
-  <img src="" id="emoji" class="w-[25px]" alt="emoji"/>
-  <p id="toast-music-text">{user} requested {music}</p>
-</div>
-<script>
-var is_mobile = !!navigator.userAgent.match(/iphone|android|blackberry/ig) || false;
-    /*setInterval(() => {
-    console.log(is_mobile);
-    });*/
-    if(is_mobile) { window.location.href="/mobile/dashboard" 
-    document.body.innerHTML = `
-     <div class="flex flex-col w-full h-[95vh] justify-center items-center text-center">
-      <p class="text-2xl font-bold">Smartphones do not support dashboard</p>
-      <br>
-      <p class="text-lg">OnBeat doesn't yet support the dashboard on mobile, log into a computer, or use the Discord bot itself.</p>
-      <br>
-      <p>We are still creating a better experience for mobile users!</p>
-     </div>
-    ` }
-var gif = [
-  "https://distok.top/stickers/751604115435421716/751606014054236261.gif",
-  "https://distok.top/stickers/748286863302852648/748293785997279323.gif",
-  "https://distok.top/stickers/754103543786504244/754108811354046554.gif"
-  ]
-  const random = gif[Math.floor(Math.random() * gif.length)]
-  // document.getElementById("img-error").src=random;
-socket.emit("create", "<%=guild.id%>")
-const form = document.getElementById("requestMusic")
-const search = document.getElementById("music");
-this.click = 0
-form.onsubmit = function(e, guild) {
- // socket.emit("create", guild)
-  this.click += 1
-  if (this.click === 1) {
-    alert("This feature stills in beta!")
-  }
-  socket.emit("musicRequest", {
-    guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"
-  });
-  search.value = ""
-  e.preventDefault();
- //  search.disabled = true;
-  return false;
-}
-const toast = document.getElementById("toast-music")
-const text = document.getElementById("toast-music-text")
-const emoji = document.getElementById("emoji")
-this.playing = false;
-socket.on("musicQueue", (music) => {
-  document.body.scrollTop = 0; // For Safari
-  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  const track = music.track;
-  const queue = music.queue;
-  search.disabled = true;
-  const randomEm = [
-    "https://discords.com/_next/image?url=https%3A%2F%2Fcdn.discordapp.com%2Femojis%2F883345636559290429.gif%3Fv%3D1&w=128&q=75",
-    "https://discords.com/_next/image?url=https%3A%2F%2Fcdn.discordapp.com%2Femojis%2F886753933316468776.gif%3Fv%3D1&w=128&q=75",
-    "https://discords.com/_next/image?url=https%3A%2F%2Fcdn.discordapp.com%2Femojis%2F675391951431925790.gif%3Fv%3D1&w=128&q=75",
-    "https://discords.com/_next/image?url=https%3A%2F%2Fcdn.discordapp.com%2Femojis%2F934213875916750868.gif%3Fv%3D1&w=128&q=75"
-    ];
-  const randomEmoji = randomEm[Math.floor(Math.random() * randomEm.length)]
-  emoji.classList.remove("hidden")
-  emoji.src = randomEmoji
-  text.textContent = `${music.requestedBy.tag} requested ${track.title}`;
-  toast.classList.remove("opacity-0")
-  toast.classList.remove("-translate-x-full")
-  setTimeout(() => {
-    // emoji.src = "";
-    toast.classList.add("opacity-0")
-    toast.classList.add("-translate-x-full")
-  }, 3000);
-  document.getElementById("loading").classList.remove("hidden")
-  document.getElementById("track").classList.add("hidden")
-  document.getElementById("stopped").classList.add("hidden")
-})
+<%if(req.user) {%>
+<%req.user.guilds.forEach(g => {
+      if( guild && guild.id === g.id) {
+    %>
 
-socket.on("error", (i) => {
-  emoji.classList.add("hidden")
-  text.textContent = i.message;
-  toast.classList.remove("opacity-0")
-  toast.classList.remove("-translate-x-full")
-  setTimeout(() => {
-    // emoji.src = "";
-    toast.classList.add("opacity-0")
-    toast.classList.add("-translate-x-full")
-  }, 3000);
-})
+    <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" onsubmit="submit(this, '<%=guild.id%>')">
+      <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="Search for music to play in <%=guild.name%>" autocomplete="off"></input>
+    </form>
+    <div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="stopped">
+      <!--<img src="" id="img-error" class="w-64"/>-->
+      <p class="text-2xl">
+        Nothing playing...
+      </p>
+    </div>
+    <div id="loading" class="flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]">
+      <div role="status" class="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center justify-center">
+        <div class="flex justify-center items-center h-48 w-48 p-2 bg-gray-300 rounded-2xl sm:h-96 sm:w-96 dark:bg-gray-700">
+        </div>
+        <div class="w-full">
+          <div class="p-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+          <div class="p-1.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[100px]"></div>
+        </div>
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div id="queue" class="hidden w-full overflow-hidden" x-data="{ tab: 'track' }">
+      <nav class="fixed z-[3] top-16 bg-white/70 dark:bg-gray-900/70 mb-4 border-b border-gray-200 dark:border-gray-700 w-full backdrop-blur-lg">
+        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+          <li class="w-1/4"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'track'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='track'}">Overview</button></li>
+          <li class="w-2/4"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'queue'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='queue'}">Queue</button></li>
+          <li class="w-1/4"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'lyrics'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='lyrics'}">Lyrics</button></li>
+        </ul>
+      </nav>
+      <!--<div class="m-16"></div>--->
+      <div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition>
+        <p id="queueNone">
+          The currently playing song is the only one in queue..
+        </p>
+        <div class="" id="queueMusic0"></div>
+        <div class="" id="queueMusic1"></div>
+        <div class="" id="queueMusic2"></div>
+        <div class="" id="queueMusic3"></div>
+        <div class="" id="queueMore4"></div>
+      </div>
+      <div id="track" class="flex flex-col items-center justify-center h-[80vh] w-full transition-all" x-show="tab === 'track'"
+        x-transition>
+        <img class="rounded-2xl flex justify-center items-center text-center w-48 p-2" src="/images/favicon.ico" id="track-image"></img>
+        <p class="" id="track-name">
+          Null
+        </p>
+        <p class="text-gray-600 dark:text-gray-400" id="track-artist">
+          Null
+        </p>
+        <p class="hidden">
+          Requested by <span id="track-userRequest">Null</span>
+        </p>
+        <div class="player">
+          <div class="text-slate-900 dark:text-slate-100">
+            <!--<p id="time">
+                                                                      0:00
+                                                                    </p>--->
+          </div>
+          <div id="player-buttons" class="mt-3 flex dark:text-white text-center">
+            <button onclick="pause(this, '<%=guild.id%>', '<%=req.user.id%>')" id="play">
+              <i id="icon" data-feather="pause"></i>
+            </button>
+            <button onclick="skip(this, '<%=guild.id%>', '<%=req.user.id%>')" id="skip">
+              <i data-feather="skip-forward"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="fixed w-full top-0 bg-zinc-700 rounded-full h-4 dark:bg-zinc-200">
+        <div class="bg-rose-700 dark:bg-fuchsia-400 h-4 rounded-full" id="time-progress" style="width: 0%"></div>
+      </div>
+      <div id="lyrics" class="flex flex-col mt-12 justify-center w-full text-center transition-all" x-show="tab === 'lyrics'"
+        x-transition
+        >
+        <p class="text-center" id="lyrics-text">
 
-socket.on("queueEnd", () => {
-  document.getElementById("loading").classList.remove("hidden")
-  document.getElementById("track").classList.add("hidden")
-  emoji.classList.add("hidden")
-  text.textContent = `Queue ends`;
-  toast.classList.remove("opacity-0")
-  toast.classList.remove("-translate-x-full")
-  setTimeout(() => {
-    toast.classList.add("opacity-0")
-    toast.classList.add("-translate-x-full")
-  }, 3000);
-  setTimeout(() => {
-   document.getElementById("stopped").classList.remove("hidden")
-   document.getElementById("loading").classList.add("hidden")
-   search.disabled=false
-  }, 1000)
-  this.playing = false;
-})
+        </p>
 
-socket.on("trackEnd", () => {
-  document.getElementById("loading").classList.remove("hidden")
- // document.getElementById("track").classList.add("hidden")
-  this.playing = false;
-})
+        <p class="fixed z-[0] text-gray-500 dark:text-gray-400 text-sm bottom-0 right-0 drop-shadow mr-2">
+          Lyrics provided by Genius API
+        </p>
+      </div>
+    </div>
+    <div id="toast-music" class="fixed z-[4] flex justify-center items-center top-0 m-2 bg-gray-100 text-black dark:bg-gray-700 dark:text-white text-center opacity-0 -translate-x-full transition-all duration-500 p-2">
+      <p id="toast-music-text">
+        {user} requested {music}
+      </p>
+    </div>
 
-socket.on("connect", (connected) => {
-  console.log(connected)
-  document.getElementById("loading").classList.remove("hidden")
-  document.getElementById("stopped").classList.add("hidden")
-  setTimeout(() => {
-    
-    document.getElementById("loading").classList.add("hidden")
-    if(this.playing === true) return;
-  document.getElementById("stopped").classList.remove("hidden")
-  },500)
-  //alert(connected)
-});
-const queue = document.getElementById("queue");
-//onst search = document.getElementById("music");
-const notrack = document.getElementById("stopped");
-const trackEl = document.getElementById("track");
-const music = {
-  img: document.getElementById("track-image"),
-  title: document.getElementById("track-name"),
-  artist: document.getElementById("track-artist"),
-  time: document.getElementById("time"),
-  progress: document.getElementById("time-progress")
-}
-this.paused = false;
-socket.on("currentMusic", (info) => {
-  document.getElementById("loading").classList.add("hidden")
-  // console.log(info)
-  if (!info.queue) {
-    notrack.classList.remove("hidden"); 
-    trackEl.classList.add("hidden");
-  }
-  notrack.classList.add("hidden");
-  trackEl.classList.remove("hidden");
-  music.img.src = info.info.image;
-  music.title.textContent = info.info.title;
-  music.artist.textContent = info.info.artist;
-  
-  music.time.textContent = `${info.perc.current}`;
-  if(info.perc.current > 100) { 
-    music.progress.style.width=`100%`; 
-    } else {
-    music.progress.style.width = `${info.perc.progress}%`
-  }
+    <script>
+      socket.emit("create", "<%=guild.id%>");
+      this.playing = false;
+      const form = document.querySelector("#requestMusic");
+      const search = document.querySelector("#music");
+      form.onsubmit = function(e) {
+        console.log(search)
+        console.log(form)
+        e.preventDefault();
+        socket.emit("musicRequest", {
+          guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"
+        })
+        search.value = "";
+        search.disabled = true;
+      }
+      const toast = document.getElementById("toast-music");
+      const text = document.getElementById("toast-music-text");
+      socket.on("musicQueue", (music) => {
+        document.body.scrollTop = 0; // For Safari
+        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        const track = music.track;
+        const queue = music.queue;
+        search.disabled = true;
+        text.textContent = `${music.requestedBy.tag} requested ${track.title}`;
+        toast.classList.remove("opacity-0")
+        toast.classList.remove("-translate-x-full")
+        setTimeout(() => {
+          // emoji.src = "";
+          toast.classList.add("opacity-0")
+          toast.classList.add("-translate-x-full")
+        }, 3000);
+        document.getElementById("loading").classList.remove("hidden")
+        document.getElementById("queue").classList.add("hidden")
+        document.getElementById("stopped").classList.add("hidden")
+      })
+      socket.on("error", (i) => {
+        text.textContent = i.message;
+        toast.classList.remove("opacity-0")
+        toast.classList.remove("-translate-x-full")
+        setTimeout(() => {
+          // emoji.src = "";
+          toast.classList.add("opacity-0")
+          toast.classList.add("-translate-x-full")
+        }, 3000);
+      })
+      socket.on("queueEnd", () => {
+        document.getElementById("loading").classList.remove("hidden")
+        document.getElementById("queue").classList.add("hidden")
+        // emoji.classList.add("hidden")
+        text.textContent = `Queue ends`;
+        toast.classList.remove("opacity-0")
+        toast.classList.remove("-translate-x-full")
+        setTimeout(() => {
+          toast.classList.add("opacity-0")
+          toast.classList.add("-translate-x-full")
+        }, 3000);
+        setTimeout(() => {
+          document.getElementById("stopped").classList.remove("hidden")
+          document.getElementById("loading").classList.add("hidden")
+          search.disabled = false
+        }, 1000)
+        this.playing = false;
+      })
+      socket.on("trackEnd", () => {
+        document.getElementById("loading").classList.remove("hidden")
+        this.playing = false;
+      })
+      socket.on("connect", (connected) => {
+        console.log(connected)
+        document.getElementById("loading").classList.remove("hidden")
+        document.getElementById("stopped").classList.add("hidden")
+        setTimeout(() => {
 
-  const seenUsers = info.members.slice(0, 3)
+          document.getElementById("loading").classList.add("hidden")
+          if (this.playing === true) return;
+          document.getElementById("stopped").classList.remove("hidden")
+        },
+          500)
+        //alert(connected)
+      });
+      const queue = document.getElementById("queue");
+      //onst search = document.getElementById("music");
+      const notrack = document.getElementById("stopped");
+      const trackEl = document.getElementById("queue");
+      const music = {
+        img: document.getElementById("track-image"),
+        title: document.getElementById("track-name"),
+        artist: document.getElementById("track-artist"),
+        time: document.getElementById("time"),
+        progress: document.getElementById("time-progress"),
+        user: document.getElementById("track-userRequest")
+      }
+
+      socket.on("currentMusic", (info) => {
+        document.getElementById("loading").classList.add("hidden")
+        // console.log(info)
+        if (!info.queue) {
+          notrack.classList.remove("hidden");
+          trackEl.classList.add("hidden");
+        }
+        notrack.classList.add("hidden");
+        trackEl.classList.remove("hidden");
+        music.img.src = info.info.image;
+        music.title.textContent = info.info.title;
+        music.artist.textContent = info.info.artist;
+        document.getElementById("lyrics-text").innerHTML = info.lyrics ? info.lyrics.lyrics.replace(/\n/g, "<br>"): "Nothing Here...";
+        // music.time.textContent = `${info.perc.current}`;
+        if (info.perc.current > 100) {
+          music.progress.style.width = `100%`;
+        } else {
+          music.progress.style.width = `${info.perc.progress}%`
+        }
+
+        info.tracks.map((track, i) => {
+          console.log(i, track)
+          const ione = i+1;
+          if (!track) {
+            document.getElementById("queueNone").classList.remove("hidden")
+          }
+          //$('#queueMusic' + i).html(`<p></p>`)
+          document.getElementById("queueNone").classList.add("hidden")
+          $('#queueMusic' + i).html(`<p>${i + 1}) ${info.tracks[i]?info.tracks[i].title: ""} - <span>${info.tracks[i]?info.tracks[i].author: ""}</span></p><br>`)
+          if (ione > 4) {
+            $('#queueMore4').html(`<p>And others <span>${i-3}</span> musics</p>`);
+          }
+          if (!info.tracks[i+1]) return $('#queueMusic' + ione).html("");
+        })
+        music.user.textContent = `${info.track.requestedBy.username}`
+        /* const seenUsers = info.members.slice(0, 3)
   const avatar1 = document.getElementById("user1")
   const avatar2 = document.getElementById("user2")
   document.getElementById("connected-users").textContent = info.members.length
@@ -278,41 +245,58 @@ socket.on("currentMusic", (info) => {
   } else {
     document.getElementById("otherusers").classList.add("hidden")
     document.getElementById("otherusers").textContent = "+0";
-  }
+  }*/
 
-  search.disabled = false;
-  this.playing = true;
-})
+        search.disabled = false;
+        this.playing = true;
+      })
 
-function pause(play, guild, user) {
-  //  console.log(e)
-  // e.preventDefault();
-  if (this.paused === false) {
-    this.paused = true
+      function pause(play, guild, user) {
+        //  console.log(e)
+        // e.preventDefault();
+        if (this.paused === false) {
+          this.paused = true
+        } else {
+          this.paused = false
+        };
+        socket.emit("pauseTrack", {
+          guild: guild, user: user, paused: this.paused
+        });
+        const pauseBtn = document.getElementById("icon")
+        socket.on("trackUpdate", (update) => {
+          console.log(update)
+          if (update.pause === true) {
+            pauseBtn.innerHTML = feather.icons["play"].toSvg()
+          } else {
+            pauseBtn.innerHTML = feather.icons["pause"].toSvg()
+          }
+        })
+      }
+      function skip(music, guild, user) {
+        socket.emit("skipTrack",
+          {
+            guild: guild,
+            user: user
+          });
+      }
+    </script>
+    <%
   } else {
-    this.paused = false
-  };
-  socket.emit("pauseTrack", {
-    guild: guild, user: user, paused: this.paused
-  });
-  const pauseBtn = document.getElementById("icon")
-  socket.on("trackUpdate", (update) => {
-    console.log(update)
-    if (update.pause === true) {
-      pauseBtn.innerHTML = feather.icons["play"].toSvg()
-    } else {
-      pauseBtn.innerHTML = feather.icons["pause"].toSvg()
-    }
-  })
-}
-function skip(music, guild, user) {
-  socket.emit("skipTrack",
-    {
-      guild: guild,
-      user: user
-    });
-}
-
-
-</script>
-<%-include('../include/footer.ejs')%>
+    %>
+    <div class="flex flex-col w-full h-[95vh] justify-center items-center">
+      <p>
+        This guild, does not exists
+      </p>
+    </div>
+    <%}
+    })%>
+    <%} else {%>
+     <div class="flex flex-col w-full h-[95vh] justify-center items-center">
+              <p>
+                Please connect with one of these plataforms:
+              </p>
+              <br>
+              <a href="/auth/callback" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
+            </div>
+  <%}%>
+  <%-include('../include/footer.ejs')%>

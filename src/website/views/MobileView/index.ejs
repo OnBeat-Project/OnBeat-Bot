@@ -1,8 +1,8 @@
-<%-include("../include/head.ejs", {
+<%-include("./include/head.ejs", {
   title: "OnBeat - Music Guild Dashboard",
   description: "Dashboard :0"
 })%>
-<%-include("./includes/nav.ejs")%>
+<%-include("./include/nav.ejs")%>
 <%if (req.user) {
   %>
   <center><p class="p-3 text-xl">Look for your preferred server!</p></center>
@@ -10,7 +10,7 @@
     <%req.user.guilds.forEach(g => {
       %>
       <%if (!cli.guilds.cache.get(g.id)) return; %>
-      <form method="post" onsubmit="this.preventDefault()" action="/mobile/dashboard/guild">
+      <form method="post" onsubmit="this.preventDefault()" action="/mobile/dashboard">
       <button class="relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 bg-zinc-200 text-black dark:bg-gray-800 dark:text-white drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all" name="guild" value="<%=g.id%>" type="submit">
         <%if (g.icon) {
           %>

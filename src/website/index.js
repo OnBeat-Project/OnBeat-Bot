@@ -54,26 +54,24 @@ function maintance() {
 // Home
 app.use("/", require('./Routers'));
 app.use("/dashboard", require('./Routers/dashboard'));
-app.use("/mobile", require('./Routers/mobile'));
+// app.use("/mobile", require('./Routers/mobile'));
 
 // Set errors
 app.use(function(req, res, next) {
-  res.render("404.ejs",
+  res.status(404).render("404.ejs",
     {
       req,
       res
     });
-  res.sendStatus(404)
 })
 
 app.use(function(err, req, res, next) {
-  res.render("500.ejs",
+  res.status(500).render("500.ejs",
     {
       req,
       res,
       error: err
     });
-  res.sendStatus(500)
 })
 
 // Socket
