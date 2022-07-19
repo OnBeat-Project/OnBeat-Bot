@@ -5,7 +5,7 @@
 <%-include("./includes/nav.ejs")%>
 
 <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" onsubmit="submit(this, '<%=guild.id%>')">
-  <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="Search a music for <%=guild.name%>" autocomplete="off"></input>
+  <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="Search for music to play in <%=guild.name%>" autocomplete="off"></input>
 </form>
 <div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="stopped">
   <!--<img src="" id="img-error" class="w-64"/>-->
@@ -34,7 +34,7 @@
   </nav>
   <!--<div class="m-16"></div>--->
   <div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition>
-    <p id="queueNone">There's no other song besides the one that's playing.</p>
+    <p id="queueNone">The currently playing song is the only one in queue..</p>
     <div class="" id="queueMusic0"></div>
     <div class="" id="queueMusic1"></div>
     <div class="" id="queueMusic2"></div>
