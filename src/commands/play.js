@@ -79,7 +79,7 @@ module.exports = {
     }
     queue.setVolume(75);
    // await interaction.deferReply({ephemeral:true});
-    void interaction.reply({content: `Your music will be playing soon, stay tuned!\nHey, you can now use our dashboard!\n<https://onbeat.me/dashboard>`, ephemeral: true})
+    void interaction.reply({content: `Added to queue! \nYour song will begin playing shortly.\nYou can manage the bot from our website below!\n<https://onbeat.me/dashboard>`, ephemeral: true})
     searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
     if (!queue.playing) await queue.play();
   }
