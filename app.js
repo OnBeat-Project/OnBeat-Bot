@@ -8,7 +8,7 @@ const MongoStore = require('connect-mongo');
 var bodyParser = require('body-parser')
 
 const client = require('./index.js')
-const privateKey = fs.readFileSync(process.env.private, 'utf8');
+/*const privateKey = fs.readFileSync(process.env.private, 'utf8');
 const certificate = fs.readFileSync(process.env.cert, 'utf8');
 const ca = fs.readFileSync(process.env.ca, 'utf8');
 
@@ -17,20 +17,20 @@ const credentials = {
   cert: certificate,
   ca: ca
 };
-
+*/
 const app = express();
-const httpsServer = https.createServer(credentials,app);
+// const httpsServer = https.createServer(credentials,app);
 
 const server = http.createServer(app);
 
 
 
 const socket = io(server)
-socket.listen(httpsServer)
+// socket.listen(httpsServer)
 server.listen(80)
-httpsServer.listen(443, () => {
+/*httpsServer.listen(443, () => {
   console.log('HTTPS Server running on port 443');
-});
+});*/
 
 passport.serializeUser(function(user, done) {
   done(null, user);
