@@ -23,7 +23,7 @@ const app = express();
 
 const server = http.createServer(app);
 
-
+app.set("views",__dirname + "/src/website/views")
 
 const socket = io(server)
 // socket.listen(httpsServer)
