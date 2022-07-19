@@ -17,7 +17,7 @@ module.exports = {
   run: async (interaction) => {
     const embed = new MessageEmbed()
     .setTitle("Getting ping...")
-    .setDescription("Wait a second...\nAPI Ping: " + interaction.client.ws.ping + " ms")
+    .setDescription("Loading...\nAPI Ping: " + interaction.client.ws.ping + " ms")
     .setColor("BLURPLE");
     interaction.reply({
       embeds: [embed], fetchReply: true

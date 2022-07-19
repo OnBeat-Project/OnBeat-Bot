@@ -19,8 +19,8 @@ const {
 module.exports = {
   data: new SlashCommandBuilder()
   .setName("play")
-  .setDescription("Request a music!")
-  .addStringOption(o => o.setName("query").setDescription("Music to be requested").setRequired(true)),
+  .setDescription("Request a song!")
+  .addStringOption(o => o.setName("query").setDescription("Song to be requested").setRequired(true)),
   run: async (interaction) => {
     const channeldb = await interaction.client.db.get(`channel_${interaction.guild.id}`);
     // if(!channeldb) return interaction.reply({content: `Please, use \`/set channel\` to set a log channel.`});
@@ -61,7 +61,7 @@ module.exports = {
     })
     .catch(() => {});
     if (!searchResult || !searchResult.tracks.length) return void interaction.reply({
-      content: "No results were found, try put artist name (e.g. Saturday - Norma Jean Wright) or try put Spotify Link URL!"
+      content: "No results were found. \nTry using the artist name (e.g. Saturday - Norma Jean Wright) or use a Spotify URL!"
     });
     console.log(channeldb)
     const queue = await player.createQueue(interaction.guild, {
@@ -74,7 +74,7 @@ module.exports = {
     } catch {
       void player.deleteQueue(interaction.guildId);
       return void interaction.reply({
-        content: "I can't join in your Voice Channel!"
+        content: "I can't join your Voice Channel!"
       });
     }
     queue.setVolume(75);
