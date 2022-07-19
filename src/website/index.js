@@ -108,7 +108,7 @@ socket.on("connection", async (io) => {
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
-      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+      if (guild.members.me.voice.channelId && member.voice.channelId !== guild.members.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
           message: "You are not in my voice channel!"
         });
@@ -154,6 +154,7 @@ socket.on("connection", async (io) => {
     })
   client.player.on("trackAdd",
     async(queue, track) => {
+      io.join(queue.guild.id)
       socket.in(queue.guild.id).emit("musicQueue", {
         queue,
         track,
@@ -208,7 +209,7 @@ socket.on("connection", async (io) => {
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
-      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+      if (guild.members.me.voice.channelId && member.voice.channelId !== guild.members.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
           message: "You are not in my voice channel!"
         });
@@ -229,7 +230,7 @@ socket.on("connection", async (io) => {
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
-      if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
+      if (guild.members.me.voice.channelId && member.voice.channelId !== guild.members.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
           message: "You are not in my voice channel!"
         });
