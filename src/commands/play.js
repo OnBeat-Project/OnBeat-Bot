@@ -6,7 +6,7 @@ const {
   GuildMember
 } = require("discord.js");*/
 const {
-  MessageEmbed,
+  EmbedBuilder,
   GuildMember
 } = require("discord.js");
 const {

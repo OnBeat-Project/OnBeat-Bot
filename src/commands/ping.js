@@ -6,9 +6,10 @@ const {
 } = require("discord.js");
 */
 const {
-  MessageEmbed,
+  EmbedBuilder,
   GuildMember
 } = require( "discord.js" );
+
 const {
   mem,
   cpu,
@@ -35,14 +36,14 @@ module.exports = {
       usersCount += g.memberCount;
     } );
 
-    const embed = new MessageEmbed()
-      .setColor( 'GREEN' )
+    const embed = new EmbedBuilder()
+      .setColor( '#00FF00' )
       .addFields(
         { name: 'Servers :computer:', value: `\`\`\`${ guildsCount }\`\`\``, inline: true },
         { name: 'Users :family_mmbb:', value: `\`\`\`${ usersCount }\`\`\``, inline: true },
         { name: 'Shard ID :newspaper:', value: '```1```', inline: true },
         { name: 'API Latency :ping_pong:', value: `\`\`\`${ interaction.client.ws.ping }ms\`\`\``, inline: true },
-        { name: 'Discord.js :tools:', value: '```13.9.0```', inline: true },
+        { name: 'Discord.js :tools:', value: '```14.0.2```', inline: true },
         { name: 'CPU Usage :bar_chart:', value: `\`\`\`${ await cpu.usage() } %\`\`\``, inline: true },
         { name: 'Uptime :green_circle:', value: `\`\`\`${ days }d ${ hours }h ${ minutes }m ${ seconds }s\`\`\``, inline: true },
       )

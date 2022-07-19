@@ -4,8 +4,8 @@ module.exports = {
   event: "interactionCreate",
   oneTime: false,
   run: async (i) => {
-    //;if (i.type !== InteractionType.ApplicationCommand) return;
-    if(!i.isCommand()) return;
+    if (i.type !== InteractionType.ApplicationCommand) return;
+    // if(!i.isCommand()) return;
     
     const commandCheck = i.client.commands.get(i.commandName);
 

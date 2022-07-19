@@ -1,5 +1,5 @@
 const {
-  MessageEmbed
+  EmbedBuilder
 } = require("discord.js");
 const { MessageActionRow, MessageButton } = require('discord.js');
 
@@ -12,7 +12,7 @@ module.exports = (client) => {
   });
   client.player.on("trackStart", async(queue, track) => {
     const interaction = queue.metadata;
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
     .setTitle("🎵 | Playing")
     .setDescription(`Now playing \`${track.title}\` (\`${track.duration}\`) by \`${track.author}\``)
     .setFooter({

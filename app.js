@@ -96,4 +96,4 @@ module.exports = {
     res.redirect("/auth/callback")
   }
 }
-require('./website');
+require('./src/website');

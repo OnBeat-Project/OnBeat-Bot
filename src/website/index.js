@@ -5,7 +5,7 @@ const {
   client,
   passport,
   checkAuth
-} = require('../app')
+} = require('../../app')
 
 const RPC = require('discord-rpc')
 

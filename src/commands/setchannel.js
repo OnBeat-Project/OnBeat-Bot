@@ -2,7 +2,7 @@ const {
   SlashCommandBuilder
 } = require("@discordjs/builders");
 const {
-  MessageEmbed,
+  EmbedBuilder,
   GuildMember,
   Permissions
 } = require("discord.js");

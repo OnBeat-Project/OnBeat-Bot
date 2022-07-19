@@ -2,7 +2,7 @@ require('dotenv').config();
 require("discord-player/smoothVolume");
 
 // const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { Client, Collection, Intents } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const { Player, AudioFilters } = require("discord-player");
 
 const slash = require('./src/util/slash');
@@ -11,10 +11,9 @@ const Spotify = require('node-spotify-api');
 const { QuickDB } = require("quick.db");
 const { Lyrics } = require("@discord-player/extractor");
 
-const GatewayIntentBits = Intents.FLAGS
 
 const lyricsClient = Lyrics.init();
-const client = new Client({ intents: [GatewayIntentBits.GUILDS, GatewayIntentBits.GUILD_VOICE_STATES] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
 const spotify = new Spotify({
   id: process.env.spotifyID,
   secret: process.env.spotifySecret

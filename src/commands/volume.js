@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { MessageEmbed, GuildMember } = require("discord.js");
+const { EmbedBuilder, GuildMember } = require("discord.js");
 const { Player, QueryType, QueueRepeatMode } = require("discord-player");
 
 
