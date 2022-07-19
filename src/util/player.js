@@ -14,9 +14,9 @@ module.exports = (client) => {
     const interaction = queue.metadata;
     const embed = new MessageEmbed()
     .setTitle("🎵 | Playing")
-    .setDescription(`Now is playing \`${track.title}\` (\`${track.duration}\`) from \`${track.author}\``)
+    .setDescription(`Now playing \`${track.title}\` (\`${track.duration}\`) by \`${track.author}\``)
     .setFooter({
-      iconURL: track.requestedBy.displayAvatarURL(), text: `Requested By: ${track.requestedBy.username}`
+      iconURL: track.requestedBy.displayAvatarURL(), text: `Requested by: ${track.requestedBy.username}`
     })
     .setColor("RANDOM");
     
@@ -32,7 +32,7 @@ module.exports = (client) => {
     console.log(await client.db.get("track"))
     if(!queue.metadata) return;
     queue.metadata.send({
-      content: `🎶 | Track **${track.title}** queued!\n🙆 | Requested by ${track.requestedBy.tag}`,
+      content: `🎶 | Track **${track.title}** added to queue!\n🙆 | Requested by ${track.requestedBy.tag}`,
       ephemeral:true
     });
   });

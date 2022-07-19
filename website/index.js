@@ -106,11 +106,11 @@ socket.on("connection", async (io) => {
       var track;
       const member = guild.members.cache.get(info.user)
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
-        message: "Please, join in a voice channel!"
+        message: "You are not in a voice channel!"
       });
       if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
-          message: "You are not on my voice channel!"
+          message: "You are not in my voice channel!"
         });
       }
       try {
@@ -206,11 +206,11 @@ socket.on("connection", async (io) => {
       const guild = client.guilds.cache.get(info.guild);
       const member = guild.members.cache.get(info.user)
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
-        message: "Please, join in a voice channel!"
+        message: "You are not in a voice channel!"
       });
       if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
-          message: "You are not on my voice channel!"
+          message: "You are not in my voice channel!"
         });
       }
       console.log(info)
@@ -227,11 +227,11 @@ socket.on("connection", async (io) => {
       const guild = client.guilds.cache.get(info.guild);
       const member = guild.members.cache.get(info.user)
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
-        message: "Please, join in a voice channel!"
+        message: "You are not in a voice channel!"
       });
       if (guild.me.voice.channelId && member.voice.channelId !== guild.me.voice.channelId) {
         return void socket.in(guild.id).emit("error", {
-          message: "You are not on my voice channel!"
+          message: "You are not in my voice channel!"
         });
       }
       queue.skip();

@@ -29,7 +29,7 @@ const slash = {
           });
       }
     } catch (error) {
-      loadSlash.warn(`Could not load Slash Commands: \n ${error}`);
+      loadSlash.warn(`Error loading Slash Commands: \n ${error}`);
     }
   },
 };
