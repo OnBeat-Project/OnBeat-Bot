@@ -18,10 +18,8 @@
      <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.3/dist/js/uikit.min.js"></script>
      <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.3/dist/js/uikit-icons.min.js"></script>
     <script src="https://kit.fontawesome.com/2c8728d622.js" crossorigin="anonymous"></script>
-    <%if(req.user) {%>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
     <script>const socket = io()</script>
-    <%}%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,3 +50,7 @@
   </style>
   </head>
   <body class="bg-slate-100 h-full text-slate-900 dark:bg-slate-900 dark:text-slate-100 transition-all delay-200">
+    <div id="loading-screen" class="w-full h-full flex justify-center items-center" x-transition>
+      <img src="/images/gifs/loading.gif" class="w-24 lg:w-32"/>
+    </div>
+    <div id="default-content" class="hidden" x-transition>

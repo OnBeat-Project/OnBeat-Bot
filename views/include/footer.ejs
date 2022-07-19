@@ -90,5 +90,16 @@
     }
   }
 </style>
+   </div>
+   <script>
+     socket.on("connect", () => {
+       document.getElementById("loading-screen").classList.add("hidden");
+       document.getElementById("default-content").classList.remove("hidden");
+     });
+     socket.on("disconnect", () => {
+       document.getElementById("loading-screen").classList.remove("hidden");
+       document.getElementById("default-content").classList.add("hidden");
+     })
+   </script>
   </body>
 </html>
