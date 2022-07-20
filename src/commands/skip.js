@@ -13,6 +13,15 @@ module.exports = {
         if (!queue || !queue.playing) return void interaction.reply({ content: "There are no songs playing" });
         const currentTrack = queue.current;
         const success = queue.skip();
+       if(!queue.metadata){
+
+       }else{
+       queue.metadata.send({
+       content: `🎶 | Track **${currentTrack.title}** has been skipped!\n🙆 | Skipped by ${interaction.user.tag}`,
+       ephemeral:true
+    });
+  });
+  }
         return void interaction.reply({
             content: success ? `Current song skipped!` : "Something went wrong!"
         });
