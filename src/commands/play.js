@@ -84,7 +84,7 @@ module.exports={
     void interaction.reply({
       embeds: [{
         title: "Song added to queue!",
-        description: `**${ searchResult.tracks[0].title }** by **${ searchResult.tracks[0].artist }**`,
+        description: `**${ searchResult.tracks[0].title }** by **${ searchResult.tracks[0].author }**`,
         fields: [{
           name: "You can manage the bot from our website below!",
           value: "[Click here!](https://onbeat.me/dashboard 'OnBeat Website')",
