@@ -19,7 +19,7 @@ module.exports={
     const currentTrack=queue.current;
     const success=queue.setPaused(false);
     return void interaction.reply({
-      content: success? `Current song resumed!`:"Something went wrong!",
+      // content: success? `Current song resumed!`:"Something went wrong!",
       embeds: success? [{
         title: `Current song resumed by ${ interaction.user.tag }`,
       }]:
