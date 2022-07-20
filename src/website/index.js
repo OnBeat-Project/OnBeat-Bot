@@ -173,20 +173,20 @@ socket.on("connection", async (io) => {
         if (!queue.playing) return;
         var perc;
         perc = queue.getPlayerTimestamp();
-        //const guild = client.guilds.cache.get(queue.guild);
-        const voiceChannel = queue.guild.channels.cache.filter(c => c.type === "GUILD_VOICE").get(queue.connection.channel.id)
-        const members = voiceChannel.members;
+        const guild = client.guilds.cache.get(queue.guild.id);
+        const voiceChannel = guild.channels.cache.get(queue.connection.channel.id)
+        // console.log(voiceChannel)
+       // const members = voiceChannel.members
         const info = await getPreview(track.url)
         // console.log(interval)
-        const lyrics = await client.lyrics.search(`${track.title}`);
-        console.log(lyrics)
+        const lyrics = await client.lyrics.search(`${track.title} ${track.artist}`);
+        // console.log(lyrics)
         socket.in(queue.guild.id).emit("currentMusic", {
           queue,
           track,
           perc,
           info,
           voiceChannel,
-          members,
           lyrics,
           tracks: queue.tracks,
           requestedBy: client.users.cache.get(track.requestedBy.id)

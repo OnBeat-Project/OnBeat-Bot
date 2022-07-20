@@ -6,7 +6,7 @@
 
 <%if(req.user) {%>
 <%req.user.guilds.forEach(g => {
-      if( guild && guild.id === g.id) {
+      if(g.id === guild.id) {
     %>
 
     <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" onsubmit="submit(this, '<%=guild.id%>')">
@@ -281,14 +281,7 @@
       }
     </script>
     <%
-  } else {
-    %>
-    <div class="flex flex-col w-full h-[95vh] justify-center items-center">
-      <p>
-        This guild, does not exists
-      </p>
-    </div>
-    <%}
+  } else return;
     })%>
     <%} else {%>
      <div class="flex flex-col w-full h-[95vh] justify-center items-center">
