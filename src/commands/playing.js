@@ -11,9 +11,9 @@ module.exports = {
     const player = interaction.client.player
     const queue = player.getQueue(interaction.guildId);
     if(!queue || !queue.playing){
-  message.channel.send("Nothing is currently playing!")
+  interaction.reply("Nothing is currently playing!")
     }else{
-message.channel.send(`The song playing is ${queue.current.title} by ${queue.current.author}`)
+interaction.reply(`The song playing is ${queue.current.title} by ${queue.current.author}`)
     }
   }
 }
