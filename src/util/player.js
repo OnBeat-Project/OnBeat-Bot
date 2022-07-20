@@ -18,7 +18,7 @@ module.exports = (client) => {
     .setFooter({
       iconURL: track.requestedBy.displayAvatarURL(), text: `Requested by: ${track.requestedBy.username}`
     })
-    .setColor("RANDOM");
+    .setColor("#202023");
     
     if(!queue.metadata) return;
     
