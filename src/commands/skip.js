@@ -15,7 +15,7 @@ module.exports = {
         const success = queue.skip();
         if(!queue.metadata) return;
        queue.metadata.send({
-       content: `🎶 | Track **${currentTrack.title}** has been skipped!\n🙆 | Skipped by ${track.requestedBy.tag}`,
+       content: `🎶 | Track **${currentTrack.title}** has been skipped!\n🙆 | Skipped by ${interaction.user.tag}`,
        })
         return void interaction.reply({
             content: success ? `Current song skipped!` : "Something went wrong!"
