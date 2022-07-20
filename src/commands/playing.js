@@ -17,14 +17,14 @@ module.exports={
           footer: {
             text: `Requested by ${ queue.current.requestedBy.tag }`
           },
-          color: 'RANDOM',
+          color: '000001',
         }]
       });
     } else {
       interaction.reply({
         embeds: [{
           title: `Nothing is playing.`,
-          color: 'RANDOM',
+          color: '000001',
         }]
       });
     }
