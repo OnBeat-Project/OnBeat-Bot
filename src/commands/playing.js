@@ -13,7 +13,7 @@ module.exports = {
     if(!queue || !queue.playing){
   message.channel.send("Nothing is currently playing!")
     }else{
-message.channel.send(`The song playing is ${queue.tracks[0].name} by ${queue.tracks[0].author}`)
+message.channel.send(`The song playing is ${queue.current.title} by ${queue.current.author}`)
     }
   }
 }
