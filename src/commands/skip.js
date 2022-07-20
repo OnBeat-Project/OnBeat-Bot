@@ -17,7 +17,7 @@ module.exports = {
 
        }else{
        queue.metadata.send({
-       content: `🎶 | Track **${track.title}** has been skipped!\n🙆 | Skipped by ${track.requestedBy.tag}`,
+       content: `🎶 | Track **${currentTrack.title}** has been skipped!\n🙆 | Skipped by ${track.requestedBy.tag}`,
        ephemeral:true
     });
   });
