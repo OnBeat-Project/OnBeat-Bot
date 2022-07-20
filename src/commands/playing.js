@@ -10,10 +10,10 @@ module.exports = {
   run: async (interaction) => {
     const player = interaction.client.player
     const queue = player.getQueue(interaction.guildId);
-    if(!queue || !queue.playing){
-  interaction.reply("Nothing is currently playing!")
-    }else{
-interaction.reply(`The song playing is ${queue.current.title} by ${queue.current.author}`)
+    if(queue.playing){
+      interaction.reply(`The song playing is ${ queue.current.title } by ${ queue.current.author }`)
+    } else {
+      interaction.reply("No song is playing")
     }
   }
 }
