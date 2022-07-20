@@ -17,9 +17,6 @@ module.exports={
     queue.metadata.send({
       embeds: [{
         title: `Queue has been cleared by ${ interaction.user.tag }`,
-        footer: {
-          text: `Requested by ${ currentTrack.requestedBy.tag }`
-        },
         color: '000001',
       }],
     });
