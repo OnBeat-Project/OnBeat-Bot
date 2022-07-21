@@ -6,7 +6,7 @@
 <%if (req.user) {
   %>
   <center><p class="p-3 text-xl">
-    Look for your preferred server!
+    Select your preferred server!
   </p>
   </center>
   <div class="grid grid-cols-1 gap-4 justify-items-center">
@@ -40,7 +40,7 @@
           <%} else {%>
             <div class="flex flex-col w-full h-[95vh] justify-center items-center">
               <p>
-                Please connect with one of these plataforms:
+                Please login with one of these platforms to continue:
               </p>
               <br>
               <a href="/auth/callback" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
