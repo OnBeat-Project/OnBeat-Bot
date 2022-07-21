@@ -1,15 +1,15 @@
 <nav class="sticky top-0 left-0 right-0 z-[3] bg-white/70 border-gray-200px-2 sm:px-4 py-2.5 rounded dark:bg-gray-900/70 backdrop-blur-lg drop-shadow-sm"
-        
-  >
-  <div class="container flex flex-wrap justify-between items-center mx-auto" x-data="{
+        x-data="{
          dropdown: false
-        }">
+        }"
+  >
+  <div class="container flex flex-wrap justify-between items-center mx-auto">
     <a href="/" class="flex ml-5 items-center">
       <img src="/images/original_favicon.svg" class="hidden dark:block mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
       <img src="/images/original_favicon-black.svg" class="block dark:hidden mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
       <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">OnBeat</span>
     </a>
-    <button class="m-2 mr-2 right-0 drop-shadow-md"       x-on:click="dropdown = ! dropdown"
+    <button class="m-2 mr-2 right-0 drop-shadow-md"       @click="dropdown = ! dropdown"
             type="button">
       <%if (req.user) {
         %>
@@ -20,7 +20,8 @@
       <span class="bottom-0 right-7 absolute w-3.5 h-3.5 bg-gray-400 border-2 border-inherit dark:border-inherit rounded-full" id="status"></span>
       <%}%>
       </button>
-      <!--<div class="z-10 mr-3 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700"
+      </div>
+      <div class="fixed right-0 z-10 mr-3 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700"
             x-show="dropdown"
             x-transition>
         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
@@ -41,7 +42,7 @@
                   <a href="https://discord.gg/VybAzGs4wB" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Discord Server</a>
                 </li>
               </ul>
-            </div>-->
+            </div>
             <script>
               const status = document.getElementById("status")
               socket.on("connect", () => {
