@@ -45,7 +45,7 @@ function maintance() {
     next) => {
     if (!req.user) return res.redirect("/auth/callback");
     if (req.user.id === "407859300527243275") return next();
-    res.render("maintance.ejs", {
+    res.render("maintenance.ejs", {
       req, res
     })
   })

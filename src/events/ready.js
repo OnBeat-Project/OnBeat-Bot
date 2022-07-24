@@ -8,11 +8,11 @@ const botLoader = ora("Starting Discord.js Client").start();
 
 module.exports = {
   event: "ready",
-  oneTime: true,
+  oneTime: false,
   run: async (client) => {
     const commandFiles = fs
-      .readdirSync("./src/commands")
-      .filter((file) => file.endsWith(".js"));
+    .readdirSync("./src/commands")
+    .filter((file) => file.endsWith(".js"));
 
     let commandsArray = [];
     commandFiles.forEach((file) => {
@@ -25,5 +25,47 @@ module.exports = {
     const finalArray = commandsArray.map((e) => e.data.toJSON());
     slash.register(client.user.id, finalArray);
     botLoader.succeed(`${client.user.tag} Started`);
+
+
+    // Status lmao
+    function Status() {
+      let usersCount = 0;
+
+      client.guilds.cache.forEach((g) =>
+        {
+          usersCount += g.memberCount;
+        });
+      const statusArray = [{
+        name: "Prefix: /",
+        type: "LISTENING"
+      },
+        {
+          name: "Despacito: Most listened to so far on OnBeat...",
+          type: "WATCHING"
+        },
+        {
+          name: `${client.guilds.cache.size} guilds and ${usersCount} users`,
+          type: "WATCHING"
+        },
+        {
+          name: "ROBLOX",
+          type: "PLAYING"
+        },
+        {
+          name: "Our github//OnBeat-Project",
+          type: "STREAMING",
+          url: "https://twitch.tv/settings"
+        }]
+      const statusRandom = statusArray[Math.floor(Math.random() * statusArray.length)];
+      // client.user.setActivity(,);
+      console.log("Status changed to\n"+statusRandom.name)
+    }
+    client.user.setAFK(false)
+    client.user.setPresence({
+      status: "idle",
+      activities: [{ name: "Despacito: most listened on OnBeat", type: "LISTENING"}]
+    })
+    // Status()
+    // setInterval(Status, 20000);
   },
 };

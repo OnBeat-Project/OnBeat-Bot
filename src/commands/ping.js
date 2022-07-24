@@ -18,8 +18,8 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName( "ping" )
-    .setDescription( "pong!" ),
+    .setName( "stats" )
+    .setDescription( "See bot stats!" ),
   run: async ( interaction ) =>
   {
     const { totalMemMb, usedMemMb } = await mem.info();
@@ -43,7 +43,7 @@ module.exports = {
         { name: 'Users :family_mmbb:', value: `\`\`\`${ usersCount }\`\`\``, inline: true },
         { name: 'Shard ID :newspaper:', value: '```1```', inline: true },
         { name: 'API Latency :ping_pong:', value: `\`\`\`${ interaction.client.ws.ping }ms\`\`\``, inline: true },
-        { name: 'Discord.js :tools:', value: '```14.0.2```', inline: true },
+        { name: 'Discord.js :tools:', value: '```14.0.x```', inline: true },
         { name: 'CPU Usage :bar_chart:', value: `\`\`\`${ await cpu.usage() } %\`\`\``, inline: true },
         { name: 'Uptime :green_circle:', value: `\`\`\`${ days }d ${ hours }h ${ minutes }m ${ seconds }s\`\`\``, inline: true },
       )

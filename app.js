@@ -16,14 +16,30 @@ const credentials = {
   key: privateKey,
   cert: certificate,
   ca: ca
-};
-*/
+};*/
+
+const i18next = require('i18next');
+const Backend = require('i18next-fs-backend');
+const i18nextMiddleware = require('i18next-http-middleware');
+
+i18next
+.use(Backend)
+.use(i18nextMiddleware.LanguageDetector)
+.init({
+  backend: {
+    loadPath: __dirname + '/src/translation/{{lng}}/{{ns}}.json'
+  },
+  fallbackLng: 'en',
+  preload: ['en'],
+  ns: ['common', '404', '500', 'dashboard']
+});
+
 const app = express();
 // const httpsServer = https.createServer(credentials,app);
 
 const server = http.createServer(app);
 
-app.set("views",__dirname + "/src/website/views")
+app.set("views", __dirname + "/src/website/views")
 
 const socket = io(server)
 // socket.listen(httpsServer)
@@ -69,6 +85,8 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(i18nextMiddleware.handle(i18next));
+
 app.use(bodyParser.urlencoded({
   extended: false
 }))
@@ -78,10 +96,10 @@ app.use(express.static(__dirname + "/public"))
 const webhook = new Topgg.Webhook(process.env.TOPGGauth)
 
 app.post("/webhook/topgg", webhook.listener(vote => {
-   console.log(vote)
-   const user = client.users.cache.get(vote.user)
-   if(!user) return;
-   console.log(`${user.tag} voted!`)
+  console.log(vote)
+  const user = client.users.cache.get(vote.user)
+  if (!user) return;
+  console.log(`${user.tag} voted!`)
 }))
 
 module.exports = {
