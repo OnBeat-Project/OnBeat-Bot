@@ -15,20 +15,19 @@ module.exports={
         .setName("restart")
         .setDescription("This command is not authorized to be used by users!"),
     run: async (interaction) => {
-        let validIds=["407859300527243275", "928624781731983380"];
+        let validIds=["407859300527243275"];
 
-        if (!validIds.includes(interaction.author.id)) {
+        if (!validIds.includes(interaction.member.id)) {
             return interaction.reply({
-                embeds: {
+                embeds: [{
                     title: "You are not allowed to use this command!"
-                }
+                }]
             });
         }
         await interaction.reply({
-            embeds: {
-                title: "Restarting...",
-                color: "#00FF00"
-            }
+            embeds: [{
+                title: "Restarting..."
+            }], ephemeral: true
         });
         
         try {

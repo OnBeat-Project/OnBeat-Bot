@@ -1,0 +1,60 @@
+<button class="fixed z-[3] m-2 mr-2 right-0 drop-shadow-md" id="dropdownDefault" data-dropdown-toggle="dropdown" type="button">
+  <%if (req.user) {
+    %>
+    <img class="w-10 h-10 rounded-full" src="<%=req.user.avatar?`${process.env.cdnurl}/avatars/${req.user.id}/${req.user.avatar}`:"https://cdn.discordapp.com/embed/avatars/0.png"%>" alt=""/> 
+    <span class="bottom-0 right-7 absolute  w-3.5 h-3.5 bg-gray-400 border-2 border-white dark:border-gray-800 rounded-full" id="status"></span>
+    <%} else {%>
+    <img class="w-10 h-10 rounded-full " src="https://cdn.discordapp.com/embed/avatars/0.png" alt=""/>
+    <span class="bottom-0 right-7 absolute w-3.5 h-3.5 bg-gray-400 border-2 border-inherit dark:border-inherit rounded-full"></span>
+    <%}%>
+    </button>
+    <div id="dropdown" class="z-10 mr-3 hidden bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700">
+    <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+    <li>
+    <a href="/dashboard" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+    </li>
+    <li>
+    <%if(req.user) {%>
+    <form method="post" action="/auth/logout">
+    <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log out</button>
+    </form>
+    <%} else {%>
+    <a href="/auth/callback" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Log in</a>
+    <%}%>
+    </li>
+     <li>
+       <a href="https://discord.gg/VybAzGs4wB" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Discord Server</a>
+    </li>
+    </ul>
+    </div>
+    <script>
+    const status = document.getElementById("status")
+     socket.on("connect", () => {
+      status.classList.add("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.remove("bg-red-400")
+      status.classList.remove("animate-ping")
+     })
+     socket.io.on("disconnect", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.add("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.remove("bg-red-400")
+     })
+     socket.on("connect_error", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.remove("bg-orange-400")
+      status.classList.add("bg-red-400")
+      status.classList.add("animate-ping")
+     });
+     socket.io.on("reconnect", () => {
+      status.classList.remove("bg-green-400")
+      status.classList.remove("bg-gray-400")
+      status.classList.add("bg-orange-400")
+      status.classList.add("animate-ping")
+      status.classList.remove("bg-red-400")
+     })
+     
+    </script>

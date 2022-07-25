@@ -61,10 +61,10 @@ module.exports = {
       console.log("Status changed to\n"+statusRandom.name)
     }
     client.user.setAFK(false)
-    client.user.setPresence({
+    /*client.user.setPresence({
       status: "idle",
       activities: [{ name: "Despacito: most listened on OnBeat", type: "LISTENING"}]
-    })
+    })*/
     // Status()
     // setInterval(Status, 20000);
   },

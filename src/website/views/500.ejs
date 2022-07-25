@@ -1,17 +1,17 @@
 <%-include("./include/head.ejs", {
-  title: req.t("header.title", {ns: "500"}),
-  description: req.t("header.description", {ns: "500"})
+  title: "OnBeat - Internal Server Error",
+  description: "Oops, occurred an error!"
 })%>
 <%-include("./include/nav.ejs")%>
 <div class="flex flex-col items-center justify-center w-full h-screen lg:h-screen transition-all" id="500">
-  <p class="text-2xl"><%=req.t("text.1", {ns: "500"})%></p>
-  <p><%=req.t("text.2", {ns: "500"})%></p>
+  <p class="text-2xl">Internal server error</p>
+  <p>If the error persists, please report it to us.</p>
   <br>
-  <a href='https://github.com/OnBeat-Project/OnBeat-Bot/issues/new' class="text-center flex items-center justify-center gap-x-2 bg-slate-900 text-white dark:bg-slate-100 dark:text-black p-2 rounded-xl mb-3"><i data-feather="github"></i><%=req.t("btn.1", {ns: "500"})%></a>
-  <a href="https://discord.gg/VybAzGs4wB" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3"><i class="fa-brands fa-discord"></i><%=req.t("btn.2", {ns: "500"})%></a>
+  <a href='https://github.com/OnBeat-Project/OnBeat-Bot/issues/new' class="text-center flex items-center justify-center gap-x-2 bg-slate-900 text-white dark:bg-slate-100 dark:text-black p-2 rounded-xl mb-3"><i data-feather="github"></i>Report via Github</a>
+  <a href="https://discord.gg/VybAzGs4wB" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3"><i class="fa-brands fa-discord"></i>Report via Support server</a>
   <br>
   <br>
-  <button class="" onclick="expand()" id="expandbtn"><%=req.t("text.3", {ns: "500"})%></button>
+  <button class="" onclick="expand()" id="expandbtn">Expand error</button>
   <p id="error" class="hidden text-red-600"><%= error.message %></p>
 </div>
 <script>

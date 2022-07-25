@@ -1,10 +1,10 @@
 <%-include("./include/head.ejs", {
-  title: "OnBeat - Not found",
-  description: "How do you access a place that doesn't exist?\nLet's get out of here, it's dangerous."
+  title: req.t("header.title", {ns: "404"}),
+  description: req.t("header.description", {ns: "404"})
 })%>
 <%-include("./include/nav.ejs")%>
 <div class="flex flex-col items-center justify-center w-full h-screen lg:h-screen transition-all" id="404">
   <p class="text-2xl">404</p>
-  <p>The page you're looking for can't be found.</p>
+  <p><%=req.t('text.1', {ns: '404'})%></p>
 </div>
 <%-include('./include/footer.ejs')%>

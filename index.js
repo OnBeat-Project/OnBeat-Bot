@@ -47,4 +47,8 @@ client.login()
 
 module.exports = client;
 
+process.on('uncaughtException', function(err) {
+  console.log(err);
+});
+
 require('./app.js')
