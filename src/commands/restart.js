@@ -13,7 +13,7 @@ const execSync=require('child_process').execSync;
 module.exports={
     data: new SlashCommandBuilder()
         .setName("restart")
-        .setDescription("Restart the bot!"),
+        .setDescription("This command is not authorized to be used by users!"),
     run: async (interaction) => {
         let validIds=["407859300527243275", "928624781731983380"];
 
