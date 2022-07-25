@@ -1,4 +1,4 @@
-const http = require('node:http'), express = require('express'), io = require('socket.io'), session = require('express-session'), passport = require('passport'), Strategy = require('passport-discord').Strategy;
+const http = require('node:http'), express = require('express'), {WebSocketServer} = require('ws'), session = require('express-session'), passport = require('passport'), Strategy = require('passport-discord.js').Strategy;
 const https = require('https');
 const fs = require('node:fs');
 const Topgg = require("@top-gg/sdk")
@@ -41,8 +41,8 @@ const server = http.createServer(app);
 
 app.set("views", __dirname + "/src/website/views")
 
-const socket = io(httpsServer)
-socket.listen(server)
+const socket = new WebSocketServer({server: httpsServer})
+// socket.listen(server)
 server.listen(80)
 httpsServer.listen(443, () => {
   console.log('HTTPS Server running on port 443');
@@ -85,7 +85,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use(i18nextMiddleware.handle(i18next));
+app.use(i18nextMiddleware.handle(i18next));
 
 app.use(bodyParser.urlencoded({
   extended: false

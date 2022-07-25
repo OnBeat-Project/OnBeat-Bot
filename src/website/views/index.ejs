@@ -12,10 +12,11 @@
   </p>
   <div class="mt-3 flex flex-col gap-y-3">
     <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.1", {ns: "common"})%></button>
-    <button onclick="location.href='/dashboard';" class="p-2 text-white bg-slate-700 dark:bg-slate-500 hover:bg-gray-700/80 hover:dark:bg-gray-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {ns: "common"})%></button>
+      <button onclick="location.href='#features';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {ns: "common"})%></button>
+    <!--<button onclick="location.href='/dashboard';" class="p-2 text-white bg-slate-700 dark:bg-slate-500 hover:bg-gray-700/80 hover:dark:bg-gray-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {ns: "common"})%></button>-->
   </div>
 </div>
-<div class="bg-gray-300 dark:bg-gray-700 transition-all">
+<div class="bg-gray-300 dark:bg-gray-700 transition-all" id="features">
   <%-include("./include/Waves/1.ejs", {
     color: "fill-slate-300 dark:fill-slate-900 drop-shadow-2xl transition-all"
   })%>
@@ -37,12 +38,11 @@
   <p class="text-base reveal fade-top"><%=req.t("text.section2.2_1", {ns: "common"})%></p>
   </div>
   <br>
-  <br>
-  <div class="flex flex-col gap-y-1 text-center justify-center items-center">
+<!--  <div class="flex flex-col gap-y-1 text-center justify-center items-center">
   <img src="/images/preview_3.png" class="reveal fade-bottom md:w-96"/>
   <p class="text-xl font-bold reveal fade-top"><%=req.t("text.section2.3", {ns: "common"})%></p>
   <p class="text-base reveal fade-top"><%=req.t("text.section2.3_1", {ns: "common"})%></p>
-  </div>
+  </div>-->
   <br>
   <br>
   </div>

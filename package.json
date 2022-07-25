@@ -49,9 +49,11 @@
     "ora": "^5.4.1",
     "passport": "^0.6.0",
     "passport-discord": "^0.1.4",
+    "passport-discord.js": "^0.0.6",
     "quick.db": "^9.0.5",
     "socket.io": "^4.5.1",
     "spotify-url-info": "^3.1.2",
-    "string-toolkit": "^1.6.7"
+    "string-toolkit": "^1.6.7",
+    "ws": "^8.8.1"
   }
 }

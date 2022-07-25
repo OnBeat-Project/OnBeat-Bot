@@ -20,19 +20,13 @@
     <script src="https://kit.fontawesome.com/2c8728d622.js" crossorigin="anonymous"></script>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
     <script>
-      const socket = io()
-      socket.on("connect", () => {
-        const engine = socket.io.engine;
-        console.log(engine.transport.name); // in most cases, prints "polling"
-
-        engine.once("upgrade", () => {
-    // called when the transport is upgraded (i.e. from HTTP long-polling to WebSocket)
-           console.log(engine.transport.name); // in most cases, prints "websocket"
-          });
-      })
-
+      const socket = new WebSocket("wss://onbeat.me")
+      socket.onopen = () => {
+        alert("Online!")
+        socket.send("ping!")
+      }
     </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>--->
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

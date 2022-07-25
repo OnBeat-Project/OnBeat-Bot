@@ -6,18 +6,18 @@
   "btn": {
     "section1": {
       "1": "Add Bot",
-      "2": "Dashboard"
+      "2": "Features"
     }
   },
   "text": {
     "section1": {
-      "1": "Welcome {{user}} to OnBeat!",
+      "1": "Welcome to OnBeat!",
       "2": "Play high quality music in your Discord server for free"
     },
     "section2": {
       "sectionTitle": "Why OnBeat is simply better:",
-      "1": "Advanced Dashboard",
-      "1_1": "With an advanced, yet simple to use dashboard, OnBeat is extremely easy to modify and control.",
+      "1": "Advanced bot",
+      "1_1": "With an advanced, yet simple to use bot, OnBeat is extremely easy to modify and control.",
       "2": "Add the bot, and control server based music easily.",
       "2_1": "All you have to do is select the server.",
       "3": "Interactive player",

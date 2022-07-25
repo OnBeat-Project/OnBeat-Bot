@@ -14,15 +14,19 @@ const RPC = require('discord-rpc')
 
 // Login
 
-app.get('/auth/callback',
-  passport.authenticate('discord', {
-    failureRedirect: '/'
-  }), function(req, res) {
-    // req.session.checkURL = req.originalUrl;
-    res.redirect("/")
-    // res.redirect(req.session.checkURL)
-  }
-);
+/*app.get('/auth/callback', function(req, res, next) {
+  passport.authenticate('discord.js', {
+    failureRedirect: '/',
+    function(req, res) {
+      // req.session.checkURL = req.originalUrl;
+      req.logIn(user, function(err) {
+        if (err) {
+          return next(err);
+        }
+        return res.redirect('/');
+      });
+      // res.redirect(req.session.checkURL)
+    }})(req, res, next)});
 app.post('/auth/logout', function(req, res) {
   req.logout(function(err) {
     if (err) {
@@ -35,6 +39,8 @@ app.get('/auth/info', checkAuth, function(req, res) {
   //console.log(req.user)
   res.json(req.user);
 });
+*/
+
 function maintance() {
   app.get("*", (req,
     res,
@@ -48,10 +54,12 @@ function maintance() {
     })
   })
 }
-maintance();
+// maintance();
+
 // Home
 app.use("/", require('./Routers'));
-app.use("/dashboard", require('./Routers/dashboard'));
+
+// app.use("/dashboard", require('./Routers/dashboard'));
 // app.use("/mobile", require('./Routers/mobile'));
 
 // Set errors
@@ -151,7 +159,7 @@ socket.on("connection", async (io) => {
     })
   client.player.on("trackAdd",
     async(queue, track) => {
-      io.join(queue.guild.id)
+      // io.join(queue.guild.id)
       socket.in(queue.guild.id).emit("musicQueue", {
         queue,
         track,
@@ -175,7 +183,7 @@ socket.on("connection", async (io) => {
         const guild = client.guilds.cache.get(queue.guild.id);
         const voiceChannel = guild.channels.cache.get(queue.connection.channel.id)
         // console.log(voiceChannel)
-       // const members = voiceChannel.members
+        // const members = voiceChannel.members
         const info = await getPreview(track.url)
         // console.log(interval)
         const lyrics = await client.lyrics.search(`${track.title} ${track.artist}`);
