@@ -73,7 +73,7 @@ passport.use(new Strategy({
 
 app.use(session({
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: false,
   cookie: {
     maxAge: 60000 * 60 * 24

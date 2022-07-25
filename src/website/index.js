@@ -19,11 +19,7 @@ app.get('/auth/callback',
     failureRedirect: '/'
   }), function(req, res) {
     // req.session.checkURL = req.originalUrl;
-    if (!req.session.checkURL) req.session.checkURL = "/";
-    var hour = 3600000
-    req.session.cookie.expires = new Date(Date.now() + hour)
-    req.session.cookie.maxAge = hour
-    res.redirect("/dashboard")
+    res.redirect("/")
     // res.redirect(req.session.checkURL)
   }
 );
@@ -66,6 +62,7 @@ app.use(function(req, res, next) {
 })
 
 app.use(function(err, req, res, next) {
+  console.error(err)
   res.status(500).render("500.ejs",
     {
       req,

@@ -1,0 +1,10 @@
+{
+  "dashboard": {
+    "logged": {
+      "text":"Select your preferred server!"
+    },
+    "not-logged": {
+      "text": "Please login with one of these platforms to continue:"
+    }
+  }
+}

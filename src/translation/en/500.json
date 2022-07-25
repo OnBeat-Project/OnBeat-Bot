@@ -2,7 +2,7 @@
   "header": {
     "title": "OnBeat - Internal Server Error",
     "description": "Oops, occurred an error!"
-  }
+  },
   "text": {
     "1": "Internal server error",
     "2": "If the error persists, please report it to us.",
