@@ -1,0 +1,15 @@
+{
+  "header": {
+    "title": "OnBeat - Internal Server Error",
+    "description": "Oops, occurred an error!"
+  },
+  "text": {
+    "1": "Internal server error",
+    "2": "If the error persists, please report it to us.",
+    "3": "Expand error"
+  },
+  "btn": {
+    "1": "Report via Github",
+    "2": "Report via Support server"
+  }
+}

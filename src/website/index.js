@@ -1,91 +1,39 @@
 const {
   app,
-  server,
   socket,
+  server,
   client,
-  passport,
-  checkAuth
-} = require('../../app')
+  passport
+} = require('../../app');
 
-const RPC = require('discord-rpc')
-
-// const rpcClient = new RPC.Client({ transport: 'ipc' })
-
-
-// Login
-
-/*app.get('/auth/callback', function(req, res, next) {
-  passport.authenticate('discord.js', {
-    failureRedirect: '/',
-    function(req, res) {
-      // req.session.checkURL = req.originalUrl;
-      req.logIn(user, function(err) {
-        if (err) {
-          return next(err);
-        }
-        return res.redirect('/');
-      });
-      // res.redirect(req.session.checkURL)
-    }})(req, res, next)});
-app.post('/auth/logout', function(req, res) {
-  req.logout(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
-});
-app.get('/auth/info', checkAuth, function(req, res) {
-  //console.log(req.user)
-  res.json(req.user);
-});
-*/
-
-function maintance() {
-  app.get("*", (req,
-    res,
-    next) => {
-    if (!req.user) return res.render("maintenance.ejs", {
-      req, res
-    });
-    if (req.user.id === "407859300527243275") return next();
-    res.render("maintenance.ejs", {
-      req, res
-    })
-  })
-}
-// maintance();
-
-// Home
 app.use("/", require('./Routers'));
+app.use("/dashboard", require('./Routers/dashboard'));
 
-// app.use("/dashboard", require('./Routers/dashboard'));
-// app.use("/mobile", require('./Routers/mobile'));
-
-// Set errors
 app.use(function(req, res, next) {
   res.status(404).render("404.ejs",
     {
       req,
       res
     });
-})
+});
 
 app.use(function(err, req, res, next) {
-  console.error(err)
+  console.error(err);
   res.status(500).render("500.ejs",
     {
       req,
       res,
       error: err
     });
-})
+});
 
-// Socket
 const fetch = require('isomorphic-unfetch')
 const {
-  getData, getPreview, getTracks, getDetails
-} = require('spotify-url-info')(fetch)
+  getData,
+  getPreview,
+  getTracks,
+  getDetails
+} = require('spotify-url-info')(fetch);
 
 const player = client.player;
 const {
@@ -93,23 +41,24 @@ const {
   QueryType,
   QueueRepeatMode
 } = require("discord-player");
+
 socket.on("connection", async (io) => {
   io.on("create",
     (guild) => {
       // io.set('room', guild, function() {});
-      console.log(guild)
-      io.join(guild)
-      console.log(io.rooms)
-    })
-  console.log(io.rooms)
+      console.log(guild);
+      io.join(guild);
+      console.log(io.rooms);
+    });
+  console.log(io.rooms);
   io.on("musicRequest",
     async (info) => {
 
       const guild = client.guilds.cache.get(info.guild);
-      const channeldb = await client.db.get(`channel_${guild.id}`)
+      const channeldb = await client.db.get(`channel_${guild.id}`);
       var query = info.music;
       var track;
-      const member = guild.members.cache.get(info.user)
+      const member = guild.members.cache.get(info.user);
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
@@ -128,7 +77,7 @@ socket.on("connection", async (io) => {
           tracks: {
             items: []
           }
-        }
+        };
       }
       const searchResult = await player
       .search(!track.tracks.items[0]?query: track.tracks.items[0].external_urls.spotify, {
@@ -144,47 +93,62 @@ socket.on("connection", async (io) => {
         if (!queue.connection) await queue.connect(member.voice.channel);
       } catch(e) {
         void player.deleteQueue(guild.id);
-        return console.log(e)
+        return console.log(e);
       }
-      console.log(searchResult)
+      console.log(searchResult);
       searchResult.playlist ? queue.addTracks(searchResult.tracks): queue.addTrack(searchResult.tracks[0]);
-      if (!queue.playing) await queue.play();
+      if (!queue.playing) {await queue.play();}
       queue.setFilters({
         "fadein": true
-      })
+      });
       socket.in(guild.id).emit("musicQueue", {
         queue,
         track: queue.track
-      })
-    })
+      });
+    });
   client.player.on("trackAdd",
     async(queue, track) => {
-      // io.join(queue.guild.id)
+      io.join(queue.guild.id);
+      await client.db.add(`track.${track.title}`, 1);
+      console.log(await client.db.get("track"));
       socket.in(queue.guild.id).emit("musicQueue", {
         queue,
         track,
         requestedBy: client.users.cache.get(track.requestedBy.id)
-      })
+      });
     });
   client.player.on("queueEnd",
     async(queue, track) => {
       socket.in(queue.guild.id).emit("queueEnd", {
         queue, track
-      })
-    })
+      });
+    });
   var interval;
   client.player.on("trackStart",
     async(queue, track) => {
+      const interaction = queue.metadata;
+      const embed = new EmbedBuilder()
+      .setTitle("🎵 | Playing")
+      .setDescription(`Now playing \`${track.title}\` (\`${track.duration}\`) by \`${track.author}\``)
+      .setFooter({
+        iconURL: track.requestedBy.displayAvatarURL(), text: `Requested by: ${track.requestedBy.username}`
+      })
+      .setColor("#202023");
 
+      if (!queue.metadata) return;
+
+      queue.metadata.send({
+        embeds: [embed]
+      }).then(message => {});
       interval = setInterval(async() => {
         if (!queue.playing) return;
         var perc;
         perc = queue.getPlayerTimestamp();
         const guild = client.guilds.cache.get(queue.guild.id);
-        const voiceChannel = guild.channels.cache.get(queue.connection.channel.id)
+        const voiceChannel = guild.channels.cache.get(queue.connection.channel.id);
         // console.log(voiceChannel)
         // const members = voiceChannel.members
-        const info = await getPreview(track.url)
+        const info = await getPreview(track.url);
         // console.log(interval)
         const lyrics = await client.lyrics.search(`${track.title} ${track.artist}`);
         // console.log(lyrics)
@@ -197,20 +161,16 @@ socket.on("connection", async (io) => {
           lyrics,
           tracks: queue.tracks,
           requestedBy: client.users.cache.get(track.requestedBy.id)
-        })
+        });
       },
-        1000)
+        1000);
     });
-  io.on("broadcastNotify", (info) => {
-    io.sockets.emit("notification",
-      info)
-  })
   io.on("pauseTrack",
     (info) => {
       const queue = player.getQueue(info.guild);
       if (!queue.playing) return;
       const guild = client.guilds.cache.get(info.guild);
-      const member = guild.members.cache.get(info.user)
+      const member = guild.members.cache.get(info.user);
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
@@ -219,19 +179,19 @@ socket.on("connection", async (io) => {
           message: "You are not in my voice channel!"
         });
       }
-      console.log(info)
+      console.log(info);
       const paused = queue.setPaused(info.paused);
       // console.log(paused)
       socket.in(info.guild).emit("trackUpdate", {
         pause: info.paused
       });
-    })
+    });
   io.on("skipTrack",
     (info) => {
       const queue = player.getQueue(info.guild);
       if (!queue.playing) return;
       const guild = client.guilds.cache.get(info.guild);
-      const member = guild.members.cache.get(info.user)
+      const member = guild.members.cache.get(info.user);
       if (!member.voice.channel) return socket.in(guild.id).emit("error", {
         message: "You are not in a voice channel!"
       });
@@ -241,13 +201,13 @@ socket.on("connection", async (io) => {
         });
       }
       queue.skip();
-    })
+    });
   client.player.on("trackEnd",
     (queue, track) => {
       socket.in(queue.guild.id).emit("trackEnd", {
         queue, track
-      })
-      clearInterval(interval)
-    })
-  console.log(`connected to ${io.id}`)
-})
+      });
+      clearInterval(interval);
+    });
+  console.log(`connected to ${io.id}`);
+});
