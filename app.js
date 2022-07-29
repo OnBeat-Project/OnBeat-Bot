@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const client = require('./index.js');
 const socket = io(server);
-const privateKey = fs.readFileSync(process.env.private, 'utf8');
+/*const privateKey = fs.readFileSync(process.env.private, 'utf8');
 const certificate = fs.readFileSync(process.env.cert, 'utf8');
 const ca = fs.readFileSync(process.env.ca, 'utf8');
 const credentials = {
@@ -25,13 +25,13 @@ const credentials = {
   ca: ca
 };
 const httpsServer = https.createServer(credentials,app);
+*/
 
-
-socket.listen(httpsServer);
+// socket.listen(httpsServer);
 server.listen(80);
-httpsServer.listen(443, () => {
+/*httpsServer.listen(443, () => {
   console.log('HTTPS Server running on port 443');
-});
+});*/
 
 
 app.use(session({
