@@ -22,12 +22,8 @@ module.exports={
     .setDescription("Request a song!")
     .addStringOption(o => o.setName("query").setDescription("Song to be requested").setRequired(true)),
   run: async (interaction) => {
-    const channeldb=await interaction.client.db.get(`channel_${ interaction.guild.id }`);
+    const channeldb=await interaction.client.db.get(`channel_${ interaction.guild.id }`)||`channel_${ interaction.guild.id }`;
     // if(!channeldb) return interaction.reply({content: `Please, use \`/set channel\` to set a log channel.`});
-    if (!interaction.guild.channels.cache.get(channeldb)) {
-      await interaction.client.db.delete(`channel_${ interaction.guild.id }`);
-      // return interaction.reply("The log channel don't exists anymore.")
-    }
     // await interaction.deferReply();
     const player=interaction.client.player;
     if (!(interaction.member instanceof GuildMember)||!interaction.member.voice.channel) {
@@ -64,15 +60,16 @@ module.exports={
       content: "No results were found. \nTry using the artist name (e.g. Saturday - Norma Jean Wright) or use a Spotify URL!"
     });
     console.log(channeldb);
-    const queue=await player.createQueue(interaction.guild, {
-      metadata: interaction.guild.channels.cache.get(channeldb),
-      i: interaction
-    });
 
+    queue=player.getQueue(interaction.guild.id);
+
+    if (!queue) {
+      queue=player.createQueue(interaction.guild.id);
+    }
+    
     try {
       if (!queue.connection) await queue.connect(interaction.member.voice.channel);
     } catch {
-      void player.deleteQueue(interaction.guildId);
       return void interaction.reply({
         embeds: [{
           title: "I can't join your Voice Channel!",
@@ -93,7 +90,14 @@ module.exports={
       }],
       ephemeral: true
     });
-    searchResult.playlist? queue.addTracks(searchResult.tracks):queue.addTrack(searchResult.tracks[0]);
-    if (!queue.playing) await queue.play();
+    //     queue.addTrack(searchResult?.tracks[0]);
+    try {
+      await queue.addTrack(searchResult.tracks[0]);
+    } catch (e) {
+      console.log(e);
+    }
+    if (!queue.playing) {
+      queue.play();
+    }
   }
 };
