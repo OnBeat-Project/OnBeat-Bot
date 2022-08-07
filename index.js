@@ -82,7 +82,7 @@ for (const file of cmds) {
 }
 
 
-const rest=new REST({version: "9"}).setToken(process.env.TOKEN);
+const rest=new REST({version: "9"}).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {
