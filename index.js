@@ -82,6 +82,7 @@ for (const file of cmds) {
 }
 
 
+
 const rest=new REST({version: "9"}).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
@@ -98,6 +99,23 @@ const rest=new REST({version: "9"}).setToken(process.env.DISCORD_TOKEN);
     console.error(error);
   }
 })();
+
+const events = fs
+  .readdirSync('./src/events')
+  .filter(file => file.endsWith('.js'))
+
+events.forEach(event => {
+  const eventFile = require(`./src/events/${event}`)
+  if (eventFile.oneTime) {
+    client.once(eventFile.event, (...args) => eventFile.run(...args))
+  } else {
+    if(eventFile.player) {
+      client.player.on(eventFile.event, (...args) => eventFile.run(...args));
+    } else {
+    client.on(eventFile.event, (...args) => eventFile.run(...args))
+    }
+  }
+})
 
 client.once('ready', async () => {
   for (const file of cmds) {
