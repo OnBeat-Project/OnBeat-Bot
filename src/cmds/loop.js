@@ -1,7 +1,4 @@
 const {SlashCommandBuilder}=require('@discordjs/builders');
-const {
-    MessageEmbed, Modal, MessageActionRow, TextInputComponent, MessageButton,
-}=require('discord.js');
 const chalk=require('chalk');
 
 module.exports={
