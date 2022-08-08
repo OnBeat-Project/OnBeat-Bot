@@ -27,7 +27,7 @@ module.exports={
         });
 
         try {
-            execSync('pm2 restart 0', {encoding: 'utf-8'});
+            execSync('sudo pm2 restart 0', {encoding: 'utf-8'});
         } catch (err) {
             console.log(err);
         }
