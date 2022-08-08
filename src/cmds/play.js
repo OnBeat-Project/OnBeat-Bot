@@ -75,7 +75,7 @@ module.exports={
                 ephemeral: true
             });
         }
-        queue.play(track);
+        queue.play(track.playlist.tracks.first());
 
         return await interaction.followUp({
             embeds: [{
