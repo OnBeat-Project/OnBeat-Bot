@@ -69,21 +69,20 @@ module.exports={
             await interaction.followUp({
                 embeds: [{
                     title: "Added playlist to queue!",
-                    description: `${track.title} [${track.requestedBy}]`,
                     color: 0x00FF00
                 }],
                 ephemeral: true
             });
+        } else {
+            await interaction.followUp({
+                embeds: [{
+                    title: `Loading: ${ track.title } by ${ track.author }`,
+                    color: 0x00ff00,
+                }],
+                ephemeral: true
+            });
         }
-        queue.play(track.playlist.tracks.first());
-
-        return await interaction.followUp({
-            embeds: [{
-                title: `Loading: ${ track.title } by ${ track.author }`,
-                color: 0x00ff00,
-            }],
-            ephemeral: true
-        });
+        queue.play();
 
     },
 };
