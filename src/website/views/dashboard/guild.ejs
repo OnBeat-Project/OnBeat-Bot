@@ -9,16 +9,16 @@
       if(g.id === guild.id) {
     %>
 
-    <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" onsubmit="submit(this, '<%=guild.id%>')">
+    <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3"  action="/api/guild/<%=guild.id%>/track/add" method="post">
       <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="Search for music to play in <%=guild.name%>" autocomplete="off"></input>
     </form>
-    <div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="stopped">
+    <div class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="stopped">
       <!--<img src="" id="img-error" class="w-64"/>-->
       <p class="text-2xl">
         Nothing playing...
       </p>
     </div>
-    <div id="loading" class="flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]">
+    <div id="loading" class="hidden flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]">
       <div role="status" class="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center justify-center">
         <div class="flex justify-center items-center h-48 w-48 p-2 bg-gray-300 rounded-2xl sm:h-96 sm:w-96 dark:bg-gray-700">
         </div>
@@ -98,90 +98,7 @@
     </div>
 
     <script>
-      socket.emit("create", "<%=guild.id%>");
-      this.playing = false;
-      const form = document.querySelector("#requestMusic");
-      const search = document.querySelector("#music");
-      form.onsubmit = function(e) {
-        console.log(search)
-        console.log(form)
-        e.preventDefault();
-        socket.emit("musicRequest", {
-          guild: "<%=guild.id%>", music: search.value, user: "<%=req.user.id%>"
-        })
-        search.value = "";
-        search.disabled = true;
-      }
-      const toast = document.getElementById("toast-music");
-      const text = document.getElementById("toast-music-text");
-      socket.on("musicQueue", (music) => {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-        const track = music.track;
-        const queue = music.queue;
-        search.disabled = true;
-        text.textContent = `${music.requestedBy.tag} requested ${track.title}`;
-        toast.classList.remove("opacity-0")
-        toast.classList.remove("-translate-x-full")
-        setTimeout(() => {
-          // emoji.src = "";
-          toast.classList.add("opacity-0")
-          toast.classList.add("-translate-x-full")
-        }, 3000);
-        document.getElementById("loading").classList.remove("hidden")
-        document.getElementById("queue").classList.add("hidden")
-        document.getElementById("stopped").classList.add("hidden")
-      })
-      socket.on("error", (i) => {
-        text.textContent = i.message;
-        toast.classList.remove("opacity-0")
-        toast.classList.remove("-translate-x-full")
-        setTimeout(() => {
-          // emoji.src = "";
-          toast.classList.add("opacity-0")
-          toast.classList.add("-translate-x-full")
-        }, 3000);
-      })
-      socket.on("queueEnd", () => {
-        document.getElementById("loading").classList.remove("hidden")
-        document.getElementById("queue").classList.add("hidden")
-        // emoji.classList.add("hidden")
-        text.textContent = `Queue ends`;
-        toast.classList.remove("opacity-0")
-        toast.classList.remove("-translate-x-full")
-        setTimeout(() => {
-          toast.classList.add("opacity-0")
-          toast.classList.add("-translate-x-full")
-        }, 3000);
-        setTimeout(() => {
-          document.getElementById("stopped").classList.remove("hidden")
-          document.getElementById("loading").classList.add("hidden")
-          search.disabled = false
-        }, 1000)
-        this.playing = false;
-      })
-      socket.on("trackEnd", () => {
-        document.getElementById("loading").classList.remove("hidden")
-        this.playing = false;
-      })
-      socket.on("connect", (connected) => {
-        console.log(connected)
-        document.getElementById("loading").classList.remove("hidden")
-        document.getElementById("stopped").classList.add("hidden")
-        setTimeout(() => {
-
-          document.getElementById("loading").classList.add("hidden")
-          if (this.playing === true) return;
-          document.getElementById("stopped").classList.remove("hidden")
-        },
-          500)
-        //alert(connected)
-      });
-      const queue = document.getElementById("queue");
-      //onst search = document.getElementById("music");
-      const notrack = document.getElementById("stopped");
-      const trackEl = document.getElementById("queue");
-      const music = {
+     const music = {
         img: document.getElementById("track-image"),
         title: document.getElementById("track-name"),
         artist: document.getElementById("track-artist"),
@@ -189,28 +106,34 @@
         progress: document.getElementById("time-progress"),
         user: document.getElementById("track-userRequest")
       }
-
-      socket.on("currentMusic", (info) => {
-        document.getElementById("loading").classList.add("hidden")
-        // console.log(info)
-        if (!info.queue) {
+const request = document.getElementById("requestMusic");
+const query = document.getElementById("music");
+ const notrack = document.getElementById("stopped");
+      const trackEl = document.getElementById("queue");
+ $(function() {
+  $("#requestMusic").submit((e) => {
+    e.preventDefault()
+    $.post(`/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
+      console.log(data);
+      console.log(status);
+    });
+    query.value=""
+    // return false;
+  })
+ })
+ setInterval(() => {
+   $(function() {
+    $.get(`/api/guild/<%=guild.id%>/queue`, function(data, status) {
+        if (!data.track) {
           notrack.classList.remove("hidden");
           trackEl.classList.add("hidden");
-        }
-        notrack.classList.add("hidden");
-        trackEl.classList.remove("hidden");
-        music.img.src = info.info.image;
-        music.title.textContent = info.info.title;
-        music.artist.textContent = info.info.artist;
-        document.getElementById("lyrics-text").innerHTML = info.lyrics ? info.lyrics.lyrics.replace(/\n/g, "<br>"): "Nothing Here...";
-        // music.time.textContent = `${info.perc.current}`;
-        if (info.perc.current > 100) {
-          music.progress.style.width = `100%`;
+          return;
         } else {
-          music.progress.style.width = `${info.perc.progress}%`
-        }
-
-        info.tracks.map((track, i) => {
+          music.img.src = data.track.thumbnail;
+          music.title.textContent = data.track.title;
+          music.artist.textContent = data.track.artist;
+          
+          data.tracks.map((track, i) => {
           console.log(i, track)
           const ione = i+1;
           if (!track) {
@@ -218,67 +141,27 @@
           }
           //$('#queueMusic' + i).html(`<p></p>`)
           document.getElementById("queueNone").classList.add("hidden")
-          $('#queueMusic' + i).html(`<p>${i + 1}) ${info.tracks[i]?info.tracks[i].title: ""} - <span>${info.tracks[i]?info.tracks[i].author: ""}</span></p><br>`)
+          $('#queueMusic' + i).html(`<p>${i + 1}) ${data.tracks[i]?data.tracks[i].title: ""} - <span>${data.tracks[i]?data.tracks[i].author: ""}</span></p><br>`)
           if (ione > 4) {
             $('#queueMore4').html(`<p>And others <span>${i-3}</span> musics</p>`);
           }
-          if (!info.tracks[i+1]) return $('#queueMusic' + ione).html("");
+          if (!data.tracks[i+1]) return $('#queueMusic' + ione).html("");
         })
-        music.user.textContent = `${info.track.requestedBy.username}`
-        /* const seenUsers = info.members.slice(0, 3)
-  const avatar1 = document.getElementById("user1")
-  const avatar2 = document.getElementById("user2")
-  document.getElementById("connected-users").textContent = info.members.length
-  avatar1.src = info.members[0].displayAvatarURL;
-  if (info.members[1]) {
-    avatar2.classList.remove("hidden")
-    avatar2.src = info.members[1].displayAvatarURL;
-  } else {
-    avatar2.src = "";
-    avatar2.classList.add("hidden")
-  }
-
-  const extraUsers = info.members.length - 2
-  if (extraUsers > 0) {
-    document.getElementById("otherusers").classList.remove("hidden")
-    document.getElementById("otherusers").textContent = "+" + extraUsers;
-  } else {
-    document.getElementById("otherusers").classList.add("hidden")
-    document.getElementById("otherusers").textContent = "+0";
-  }*/
-
-        search.disabled = false;
-        this.playing = true;
+          
+          notrack.classList.add("hidden");
+          trackEl.classList.remove("hidden");
+        }
+        // music.time.textContent = `${info.perc.current}`
       })
-
-      function pause(play, guild, user) {
-        //  console.log(e)
-        // e.preventDefault();
-        if (this.paused === false) {
-          this.paused = true
+       $.get(`/api/guild/<%=guild.id%>/queue/progress`, function(data, status) {
+         if (data.progress > 100) {
+          music.progress.style.width = `100%`;
         } else {
-          this.paused = false
-        };
-        socket.emit("pauseTrack", {
-          guild: guild, user: user, paused: this.paused
-        });
-        const pauseBtn = document.getElementById("icon")
-        socket.on("trackUpdate", (update) => {
-          console.log(update)
-          if (update.pause === true) {
-            pauseBtn.innerHTML = feather.icons["play"].toSvg()
-          } else {
-            pauseBtn.innerHTML = feather.icons["pause"].toSvg()
-          }
-        })
-      }
-      function skip(music, guild, user) {
-        socket.emit("skipTrack",
-          {
-            guild: guild,
-            user: user
-          });
-      }
+          music.progress.style.width = `${data.progress}%`
+        }
+       })
+     })
+  }, 1000);
     </script>
     <%
   } else return;

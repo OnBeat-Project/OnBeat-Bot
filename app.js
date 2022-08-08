@@ -15,7 +15,7 @@ const https = require('https');
 const app = express();
 const server = http.createServer(app);
 const client = require('./index.js');
-const socket = io(server);
+const socket = new io.Server(server);
 /*const privateKey = fs.readFileSync(process.env.private, 'utf8');
 const certificate = fs.readFileSync(process.env.cert, 'utf8');
 const ca = fs.readFileSync(process.env.ca, 'utf8');
@@ -28,10 +28,6 @@ const httpsServer = https.createServer(credentials,app);
 */
 
 // socket.listen(httpsServer);
-server.listen(80);
-/*httpsServer.listen(443, () => {
-  console.log('HTTPS Server running on port 443');
-});*/
 
 
 app.use(session({
@@ -71,7 +67,7 @@ i18next
 .use(i18nextMiddleware.LanguageDetector)
 .init({
   backend: {
-    loadPath: __dirname + '/src/translation/{{lng}}/{{ns}}.json'
+    loadPath: __dirname + '/src/Translation/Website/{{lng}}/{{ns}}.json'
   },
   fallbackLng: 'en',
   preload: ['en'],
@@ -121,5 +117,12 @@ module.exports = {
   client,
   passport
 };
+
+server.listen(80, () => {
+  console.log("Running on port 80");
+});
+/*httpsServer.listen(443, () => {
+  console.log('HTTPS Server running on port 443');
+});*/
 
 require('./src/website/index.js');
