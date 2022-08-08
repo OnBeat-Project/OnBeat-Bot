@@ -65,7 +65,7 @@ module.exports={
         });
 
         if (track.playlist) {
-            queue.addTracks(queue.playlist.tracks);
+            queue.addTracks(track.playlist.tracks);
             await interaction.followUp({
                 embeds: [{
                     title: "Added playlist to queue!",
