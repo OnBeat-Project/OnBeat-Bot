@@ -81,8 +81,6 @@ for (const file of cmds) {
   client.slash.set(command.data.name, command);
 }
 
-
-
 const rest=new REST({version: "9"}).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
