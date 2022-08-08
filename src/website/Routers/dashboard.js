@@ -6,8 +6,7 @@ const {
   server,
   socket,
   client,
-  passport,
-  checkAuth
+  passport
 } = require('../../../app')
 
 const stringTools = require('string-toolkit');

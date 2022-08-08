@@ -71,7 +71,7 @@ player.on("trackAdd", (queue, track) => queue.metadata.channel.send({
   }],
 }));
 client.slash=new Collection();
-
+client.player = player;
 
 const cmds=fs.readdirSync('./src/cmds').filter((file) => file.endsWith('.js'));
 const commands=[];
@@ -100,7 +100,7 @@ const rest=new REST({version: "9"}).setToken(process.env.DISCORD_TOKEN);
   }
 })();
 
-const events = fs
+/*const events = fs
   .readdirSync('./src/events')
   .filter(file => file.endsWith('.js'))
 
@@ -115,7 +115,7 @@ events.forEach(event => {
     client.on(eventFile.event, (...args) => eventFile.run(...args))
     }
   }
-})
+})*/
 
 client.once('ready', async () => {
   for (const file of cmds) {
@@ -137,3 +137,7 @@ client.on('interactionCreate', async (interaction) => {
   }
 });
 client.login(process.env.TOKEN);
+
+module.exports = client;
+
+require('./app');
