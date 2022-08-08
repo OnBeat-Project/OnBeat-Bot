@@ -40,7 +40,13 @@ module.exports={
                 color: 0x00ff00,
             }],
             ephemeral: true
-        });
+        }).catch(e => interaction.reply({
+            embeds: [{
+                title: `An error has occurred. This was most likely because a track was loading when you sent the command.`,
+                description: `\`\`\`${ e }\`\`\``,
+                color: 0x00ff00,
+            }],
+        }));
         await q.skip();
 
     },
