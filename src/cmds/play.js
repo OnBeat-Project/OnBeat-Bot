@@ -35,7 +35,8 @@ module.exports={
         const queue=player.createQueue(interaction.guild, {
             metadata: {
                 channel: interaction.channel
-            }
+            },
+            spotifyBridge: true,
         });
         try {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
