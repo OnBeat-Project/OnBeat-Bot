@@ -65,7 +65,8 @@ module.exports={
         });
         if (player.playing) {
             if (queue.playlist) {
-                queue.addTracks(track);
+                await queue.addTracks(track);
+                await queue.play()
                 return await interaction.followUp({
                     embeds: [{
                         title: "Added to queue!",
@@ -75,7 +76,8 @@ module.exports={
                     ephemeral: true
                 });
             } else {
-                queue.addTrack(track);
+                await queue.addTrack(track);
+                await queue.play()
                 return await interaction.followUp({
                     embeds: [{
                         title: "Added to queue!",
