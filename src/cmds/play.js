@@ -63,42 +63,27 @@ module.exports={
             ephemeral: true
 
         });
-        if (player.playing) {
-            if (queue.playlist) {
-                await queue.addTracks(track);
-                await queue.play()
-                return await interaction.followUp({
-                    embeds: [{
-                        title: "Added to queue!",
-                        description: `${ track.title } [${ track.requestedBy }]`,
-                        color: 0x00FF00
-                    }],
-                    ephemeral: true
-                });
-            } else {
-                await queue.addTrack(track);
-                await queue.play()
-                return await interaction.followUp({
-                    embeds: [{
-                        title: "Added to queue!",
-                        description: `**[${ track.title }](${ track.url })**`,
-                        color: 0x00FF00,
-                    }],
-                    ephemeral: true
-                });
-x
-            }
-        } else {
-            await queue.play();
-            return await interaction.followUp({
+
+        if (queue.playlist) {
+            queue.addTracks(track);
+            await interaction.followUp({
                 embeds: [{
-                    title: `Loading: ${ track.title } by ${ track.author }`,
-                    color: 0x00ff00,
+                    title: "Added playlist to queue!",
+                    description: `${track.title} [${track.requestedBy}]`,
+                    color: 0x00FF00
                 }],
                 ephemeral: true
             });
         }
+        queue.play(track);
 
+        return await interaction.followUp({
+            embeds: [{
+                title: `Loading: ${ track.title } by ${ track.author }`,
+                color: 0x00ff00,
+            }],
+            ephemeral: true
+        });
 
     },
 };
