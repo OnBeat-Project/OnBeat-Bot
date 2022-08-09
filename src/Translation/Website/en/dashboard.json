@@ -1,10 +1,19 @@
 {
-  "dashboard": {
-    "logged": {
-      "text":"Select your preferred server!"
-    },
-    "not-logged": {
-      "text": "Please login with one of these platforms to continue:"
+  "logged": {
+    "text": "Select your preferred server!",
+    "guild": {
+      "search": "Search for music to play in {{server_name}}",
+      "overview": {
+        "tabName": "Overview"
+      },
+      "queue": {
+        "tabName": "Queue",
+        "noMusic": "The currently playing song is the only one in queue..",
+        "moreMusic": "And others {{- queueLength}} musics"
+      }
     }
+  },
+  "not-logged": {
+    "text": "Please login with one of these platforms to continue:"
   }
-} 
+}
