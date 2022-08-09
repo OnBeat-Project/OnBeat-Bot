@@ -1,0 +1,35 @@
+{
+  "header": {
+    "title": "OnBeat - Casa",
+    "description": "O OnBeat é um simples bot de música para o Discord. Com um painel de controle avançado e simples, o OnBeat é extremamente fácil de modificar e controlar."
+  },
+  "btn": {
+    "section1": {
+      "1": "Adicionar Bot",
+      "2": "Recursos"
+    }
+  },
+  "text": {
+    "section1": {
+      "1": "Bem-vindo(a) ao OnBeat!",
+      "2": "Ouça músicas de alta qualidade no seu servidor do Discord gratuitamente"
+    },
+    "section2": {
+      "sectionTitle": "Por que OnBeat é simplesmente melhor:",
+      "1": "Bot avançado",
+      "1_1": "Com um bot avançado, mas simples de usar, o OnBeat é extremamente fácil de modificar e controlar.",
+      "2": "Adicione o bot e controle facilmente a música baseada no servidor.",
+      "2_1": "Tudo o que você precisa fazer é selecionar o servidor.",
+      "3": "Reprodutor interativo",
+      "3_1": "Você pode interagir com o reprodutor do site e assumir o controle das músicas de qualquer dispositivo."
+    },
+    "section3": {
+      "sectionTitle": "Confira algumas das coisas que temos:",
+      "1": "Transmissões do Spotify",
+      "2": "Transmitimos usando o Spotify em vez do YouTube ou Soundcloud."
+    },
+    "section4": {
+      "sectionTitle": "Nós também temos redes sociais"
+    }
+  }
+}

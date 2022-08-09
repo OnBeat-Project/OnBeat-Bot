@@ -71,7 +71,7 @@ i18next
   },
   fallbackLng: 'en',
   preload: ['en'],
-  ns: ['common', '404', '500', 'dashboard']
+  ns: ['common', '404', '500', 'dashboard','util']
 });
 app.use(i18nextMiddleware.handle(i18next));
 

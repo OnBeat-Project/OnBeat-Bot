@@ -1,0 +1,13 @@
+{
+  "navbar": {
+    "siteName": "OnBeat",
+    "dropdown": {
+      "dashboard": "Painel",
+      "log": {
+        "in": "Conectar",
+        "out": "Desconectar"
+      },
+      "discordserver": "Servidor do Discord"
+    }
+  }
+}

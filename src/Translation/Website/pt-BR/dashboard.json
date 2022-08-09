@@ -1,0 +1,19 @@
+{
+  "logged": {
+    "text": "Selecione seu servidor preferido!",
+    "guild": {
+      "search": "Procure uma música para tocar no {{server_name}}",
+      "overview": {
+        "tabName": "Visão geral"
+      },
+      "queue": {
+        "tabName": "Fila",
+        "noMusic": "A música que está tocando é a única na fila.",
+        "moreMusic": "E outras {{- queueLength}} músicas"
+      }
+    }
+  },
+  "not-logged": {
+    "text": "Faça login com uma destas plataformas para continuar:"
+  }
+}

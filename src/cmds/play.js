@@ -83,7 +83,7 @@ module.exports={
                 ephemeral: true
             });
         }
-        queue.play();
+        if(!queue.playing) queue.play();
 
     },
 };
