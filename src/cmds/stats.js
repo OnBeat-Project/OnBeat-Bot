@@ -26,7 +26,7 @@ module.exports={
 
         const embed=new MessageEmbed()
             .setColor('GREEN')
-            .setAuthor({name: 'Statistics', iconURL: 'https://cdn.discordapp.com/avatars/928630913032658964/ead910d8dfac5012e21e618bce79a93a.png?size=4096'})
+            .setAuthor({name: 'Statistics', iconURL: 'https://cdn.discordapp.com/icons/992884532833423450/5b5ec45e432b83d1a40de2ec1cb280e1.png'})
             .addFields(
                 {name: 'Servers :computer:', value: `\`\`\`${ guildsCount }\`\`\``, inline: true},
                 {name: 'Users :family_mmbb:', value: `\`\`\`${ usersCount }\`\`\``, inline: true},
