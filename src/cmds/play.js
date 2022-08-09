@@ -74,8 +74,8 @@ module.exports={
                 ephemeral: true
             });
         } else {
-            queue.addTrack(track)
-            await interaction.followUp({
+            queue.play(track)
+            return await interaction.followUp({
                 embeds: [{
                     title: `Loading: ${ track.title } by ${ track.author }`,
                     color: 0x00ff00,
