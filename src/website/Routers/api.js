@@ -18,7 +18,8 @@ router.get("/guild/:id/queue", (req, res) => {
   if (!q || q === undefined || q.length === 0) return res.json(undefined);
   res.json({
     track: q.nowPlaying(),
-    tracks: q.tracks
+    tracks: q.tracks,
+    playing: q.playing
   });
 });
 
@@ -42,7 +43,8 @@ router.post("/guild/:id/track/add", async function (req, res) {
   const queue = player.createQueue(req.params.id, {
     metadata: {
       channel: ""
-    }
+    },
+    spotifyBridge: true,
   });
   try {
     if (!queue.connection) await queue.connect(member.voice.channel);
@@ -55,13 +57,28 @@ router.post("/guild/:id/track/add", async function (req, res) {
   const track = await player.search(body.query, {
     requestedBy: member
   }).then(x => x.tracks[0]);
-  
+
   if (!track) return res.json({});
+
+  if (track.playlist) {
+    queue.addTracks(track.playlist.tracks);
+  } else {
+    queue.play(track);
+  }
   
-  queue.play(track);
+  if(!queue.playing) queue.play();
   res.json({
     track
   });
+});
+
+router.post("/guild/:id/track/skip/:num", async function(req,res) {
+  let queue = client.player.getQueue(req.params.id);
+  console.log(req.params.id);
+  if(!queue) return res.json({});
+  
+  await queue.skipTo(Number(req.params.num));
+  res.json({queue});
 });
 
 module.exports = router;

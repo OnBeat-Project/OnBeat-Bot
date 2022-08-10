@@ -36,7 +36,7 @@
             <%if (req.user) {
               %>
               <form method="post" action="/auth/logout">
-                <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.in", {ns: 'util'})%></button>
+                <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.out", {ns: 'util'})%></button>
               </form>
               <%} else {%>
                 <a href="/auth/callback" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.in", {ns: 'util'})%></a>

@@ -123,6 +123,14 @@ const query = document.getElementById("music");
     // return false;
   })
  })
+ 
+ $('#skip').click(function() {
+   $.post(`/api/guild/<%=guild.id%>/track/skip/0?user=<%=req.user.id%>`, {}, function(data, status) {
+            console.log(data);
+            console.log(status);
+     });
+ });
+ 
  setInterval(() => {
    $(function() {
     $.get(`/api/guild/<%=guild.id%>/queue`, function(data, status) {
@@ -131,25 +139,36 @@ const query = document.getElementById("music");
           trackEl.classList.add("hidden");
           return;
         } else {
+          
           music.img.src = data.track.thumbnail;
           music.title.textContent = data.track.title;
           music.artist.textContent = data.track.artist;
-          
+          const tracksmap = data.tracks.map((track, i) => {
+            var trackName = data.tracks[i]?data.tracks[i].title:{}
+            if(trackName&&trackName.length > 43) trackName = trackName.slice(0,43) + "..."
+            
+            return `<div id="queueTrack-${i}" class="flex gap-x-2 items-center"><img src="${track.thumbnail?track.thumbnail:""}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p class="text-lg">${i + 1}. ${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div><br>`;
+          })
+          if(data.playing === true) {
+            $("#icon").html(feather.icons["pause"].toSvg())
+          } else if(data.playing === false) {
+            $("#icon").html(feather.icons["play"].toSvg())
+          }
           data.tracks.map((track, i) => {
-          console.log(i, track)
-          const ione = i+1;
           if (!track) {
             document.getElementById("queueNone").classList.remove("hidden")
           }
-          //$('#queueMusic' + i).html(`<p></p>`)
           document.getElementById("queueNone").classList.add("hidden")
-          $('#queueMusic' + i).html(`<p>${i + 1}) ${data.tracks[i]?data.tracks[i].title: ""} - <span>${data.tracks[i]?data.tracks[i].author: ""}</span></p><br>`)
-          if (ione > 4) {
-            $('#queueMore4').html(`<p><%=req.t("logged.guild.queue.moreMusic", {ns:"dashboard", queueLength: "${i-3}"})%></p>`);
-          } else if(ione < 4) {
-            $('#queueMore4').html("<p></p>");
-          }
-          if (!data.tracks[i+1]) return $('#queueMusic' + ione).html("");
+          $("#queueMusic1").html(tracksmap)
+          console.log(i)
+          
+          $(`#queueTrack-${i}`).click(function() {
+            console.log(e)
+            $.post(`/api/guild/<%=guild.id%>/track/skip/${i}?user=<%=req.user.id%>`, {}, function(data, status) {
+            console.log(data);
+            console.log(status);
+           });
+          })
         })
           
           notrack.classList.add("hidden");

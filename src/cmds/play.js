@@ -74,7 +74,7 @@ module.exports={
                 ephemeral: true
             });
         } else {
-            queue.play(track)
+          queue.play(track);
             return await interaction.followUp({
                 embeds: [{
                     title: `Loading: ${ track.title } by ${ track.author }`,
