@@ -4,7 +4,10 @@
     "guild": {
       "search": "Search for music to play in {{server_name}}",
       "overview": {
-        "tabName": "Overview"
+        "tabName": "Overview",
+        "track": {
+          "noMusic": "Nothing playing..."
+        }
       },
       "queue": {
         "tabName": "Queue",
