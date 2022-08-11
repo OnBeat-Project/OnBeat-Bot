@@ -1,6 +1,5 @@
 const {
   app,
-  socket,
   server,
   client,
   passport
@@ -26,8 +25,4 @@ app.use(function(err, req, res, next) {
       res,
       error: err
     });
-});
-
-socket.on("connection", () => {
-  console.log("[SOCKET] Connected");
 });

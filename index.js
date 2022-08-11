@@ -45,6 +45,7 @@ player.on("trackStart", (queue, track) => queue.metadata.channel.send({
     },
   }],
 }));
+player.on("connectionError", console.log);
 player.on("trackAdd", (queue, track) => queue.metadata.channel.send({
   embeds: [{
     title: `Added to queue:`,
