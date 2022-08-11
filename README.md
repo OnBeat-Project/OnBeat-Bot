@@ -12,6 +12,4 @@ If you are contributing by fixing bugs, you can [fork](https://github.com/OnBeat
 # License
 _**You will not be allowed to clone this project and publish to another instance.**_
 
-*Read [LICENSE](https://github.com/OnBeat-Project/OnBeat-Bot/blob/main/LICENSE)*
-
 **All rights reserved © OnBeat Project**
