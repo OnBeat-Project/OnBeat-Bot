@@ -8,36 +8,55 @@ const {
   passport
 } = require('../../../app');
 
-router.get("/", (req, res) => {
-  res.send({
-    Message: "Api is ok"
-  });
+router.use("*", (req, res, next) => {
+  if (req.hostname == "api.onbeat.me") {
+    next();
+  } else {
+    next();
+  }
 });
 
-router.get("/guild/:id/queue", (req, res) => {
+router.get("/", (req, res) => {
+  if (req.hostname == "api.onbeat.me") {
+    res.send({
+      api: "OnBeat"
+    });
+  }
+});
+
+router.get("/guild/:id/queue", async function(req, res) {
   let q = client.player.getQueue(req.params.id);
-  if (!q || q === undefined || q.length === 0) return res.json(undefined);
-  res.json({
-    track: q.nowPlaying(),
-    tracks: q.tracks,
-    playing: q.playing
-  });
+   try {
+    res.json({
+      track: q?q.nowPlaying():{},
+      tracks: q?q.tracks:[],
+      paused: q?q.connection.paused:true,
+      playing: q?q.playing:false
+    });
+   } catch(e) {
+     console.error(e);
+     res.json({
+      tracks: q?q.tracks:[],
+    });
+   }
 });
 
 router.get("/guild/:id/queue/progress", (req, res) => {
   let q = client.player.getQueue(req.params.id);
-  if (!q || q === undefined || q.length === 0) return res.send(undefined);
-  var perc = q.getPlayerTimestamp();
+  var perc = q?q.getPlayerTimestamp():{};
   res.json(perc);
 });
 
 router.post("/guild/:id/queue/shuffle", async(req,res) => {
   const guild = client.guilds.cache.get(req.params.id);
   const member = guild.members.cache.get(req.query.user);
-  if(!member.voice.channel) return res.json({});
+  if(!member.voice.channel) return res.json({
+    errCode: 1,
+    err: "User aren't in voice channel"
+  });
   
   let q = client.player.getQueue(req.params.id);
-  if (!q || q === undefined || q.length === 0) return res.json(undefined);
+  if (!q || q === undefined || q.length === 0) return res.json({ errCode: 2, err: "Nothing playing" });
   
   await q.shuffle();
   
@@ -61,7 +80,7 @@ router.post("/guild/:id/track/add", async function (req, res) {
   });
   const queue = player.createQueue(req.params.id, {
     metadata: {
-      channel: ""
+      
     },
     spotifyBridge: true,
   });
@@ -97,7 +116,7 @@ router.post("/guild/:id/track/add", async function (req, res) {
   });
 });
 
-router.post("/guild/:id/track/skip/:num", async function(req,res) {
+router.post("/guild/:id/queue/skip/:num", async function(req,res) {
   let queue = client.player.getQueue(req.params.id);
   const guild = client.guilds.cache.get(req.params.id);
   const member = guild.members.cache.get(req.query.user);
@@ -110,7 +129,46 @@ router.post("/guild/:id/track/skip/:num", async function(req,res) {
     err: "Nothing playing"
   });
   
-  await queue.skipTo(Number(req.params.num));
+  const num = Number(req.params.num);
+  
+   await queue.skipTo(Number(req.params.num));
+  res.json({queue});
+});
+
+router.post("/guild/:id/track/skip", async function(req,res) {
+  let queue = client.player.getQueue(req.params.id);
+  const guild = client.guilds.cache.get(req.params.id);
+  const member = guild.members.cache.get(req.query.user);
+  if(!member.voice.channel) return res.json({
+    errCode: 1,
+    err: "User aren't in voice channel"
+  });
+  if(!queue) return res.json({
+    errCode: 2,
+    err: "Nothing playing"
+  });
+  
+ // const num = Number(req.params.num);
+  
+   await queue.skip();
+  res.json({queue});
+});
+
+router.post("/guild/:id/track/pause", async function(req,res) {
+  let queue = client.player.getQueue(req.params.id);
+  const guild = client.guilds.cache.get(req.params.id);
+  const member = guild.members.cache.get(req.query.user);
+  if(!member.voice.channel) return res.json({
+    errCode: 1,
+    err: "User aren't in voice channel"
+  });
+  if(!queue) return res.json({
+    errCode: 2,
+    err: "Nothing playing"
+  });
+  console.log(queue.connection.paused);
+  if(!queue.connection.paused) { await queue.setPaused(true) } else { await queue.setPaused(false); }
+  
   res.json({queue});
 });
 

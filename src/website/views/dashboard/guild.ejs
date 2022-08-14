@@ -4,211 +4,282 @@
 })%>
 <%-include("../include/nav.ejs")%>
 
-<%if(req.user) {%>
-<%req.user.guilds.forEach(g => {
-      if(g.id === guild.id) {
-    %>
+<%if (req.user) {
+  %>
+  <%req.user.guilds.forEach(g => {
+    if (g.id === guild.id) {
+      %>
 
-    <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3"  action="/api/guild/<%=guild.id%>/track/add" method="post">
-      <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="<%=req.t("logged.guild.search", {ns:"dashboard", server_name: guild.name})%>" autocomplete="off"></input>
-    </form>
-    <div class="hidden flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" id="pstopped">
-      <!--<img src="" id="img-error" class="w-64"/>-->
-      <p class="text-2xl">
-        <%=req.t("logged.guild.overview.track.noMusic", {
-          ns: "dashboard"
-        })%>
-      </p>
-    </div>
-    <div id="stopped" class="flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]">
-      <div role="status" class="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center justify-center">
-        <div class="flex justify-center items-center h-48 w-48 p-2 bg-gray-300 rounded-2xl sm:h-96 sm:w-96 dark:bg-gray-700">
+      <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post">
+        <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
+      </form>
+      <div id="show" x-data="{show: 'noTrack'}">
+        <div class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" x-show="show === 'noTrack'" id="stopped" x-transition>
+          <!--<img src="" id="img-error" class="w-64"/>-->
+          <p class="text-2xl">
+            <%=req.t("logged.guild.overview.track.noMusic", {
+              ns: "dashboard"
+            })%>
+          </p>
         </div>
-        <div class="w-full">
-          <div class="p-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-          <div class="p-1.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[100px]"></div>
-        </div>
-        <span class="sr-only">Loading...</span>
-      </div>
-    </div>
-    <div id="queue" class="hidden w-full overflow-hidden" x-data="{ tab: 'track' }">
-      <nav class="fixed z-[3] top-16 bg-white/70 dark:bg-gray-900/70 mb-4 border-b border-gray-200 dark:border-gray-700 w-full backdrop-blur-lg">
-        <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
-          <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'track'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='track'}"><%=req.t("logged.guild.overview.tabName", {ns:"dashboard", server_name: guild.name})%></button></li>
-          <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'queue'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='queue'}"><%=req.t("logged.guild.queue.tabName", {ns:"dashboard"})%><span class="ml-2 bg-blue-500/50 p-1 rounded-full">Beta</span></button></li>
-          <li class="hidden w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'lyrics'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='lyrics'}">Lyrics</button></li>
-        </ul>
-      </nav>
-      <!--<div class="m-16"></div>--->
-      <div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition        >
-        <!--<input class="fixed bottom-0 z-[2] bg-slate-700 text-slate-100 rounded-xl mb-3 dark:text-slate-900 dark:bg-slate-300" placeholder="Look for music in this queue" type="text" id="myInput" onkeyup="myFunction()"/>--->
-        <p id="queueNone">
-          <%=req.t("logged.guild.queue.noMusic", {ns:"dashboard", server_name: guild.name})%>
-        </p>
-        <ul class="" id="queueMusic0"></ul>
-        <div class="" id="queueMusic1"></div>
-        <div class="" id="queueMusic2"></div>
-        <div class="" id="queueMusic3"></div>
-        <div class="" id="queueMore4"></div>
-      </div>
-      <div id="track" class="flex flex-col items-center justify-center h-[80vh] w-full transition-all" x-show="tab === 'track'"
-        x-transition
-        >
-        
-        <img class="rounded-2xl flex justify-center items-center text-center w-48 p-2" src="/images/favicon.ico" id="track-image"></img>
-        <p class="" id="track-name">
-          Null
-        </p>
-        <p class="text-gray-600 dark:text-gray-400" id="track-artist">
-          Null
-        </p>
-        <p class="hidden">
-          Requested by <span id="track-userRequest">Null</span>
-        </p>
-        <div class="player">
-          <div class="text-slate-900 dark:text-slate-100">
-            <!--<p id="time">
-                                                                      0:00
-                                                                    </p>--->
-          </div>
-          <div id="player-buttons" class="mt-3 flex dark:text-white text-center">
-            <button onclick="pause(this, '<%=guild.id%>', '<%=req.user.id%>')" id="play">
-              <i id="icon" data-feather="pause"></i>
-            </button>
-            <button onclick="skip(this, '<%=guild.id%>', '<%=req.user.id%>')" id="skip">
-              <i data-feather="skip-forward"></i>
-            </button>
+        <div id="loading" class="hidden flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]">
+          <div role="status" class="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center justify-center">
+            <div class="flex justify-center items-center h-48 w-48 p-2 bg-gray-300 rounded-2xl sm:h-96 sm:w-96 dark:bg-gray-700">
+            </div>
+            <div class="w-full">
+              <div class="p-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <div class="p-1.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[100px]"></div>
+            </div>
+            <span class="sr-only">Loading...</span>
           </div>
         </div>
-      </div>
-      <div class="fixed w-full top-0 bg-zinc-700 rounded-full h-4 dark:bg-zinc-200">
-        <div class="bg-rose-700 dark:bg-fuchsia-400 h-4 rounded-full" id="time-progress" style="width: 0%"></div>
-      </div>
-      <div id="lyrics" class="flex flex-col mt-12 justify-center w-full text-center transition-all" x-show="tab === 'lyrics'"
-        x-transition
-        >
-        <p class="text-center" id="lyrics-text">
+        <div id="queue" class="w-full overflow-hidden" x-show="show==='withTrack'" x-data="{ tab: 'track' }" x-transition>
+          <nav class="fixed z-[3] top-16 bg-white/70 dark:bg-gray-900/70 mb-4 border-b border-gray-200 dark:border-gray-700 w-full backdrop-blur-lg">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+              <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'track'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='track'}" x-transition><%=req.t("logged.guild.overview.tabName", {
+                ns: "dashboard", server_name: guild.name
+              })%></button></li>
+              <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'queue'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='queue'}" x-transition><%=req.t("logged.guild.queue.tabName", {
+                ns: "dashboard"
+              })%><span class="ml-2 bg-blue-500/50 p-1 rounded-full">Beta</span></button></li>
+              <li class="hidden w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'lyrics'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='lyrics'}">Lyrics</button></li>
+            </ul>
+          </nav>
+          <!--<div class="m-16"></div>--->
+          <div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition>
+            <p id="queueNone">
+              <%=req.t("logged.guild.queue.noMusic", {
+                ns: "dashboard", server_name: guild.name
+              })%>
+            </p>
+            <ul class="" id="queueMusic0"></ul>
+            <div class="" id="queueMusic1"></div>
+            <div class="" id="queueMusic2"></div>
+            <div class="" id="queueMusic3"></div>
+            <div class="" id="queueMore4"></div>
+          </div>
+          <div id="track" class="flex flex-col items-center justify-center h-[80vh] w-full transition-all" x-show="tab === 'track'"
+            x-transition
+            >
 
-        </p>
+            <img class="rounded-2xl flex justify-center items-center text-center w-48 p-2" src="https://api.onbeat.me/images/favicon.ico" id="track-image"></img>
+            <p class="" id="track-name">
+              Null
+            </p>
+            <p class="text-gray-600 dark:text-gray-400" id="track-artist">
+              Null
+            </p>
+            <p class="" id="errorMessage">
 
-        <p class="fixed z-[0] text-gray-500 dark:text-gray-400 text-sm bottom-0 right-0 drop-shadow mr-2">
-          Lyrics provided by Genius API
-        </p>
+            </p>
+            <div class="player">
+              <div class="text-slate-900 dark:text-slate-100">
+                <!--<p id="time">
+                                                                                      0:00
+                                                                                    </p>--->
+              </div>
+              <div id="player-buttons" class="mt-3 flex dark:text-white text-center">
+                <button id="play">
+                  <i id="icon" data-feather="pause"></i>
+                </button>
+                <button id="skip">
+                  <i data-feather="skip-forward"></i>
+                </button>
+                <button id="shuffle">
+                  <i data-feather="shuffle"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="fixed w-full top-0 bg-zinc-700 rounded-full h-4 dark:bg-zinc-200">
+            <div class="bg-rose-700 dark:bg-fuchsia-400 h-4 rounded-full" id="time-progress" style="width: 0%"></div>
+          </div>
+          <div id="lyrics" class="flex flex-col mt-12 justify-center w-full text-center transition-all" x-show="tab === 'lyrics'"
+            x-transition
+            >
+            <p class="text-center" id="lyrics-text">
+
+            </p>
+
+            <p class="fixed z-[0] text-gray-500 dark:text-gray-400 text-sm bottom-0 right-0 drop-shadow mr-2">
+              Lyrics provided by Genius API
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div id="toast-music" class="fixed z-[4] flex justify-center items-center top-0 m-2 bg-gray-100 text-black dark:bg-gray-700 dark:text-white text-center opacity-0 -translate-x-full transition-all duration-500 p-2">
-      <p id="toast-music-text">
-        {user} requested {music}
-      </p>
-    </div>
+      <div id="toast-data" x-data="{toast:false}">
+        <div id="toast-music" class="fixed z-[4] flex justify-center items-center top-0 m-2 bg-gray-100 text-black dark:bg-gray-700 dark:text-white text-center opacity-0 transition-all duration-500 p-2" x-show="toast">
+          <p id="toast-music-text">
 
-    <script>
-     const music = {
-        img: document.getElementById("track-image"),
-        title: document.getElementById("track-name"),
-        artist: document.getElementById("track-artist"),
-        time: document.getElementById("time"),
-        progress: document.getElementById("time-progress"),
-        user: document.getElementById("track-userRequest")
-      }
-const request = document.getElementById("requestMusic");
-const query = document.getElementById("music");
- const notrack = document.getElementById("stopped");
-      const trackEl = document.getElementById("queue");
- $(function() {
-  $("#requestMusic").submit((e) => {
-    e.preventDefault()
-    $.post(`/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
-      console.log(data);
-      console.log(status);
-    });
-    query.value=""
-    // return false;
-  })
- })
- 
- $('#skip').click(function() {
-   $.post(`/api/guild/<%=guild.id%>/track/skip/0?user=<%=req.user.id%>`, {}, function(data, status) {
-            console.log(data);
-            console.log(status);
-     });
- });
- 
- setInterval(() => {
-   $(function() {
-    $.get(`/api/guild/<%=guild.id%>/queue`, function(data, status) {
-        if (!data.track) {
-          notrack.classList.remove("hidden");
-          trackEl.classList.add("hidden");
-          return;
-        } else {
-          
-          music.img.src = data.track.thumbnail;
-          music.title.textContent = data.track.title;
-          music.artist.textContent = data.track.artist;
-          const tracksmap = data.tracks.map((track, i) => {
-            var trackName = data.tracks[i]?data.tracks[i].title:{}
-            if(trackName&&trackName.length > 43) trackName = trackName.slice(0,43) + "..."
-            
-            return `<li id="li"><div id="queueTrack-${i}" class="flex gap-x-2 items-center"><span class="ml-2 bg-blue-500/50 p-1 pl-3 pr-3 rounded-full">${i+1}</span><img src="${track.thumbnail?track.thumbnail:""}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
-          })
-          $("#queueMusic0").html(tracksmap)
-          if(data.playing === true) {
-            $("#icon").html(feather.icons["pause"].toSvg())
-          } else if(data.playing === false) {
-            $("#icon").html(feather.icons["play"].toSvg())
-          }
-          data.tracks.map((track, i) => {
-          if (!track) {
-            document.getElementById("queueNone").classList.remove("hidden")
-          }
-          document.getElementById("queueNone").classList.add("hidden")
-          console.log(i)
-          
-          $(`#queueTrack-${i}`).click(function() {
-            console.log(e)
-            $.post(`/api/guild/<%=guild.id%>/track/skip/${i}?user=<%=req.user.id%>`, {}, function(data, status) {
-            console.log(data);
-            console.log(status);
-           });
+          </p>
+        </div>
+      </div>
+      <script>
+        const url = "https://onbeat.me"
+        const music = {
+          img: document.getElementById("track-image"),
+          title: document.getElementById("track-name"),
+          artist: document.getElementById("track-artist"),
+          time: document.getElementById("time"),
+          progress: document.getElementById("time-progress"),
+          user: document.getElementById("track-userRequest"),
+        }
+        const request = document.getElementById("requestMusic");
+        const query = document.getElementById("music");
+        const notrack = document.getElementById("stopped");
+        const trackEl = document.getElementById("queue");
+        $(function() {
+          $("#requestMusic").submit((e) => {
+            e.preventDefault()
+            $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
+              document.getElementById("show")._x_dataStack[0].show = ""
+
+              if (data.errCode === 1) {
+                $("#errorMessage").html("Join in a voice channel.")
+                setTimeout(() => {
+                  $("#errorMessage").html("")
+                }, 3000);
+              }
+              console.log(data);
+              console.log(status);
+            });
+            query.value = ""
+            // return false;
           })
         })
-          
-          notrack.classList.add("hidden");
-          trackEl.classList.remove("hidden");
-        }
-        // music.time.textContent = `${info.perc.current}`
-      })
-       $.get(`/api/guild/<%=guild.id%>/queue/progress`, function(data, status) {
-         if (data.progress > 100) {
-          music.progress.style.width = `100%`;
-        } else {
-          music.progress.style.width = `${data.progress}%`
-        }
-       })
-     })
-  $("#myInput").on("keyup", function() {
-    setInterval(() => {
-    var value = $(this).val().toLowerCase();
-    $("#queueMusic0 #li").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    })
-    });
-  });
-  }, 1000);
-  
-  
-    </script>
-    <%
-  } else return;
-    })%>
-    <%} else {%>
-     <div class="flex flex-col w-full h-[95vh] justify-center items-center">
-              <p>
-                Please login with one of these platforms to continue:
-              </p>
-              <br>
-              <a href="/auth/callback" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
-            </div>
-  <%}%>
-  <%-include('../include/footer.ejs')%>
+
+        $('#skip').click(function() {
+          $.post(`${url}/api/guild/<%=guild.id%>/track/skip?user=<%=req.user.id%>`, {}, function(data,
+            status) {
+            if (data.errCode === 1) {
+              $("#errorMessage").html("Join in a voice channel.")
+              setTimeout(() => {
+                $("#errorMessage").html("")
+              }, 3000);
+              return;
+            }
+            document.getElementById("queue")._x_dataStack[0].tab = ""
+            setTimeout(() => {
+              document.getElementById("queue")._x_dataStack[0].tab = "track"
+            },
+              2000)
+            
+            console.log(data);
+            console.log(status);
+          });
+        });
+        $('#play').click(function() {
+          $.post(`${url}/api/guild/<%=guild.id%>/track/pause?user=<%=req.user.id%>`,
+            {},
+            function(data, status) {
+              if (data.errCode === 1) {
+                $("#errorMessage").html("Join in a voice channel.")
+                setTimeout(() => {
+                  $("#errorMessage").html("")
+                }, 3000);
+                return;
+              }
+              console.log(data);
+              console.log(status);
+            });
+        });
+        $('#shuffle').click(function() {
+          $.post(`${url}/api/guild/<%=guild.id%>/queue/shuffle?user=<%=req.user.id%>`,
+            {},
+            function(data, status) {
+              if (data.errCode === 1) {
+              $("#errorMessage").html("Join in a voice channel.")
+              setTimeout(() => {
+                $("#errorMessage").html("")
+              }, 3000);
+              return;
+            }
+              document.getElementById("queue")._x_dataStack[0].tab = ""
+              setTimeout(() => {
+                document.getElementById("queue")._x_dataStack[0].tab = "queue"
+              }, 2000)
+              console.log(data);
+              console.log(status);
+            });
+        });
+
+        setInterval(() => {
+          $(function() {
+            $.get(`${url}/api/guild/<%=guild.id%>/queue`, function(data, status) {
+              if (!data.playing) {
+                document.getElementById("show")._x_dataStack[0].show = "noTrack"
+                return;
+              } else {
+                document.getElementById("show")._x_dataStack[0].show = "withTrack"
+                music.img.src = data.track.thumbnail;
+                music.title.textContent = data.track.title;
+                music.artist.textContent = data.track.author;
+
+
+                const tracksmap = data.tracks.map((track, i) => {
+                  var trackName = data.tracks[i]?data.tracks[i].title: {}
+                  if (trackName && trackName.length > 43) trackName = trackName.slice(0, 43) + "..."
+
+                  return `<li id="li" class="cursor-pointer" x-transition><div id="queueTrack-${i}" class="flex gap-x-2 items-center"><span class="ml-2 bg-blue-500/50 p-1 pl-3 pr-3 rounded-full">${i+1}</span><img src="${track.thumbnail?track.thumbnail: ""}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
+                })
+                $("#queueMusic0").html(tracksmap)
+                if (!data.paused) {
+                  $("#icon").html(feather.icons["pause"].toSvg())
+                } else {
+                  $("#icon").html(feather.icons["play"].toSvg())
+                }
+                data.tracks.map((track, i) => {
+                  if (!track) {
+                    document.getElementById("queueNone").classList.remove("hidden")
+                  } else {
+                    document.getElementById("queueNone").classList.add("hidden")
+                  }
+                  console.log(i)
+
+                  $(`#queueTrack-${i}`).click(function() {
+                    location.href = "#";
+                    document.getElementById("queue")._x_dataStack[0].tab = "track"
+                    console.log(e)
+                    $.post(`${url}/api/guild/<%=guild.id%>/queue/skip/${i}?user=<%=req.user.id%>`, {}, function(data, status) {
+                      console.log(data);
+                      console.log(status);
+                    });
+                  })
+                })
+              }
+              // music.time.textContent = `${info.perc.current}`
+            })
+            $.get(`${url}/api/guild/<%=guild.id%>/queue/progress`, function(data,
+              status) {
+              if (data.progress > 100) {
+                music.progress.style.width = `100%`;
+              } else {
+                music.progress.style.width = `${data.progress}%`
+              }
+            })
+          })
+          $("#myInput").on("keyup", function() {
+            setInterval(() => {
+              var value = $(this).val().toLowerCase();
+              $("#queueMusic0 #li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+              })
+            });
+          });
+        }, 1000);
+
+
+      </script>
+      <%
+    } else return;
+  })%>
+  <%} else {%>
+    <div class="flex flex-col w-full h-[95vh] justify-center items-center">
+      <p>
+        Please login with one of these platforms to continue:
+      </p>
+      <br>
+      <a href="/auth/callback" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
+    </div>
+    <%}%>
+      <%-include('../include/footer.ejs')%>

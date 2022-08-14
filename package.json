@@ -41,6 +41,7 @@
     "passport-discord": "^0.1.4",
     "require-in-the-middle": "^5.1.0",
     "socket.io": "^4.5.1",
-    "string-toolkit": "^1.6.7"
+    "string-toolkit": "^1.6.7",
+    "ytdl-core": "^4.11.0"
   }
 }

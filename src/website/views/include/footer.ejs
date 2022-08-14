@@ -90,9 +90,17 @@
     }
   }
 </style>
-   </div>
    <script>
-    /* socket.on("connect", () => {
+   /*document.addEventListener('alpine:init', () => {
+        Alpine.data('loaded', () => ({
+            loaded: false,
+ 
+            init() {
+                 setTimeout(() => {this.loaded = true},1000)
+            }
+        }))
+    })
+     socket.on("connect", () => {
        document.getElementById("loading-screen").classList.add("hidden");
        document.getElementById("default-content").classList.remove("hidden");
      });

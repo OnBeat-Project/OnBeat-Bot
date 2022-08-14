@@ -20,7 +20,7 @@ const client=new Client({intents, partials: ['MESSAGE', 'REACTION'], allowedMent
 
 const player=new Player(client);
 
-player.on("trackStart", (queue, track) => queue.metadata.channel.send({
+player.on("trackStart", (queue, track) => queue.metadata.channel?queue.metadata.channel.send({
   embeds: [{
     title: `Now playing:`,
     fields: [{
@@ -44,9 +44,10 @@ player.on("trackStart", (queue, track) => queue.metadata.channel.send({
       text: `Duration: ${ track.duration } | Views: ${ track.views }`,
     },
   }],
-}));
-player.on("connectionError", console.log);
-player.on("trackAdd", (queue, track) => queue.metadata.channel.send({
+}):"");
+player.on("error", console.error);
+player.on("connectionError", console.error);
+player.on("trackAdd", (queue, track) => queue.metadata.channel?queue.metadata.channel.send({
   embeds: [{
     title: `Added to queue:`,
     fields: [{
@@ -70,7 +71,7 @@ player.on("trackAdd", (queue, track) => queue.metadata.channel.send({
       text: `Duration: ${ track.duration } | Views: ${ track.views }`,
     },
   }],
-}));
+}):"");
 client.slash=new Collection();
 client.player = player;
 

@@ -1,12 +1,12 @@
-<nav class="sticky top-0 left-0 right-0 z-[3] bg-white/70 border-gray-200 p-4 sm:px-4 py-2.5 rounded dark:bg-gray-900/70 backdrop-blur-lg drop-shadow-sm"
+<nav class="fixed top-0 left-0 right-0 z-[3] bg-white/70 border-gray-200 p-4 sm:px-4 py-2.5 rounded dark:bg-gray-900/70 backdrop-blur-lg drop-shadow-sm"
         x-data="{
          dropdown: false
         }"
   >
   <div class="container flex flex-wrap justify-between items-center mx-auto">
     <a href="/" class="flex ml-5 items-center">
-      <img src="/images/original_favicon.svg" class="hidden dark:block mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
-      <img src="/images/original_favicon-black.svg" class="block dark:hidden mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
+      <img src="https://api.onbeat.me/images/original_favicon.svg" class="hidden dark:block mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
+      <img src="https://api.onbeat.me/images/original_favicon-black.svg" class="block dark:hidden mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
       <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><%=req.t("navbar.siteName", {ns: 'util'})%></span>
     </a>
    <button class="m-2 mr-2 right-0 drop-shadow-md"       @click="dropdown = ! dropdown"
@@ -36,7 +36,7 @@
             <%if (req.user) {
               %>
               <form method="post" action="/auth/logout">
-                <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.out", {ns: 'util'})%></button>
+                <button type="submit" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"><%=req.t("navbar.dropdown.log.out", {ns: 'util'})%></button>
               </form>
               <%} else {%>
                 <a href="/auth/callback" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.in", {ns: 'util'})%></a>
@@ -48,3 +48,6 @@
               </ul>
             </div>
           </nav>
+          <br>
+          <br>
+          <br>
