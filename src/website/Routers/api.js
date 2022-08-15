@@ -86,6 +86,7 @@ router.post("/guild/:id/queue/clear", async(req,res) => {
 router.post("/guild/:id/track/add", async function (req, res) {
   const player = client.player;
   const body = req.query;
+  //const body = req.user
   if (!body) return;
 
   const guild = client.guilds.cache.get(req.params.id);

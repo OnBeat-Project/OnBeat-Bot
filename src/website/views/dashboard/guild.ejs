@@ -13,7 +13,7 @@
       <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post">
         <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
       </form>
-      <div id="show" x-data="{show: 'noTrack'}">
+      <div id="show" x-data="{show: 'loading'}">
         <div class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" x-show="show === 'noTrack'" id="stopped" x-transition.duration.500ms>
           <!--<img src="" id="img-error" class="w-64"/>-->
           <p class="text-2xl">
@@ -22,14 +22,12 @@
             })%>
           </p>
         </div>
-        <div id="loading" class="flex flex-col justify-center items-center text-center w-full overflow-hidden h-[80vh]" x-show="show==='loading'" x-transition.duration.500ms>
-          <div role="status" class="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 md:flex md:items-center justify-center">
-            <div class="flex justify-center items-center h-48 w-48 p-2 bg-gray-300 rounded-2xl sm:h-96 sm:w-96 dark:bg-gray-700">
-            </div>
-            <div class="w-full">
-              <div class="p-2 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-              <div class="p-1.5 bg-gray-200 rounded-full dark:bg-gray-700 max-w-[100px]"></div>
-            </div>
+        <div id="loading" class="flex justify-center items-center text-center w-full overflow-hidden h-[80vh]" x-show="show==='loading'" x-transition.duration.500ms>
+          <div role="status">
+            <svg aria-hidden="true" class="mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+              <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+            </svg>
             <span class="sr-only">Loading...</span>
           </div>
         </div>
@@ -47,13 +45,13 @@
           </nav>
           <!--<div class="m-16"></div>--->
           <div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition:enter.delay.500ms.duration.500ms
-          x-transition:leave>
+            x-transition:leave>
             <div id="queueNone" class="flex justify-center items-center text-center w-full h-[80vh]">
-             <p>
-              <%=req.t("logged.guild.queue.noMusic", {
-                ns: "dashboard", server_name: guild.name
-              })%>
-             </p>
+              <p>
+                <%=req.t("logged.guild.queue.noMusic", {
+                  ns: "dashboard", server_name: guild.name
+                })%>
+              </p>
             </div>
             <ul class="" id="queueMusic0"></ul>
           </div>
@@ -75,8 +73,8 @@
             <div class="player">
               <div class="text-slate-900 dark:text-slate-100">
                 <!--<p id="time">
-                                                                                                      0:00
-                                                                                                    </p>--->
+                                                                                                                                      0:00
+                                                                                                                                    </p>--->
               </div>
               <div id="player-buttons" class="flex gap-x-2 mt-3 flex dark:text-white text-center">
                 <button id="clear">
@@ -100,7 +98,7 @@
           <div id="suggestion" class="flex flex-col mt-12 justify-center w-full text-center transition-all" x-show="tab === 'suggestion'"
             x-transition
             >
-            
+
           </div>
         </div>
       </div>
@@ -129,14 +127,14 @@
           $("#requestMusic").submit((e) => {
             e.preventDefault()
             $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
-             // document.getElementById("show")._x_dataStack[0].show = "loading"
+              // document.getElementById("show")._x_dataStack[0].show = "loading"
 
               if (data.errCode === 1) {
                 $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
                 document.getElementById("toast-data")._x_dataStack[0].toast = true;
                 setTimeout(() => {
                   document.getElementById("toast-data")._x_dataStack[0].toast = false;
-                },3000);
+                }, 3000);
               }
               console.log(data);
               console.log(status);
@@ -151,10 +149,10 @@
             status) {
             if (data.errCode === 1) {
               $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
-                document.getElementById("toast-data")._x_dataStack[0].toast = true;
-                setTimeout(() => {
-                  document.getElementById("toast-data")._x_dataStack[0].toast = false;
-                },3000);
+              document.getElementById("toast-data")._x_dataStack[0].toast = true;
+              setTimeout(() => {
+                document.getElementById("toast-data")._x_dataStack[0].toast = false;
+              }, 3000);
             }
             document.getElementById("queue")._x_dataStack[0].tab = ""
             setTimeout(() => {
@@ -167,24 +165,26 @@
           });
         });
         $('#clear').click(function() {
-          $.post(`${url}/api/guild/<%=guild.id%>/queue/clear?user=<%=req.user.id%>`, {}, function(data,
-            status) {
-            if (data.errCode === 1) {
-              $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          $.post(`${url}/api/guild/<%=guild.id%>/queue/clear?user=<%=req.user.id%>`,
+            {},
+            function(data,
+              status) {
+              if (data.errCode === 1) {
+                $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
                 document.getElementById("toast-data")._x_dataStack[0].toast = true;
                 setTimeout(() => {
                   document.getElementById("toast-data")._x_dataStack[0].toast = false;
-                },3000);
-            }
-            document.getElementById("queue")._x_dataStack[0].tab = ""
-            setTimeout(() => {
-              document.getElementById("queue")._x_dataStack[0].tab = "track"
-            },
-              2000)
+                }, 3000);
+              }
+              document.getElementById("queue")._x_dataStack[0].tab = ""
+              setTimeout(() => {
+                document.getElementById("queue")._x_dataStack[0].tab = "track"
+              },
+                2000)
 
-            console.log(data);
-            console.log(status);
-          });
+              console.log(data);
+              console.log(status);
+            });
         });
         $('#play').click(function() {
           $.post(`${url}/api/guild/<%=guild.id%>/track/pause?user=<%=req.user.id%>`,
@@ -195,7 +195,7 @@
                 document.getElementById("toast-data")._x_dataStack[0].toast = true;
                 setTimeout(() => {
                   document.getElementById("toast-data")._x_dataStack[0].toast = false;
-                },3000);
+                }, 3000);
               }
               console.log(data);
               console.log(status);
@@ -210,7 +210,7 @@
                 document.getElementById("toast-data")._x_dataStack[0].toast = true;
                 setTimeout(() => {
                   document.getElementById("toast-data")._x_dataStack[0].toast = false;
-                },3000);
+                }, 3000);
               }
               document.getElementById("queue")._x_dataStack[0].tab = ""
               setTimeout(() => {
@@ -225,8 +225,8 @@
           $(function() {
             $.get(`${url}/api/guild/<%=guild.id%>/queue`, function(data, status) {
               if (!data.playing) {
-                if(data.tracks[0]) {
-                  document.getElementById("show")._x_dataStack[0].show="loading"
+                if (data.tracks[0]) {
+                  document.getElementById("show")._x_dataStack[0].show = "loading"
                 } else {
                   document.getElementById("show")._x_dataStack[0].show = "noTrack"
                 }
