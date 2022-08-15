@@ -5,9 +5,14 @@ const {
   passport
 } = require('../../app');
 
-app.use("/", require('./Routers'));
-app.use("/dashboard", require('./Routers/dashboard'));
+app.use("/", checkUrl, require('./Routers'));
+app.use("/dashboard", checkUrl, require('./Routers/dashboard'));
 app.use("/api", require('./Routers/api'));
+
+function checkUrl(req,res,next) {
+  req.session.backURL = req.originalUrl;
+  next();
+}
 
 app.use(function(req, res, next) {
   res.status(404).render("404.ejs",

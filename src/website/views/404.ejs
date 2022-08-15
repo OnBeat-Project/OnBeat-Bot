@@ -4,7 +4,13 @@
 })%>
 <%-include("./include/nav.ejs")%>
 <div class="flex flex-col items-center justify-center w-full h-screen lg:h-screen transition-all text-center" id="404">
-  <p class="text-2xl">404</p>
-  <p><%=req.t("text.1", {ns: "404"})%></p>
+  <p class="text-2xl">
+    404
+  </p>
+  <p>
+    <%=req.t("text.1", {
+      ns: "404"
+    })%>
+  </p>
 </div>
 <%-include('./include/footer.ejs')%>

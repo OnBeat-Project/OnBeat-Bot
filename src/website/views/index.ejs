@@ -1,19 +1,29 @@
 <%-include("./include/head.ejs", {
-	  title: "OnBeat | Home",
+  title: "OnBeat | Home",
   description: "OnBeat is a simple music bot for Discord. With an advanced, yet simple to use dashboard, OnBeat is extremely easy to modify and control."
 })%>
 <%-include("./include/nav.ejs")%>
-<div class="bg-slate-300 dark:bg-slate-900 flex flex-col items-center justify-center w-full h-[70vh] lg:h-[50vh] transition-all" id="home-center" style="">
+<div class="bg-slate-300 dark:bg-slate-900 flex flex-col items-center text-center justify-center w-full h-[70vh] lg:h-[50vh] transition-all" id="home-center" style="">
   <p class="text-xl">
-    <%=req.t("text.section1.1", {ns: "common", user: req.user?req.user.username:""})%>
+    <%=req.t("text.section1.1", {
+      ns: "common", user: req.user?req.user.username: ""
+    })%>
   </p>
   <p class="text-gray-800 dark:text-gray-300">
-    <%=req.t("text.section1.2", {ns: "common"})%>
+    <%=req.t("text.section1.2", {
+      ns: "common"
+    })%>
   </p>
   <div class="mt-3 flex flex-col gap-y-3">
-    <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.1", {ns: "common"})%></button>
-      <button onclick="location.href='#features';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {ns: "common"})%></button>
-    <!--<button onclick="location.href='/dashboard';" class="p-2 text-white bg-slate-700 dark:bg-slate-500 hover:bg-gray-700/80 hover:dark:bg-gray-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {ns: "common"})%></button>-->
+    <button onclick="location.href='https://top.gg/bot/930117271802773514/invite';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.1", {
+      ns: "common"
+    })%></button>
+    <button onclick="location.href='#features';" class="p-2 text-white bg-gray-700 dark:bg-gray-500 hover:bg-slate-700/80 hover:dark:bg-slate-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {
+      ns: "common"
+    })%></button>
+    <!--<button onclick="location.href='/dashboard';" class="p-2 text-white bg-slate-700 dark:bg-slate-500 hover:bg-gray-700/80 hover:dark:bg-gray-500/80 rounded-lg transition-all"><%=req.t("btn.section1.2", {
+      ns: "common"
+    })%></button>-->
   </div>
 </div>
 <div class="bg-gray-300 dark:bg-gray-700 transition-all" id="features">
@@ -21,61 +31,104 @@
     color: "fill-slate-300 dark:fill-slate-900 drop-shadow-2xl transition-all"
   })%>
   <div class="p-2">
-  <div class="w-full">
-    <p class="text-2xl text-center"><%=req.t("text.section2.sectionTitle", {ns: "common"})%></p>
-  </div>
-  <br>
-  <div class="flex flex-col md:flex-row gap-y-1 text-center md:text-left justify-center items-center">
-  <img src="https://api.onbeat.me/images/preview_1.png" class=" fade-left md:w-96"/>
-   <div class="md:flex-col">
-    <p class="text-xl font-bold  fade-top"><%=req.t("text.section2.1", {ns: "common"})%></p>
-    <p class="text-base  fade-top delay"><%=req.t("text.section2.1_1", {ns: "common"})%></p>
-   </div>
+    <div class="w-full">
+      <p class="text-2xl text-center">
+        <%=req.t("text.section2.sectionTitle", {
+          ns: "common"
+        })%>
+      </p>
+    </div>
+    <br>
+    <div class="flex flex-col md:flex-row gap-y-1 text-center md:text-left justify-center items-center">
+      <img src="https://api.onbeat.me/images/preview_1.png" class=" fade-left md:w-96" />
+    <div class="md:flex-col">
+      <p class="text-xl font-bold  fade-top">
+        <%=req.t("text.section2.1", {
+          ns: "common"
+        })%>
+      </p>
+      <p class="text-base  fade-top delay">
+        <%=req.t("text.section2.1_1", {
+          ns: "common"
+        })%>
+      </p>
+    </div>
   </div>
   <br>
   <br>
   <div class="flex flex-col md:flex-row-reverse gap-y-1 text-center md:text-right justify-center items-center">
-  <img src="https://api.onbeat.me/images/preview_2.png" class="fade-left drop-shadow-2xl md:w-96"/>
+    <img src="https://api.onbeat.me/images/preview_2.png" class="fade-left drop-shadow-2xl md:w-96" />
   <div class="flex-col">
-    <p class="text-xl font-bold  fade-top"><%=req.t("text.section2.2", {ns: "common"})%></p>
-    <p class="text-base  fade-top"><%=req.t("text.section2.2_1", {ns: "common"})%></p>
-   </div>
+    <p class="text-xl font-bold  fade-top">
+      <%=req.t("text.section2.2", {
+        ns: "common"
+      })%>
+    </p>
+    <p class="text-base  fade-top">
+      <%=req.t("text.section2.2_1", {
+        ns: "common"
+      })%>
+    </p>
   </div>
-  <br>
-  <div class="flex flex-col md:flex-row gap-y-1 text-center md:text-left justify-center items-center">
-  <img src="https://api.onbeat.me/images/preview_3.png" class=" fade-bottom md:w-96"/>
-  <div class="flex-col">
-    <p class="text-xl font-bold  fade-top"><%=req.t("text.section2.3", {ns: "common"})%></p>
-    <p class="text-base  fade-top"><%=req.t("text.section2.3_1", {ns: "common"})%></p>
-   </div>
-  </div>
-  <br>
-  <br>
-  </div>
-  <%-include("./include/Waves/2.ejs", {
-    color: "fill-slate-100 dark:fill-slate-900 drop-shadow-2xl transition-all"
-  })%>
-  </div>
-  <div class="bg-slate-100 text-black dark:bg-slate-900 dark:text-white">
-    <center><p class=" text-xl">
-      <%=req.t("text.section3.sectionTitle", {ns: "common"})%>
-    </p></center>
-    <br>
-    <br>
-  <div class=" p-2 flex flex-col gap-y-1 text-center justify-center items-center">
-  <img src="https://api.onbeat.me/images/check_1.png" class="drop-shadow-lg md:w-96"/>
-  <p class="text-xl font-bold"><%=req.t("text.section3.1", {ns: "common"})%></p>
-  <p class="text-base"><%=req.t("text.section3.2", {ns: "common"})%></p>
-  </div>
-  <br>
-  <div class="bg-zinc-100 text-black dark:bg-zinc-900 dark:text-white flex flex-col justify-center items-center text-center w-full">
-  <%-include("./include/Waves/1.ejs", {
-    color: "fill-slate-100 dark:fill-slate-900 drop-shadow-2xl transition-all"
-  })%>
-    <p class="text-2xl mb-3"><%=req.t("text.section4.sectionTitle", {ns: "common"})%></p>
-    <a href="https://github.com/OnBeat-Project/OnBeat-Bot" class="text-center flex items-center justify-center gap-x-2 bg-slate-900 text-white dark:bg-slate-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i data-feather="github"></i>Github</a>
-    <a href="https://discord.gg/VybAzGs4wB" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
-    <br>
-  </div>
-  </div>
+</div>
+<br>
+<div class="flex flex-col md:flex-row gap-y-1 text-center md:text-left justify-center items-center">
+  <img src="https://api.onbeat.me/images/preview_3.png" class=" fade-bottom md:w-96" />
+<div class="flex-col">
+  <p class="text-xl font-bold  fade-top">
+    <%=req.t("text.section2.3", {
+      ns: "common"
+    })%>
+  </p>
+  <p class="text-base  fade-top">
+    <%=req.t("text.section2.3_1", {
+      ns: "common"
+    })%>
+  </p>
+</div>
+</div>
+<br>
+<br>
+</div>
+<%-include("./include/Waves/2.ejs", {
+color: "fill-slate-100 dark:fill-slate-900 drop-shadow-2xl transition-all"
+})%>
+</div>
+<div class="bg-slate-100 text-black dark:bg-slate-900 dark:text-white">
+<center><p class=" text-xl">
+<%=req.t("text.section3.sectionTitle", {
+ns: "common"
+})%>
+</p>
+</center>
+<br>
+<br>
+<div class=" p-2 flex flex-col gap-y-1 text-center justify-center items-center">
+<img src="https://api.onbeat.me/images/check_1.png" class="drop-shadow-lg md:w-96" />
+<p class="text-xl font-bold">
+<%=req.t("text.section3.1", {
+ns: "common"
+})%>
+</p>
+<p class="text-base">
+<%=req.t("text.section3.2", {
+ns: "common"
+})%>
+</p>
+</div>
+<br>
+<div class="bg-zinc-100 text-black dark:bg-zinc-900 dark:text-white flex flex-col justify-center items-center text-center w-full">
+<%-include("./include/Waves/1.ejs", {
+color: "fill-slate-100 dark:fill-slate-900 drop-shadow-2xl transition-all"
+})%>
+<p class="text-2xl mb-3">
+<%=req.t("text.section4.sectionTitle", {
+ns: "common"
+})%>
+</p>
+<a href="https://github.com/OnBeat-Project/OnBeat-Bot" class="text-center flex items-center justify-center gap-x-2 bg-slate-900 text-white dark:bg-slate-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i data-feather="github"></i>Github</a>
+<a href="https://discord.gg/VybAzGs4wB" class="text-center flex items-center justify-center gap-x-2  bg-blue-900 text-white dark:bg-blue-100 dark:text-black p-2 rounded-xl mb-3 w-32"><i class="fa-brands fa-discord"></i>Discord</a>
+<br>
+</div>
+</div>
 <%-include('./include/footer.ejs')%>

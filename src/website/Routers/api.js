@@ -28,7 +28,7 @@ router.get("/guild/:id/queue", async function(req, res) {
   let q = client.player.getQueue(req.params.id);
    try {
     res.json({
-      track: q?q.nowPlaying():{},
+      track: q?q.nowPlaying():false,
       tracks: q?q.tracks:[],
       paused: q?q.connection.paused:true,
       playing: q?q.playing:false
@@ -59,6 +59,24 @@ router.post("/guild/:id/queue/shuffle", async(req,res) => {
   if (!q || q === undefined || q.length === 0) return res.json({ errCode: 2, err: "Nothing playing" });
   
   await q.shuffle();
+  
+  res.json({
+    code: "Success"
+  });
+});
+
+router.post("/guild/:id/queue/clear", async(req,res) => {
+  const guild = client.guilds.cache.get(req.params.id);
+  const member = guild.members.cache.get(req.query.user);
+  if(!member.voice.channel) return res.json({
+    errCode: 1,
+    err: "User aren't in voice channel"
+  });
+  
+  let q = client.player.getQueue(req.params.id);
+  if (!q || q === undefined || q.length === 0) return res.json({ errCode: 2, err: "Nothing playing" });
+  
+  await q.destroy();
   
   res.json({
     code: "Success"

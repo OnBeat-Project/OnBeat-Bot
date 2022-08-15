@@ -1,53 +1,64 @@
 <nav class="fixed top-0 left-0 right-0 z-[3] bg-white/70 border-gray-200 p-4 sm:px-4 py-2.5 rounded dark:bg-gray-900/70 backdrop-blur-lg drop-shadow-sm"
-        x-data="{
-         dropdown: false
-        }"
+  x-data="{
+  dropdown: false
+  }"
   >
   <div class="container flex flex-wrap justify-between items-center mx-auto">
     <a href="/" class="flex ml-5 items-center">
       <img src="https://api.onbeat.me/images/original_favicon.svg" class="hidden dark:block mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
       <img src="https://api.onbeat.me/images/original_favicon-black.svg" class="block dark:hidden mr-3 h-6 sm:h-9 drop-shadow-lg" alt="OnBeat Logo"></img>
-      <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><%=req.t("navbar.siteName", {ns: 'util'})%></span>
+      <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white"><%=req.t("navbar.siteName", {
+        ns: 'util'
+      })%></span>
     </a>
-   <button class="m-2 mr-2 right-0 drop-shadow-md"       @click="dropdown = ! dropdown"
-            type="button">
+    <button class="m-2 mr-2 right-0 drop-shadow-md"       @click="dropdown = ! dropdown"
+      type="button">
       <%if (req.user) {
         %>
-        <%if(req.user.avatar) {%>
-        <img class="w-10 h-10 rounded-full" src="<%=`${process.env.cdnurl}/avatars/${req.user.id}/${req.user.avatar}`%>" alt="" />
+        <%if (req.user.avatar) {
+          %>
+          <img class="w-10 h-10 rounded-full" src="<%=`${process.env.cdnurl}/avatars/${req.user.id}/${req.user.avatar}`%>" alt="" />
         <%} else {%>
-        <div class="flex w-10 h-10 rounded-full bg-slate-600 hover:bg-blue-600 transition-all items-center justify-center text-white text-4xl drop-shadow-lg text-center">
-            <%=req.user.username.toLowerCase().replace(/'s /g, ' ').replace(/\w+/g, e => e[0]).replace(/\s/g, '');%>
+          <div class="flex w-10 h-10 rounded-full bg-slate-600 hover:bg-blue-600 transition-all items-center justify-center text-white text-4xl drop-shadow-lg text-center">
+            <%=req.user.username.toLowerCase().replace(/'s /g, ' ').replace(/\w+/g, e => e[0]).replace(/\s/g, ''); %>
           </div>
-        <%}%>
-      <%} else {%>
-        <img class="w-10 h-10 rounded-full " src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
-      <%}%>
-      </button>
-      </div>
-      <div class="fixed right-0 z-10 mr-3 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700"
+          <%}%>
+            <%} else {%>
+              <img class="w-10 h-10 rounded-full " src="https://cdn.discordapp.com/embed/avatars/0.png" alt="" />
+            <%}%>
+            </button>
+          </div>
+          <div class="fixed right-0 z-10 mr-3 bg-white divide-y divide-gray-100 rounded shadow w-44 dark:bg-gray-700"
             x-show="dropdown"
             x-transition>
-        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
-          <li>
-            <a href="/dashboard" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.dashboard", {ns: 'util'})%></a>
-          </li>
-          <li>
-            <%if (req.user) {
-              %>
-              <form method="post" action="/auth/logout">
-                <button type="submit" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"><%=req.t("navbar.dropdown.log.out", {ns: 'util'})%></button>
-              </form>
-              <%} else {%>
-                <a href="/auth/callback" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.in", {ns: 'util'})%></a>
-                <%}%>
-                </li>
-                <li>
-                  <a href="https://discord.gg/VybAzGs4wB" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.discordserver", {ns: 'util'})%></a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-          <br>
-          <br>
-          <br>
+            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+              <li>
+                <a href="/dashboard" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.dashboard", {
+                  ns: 'util'
+                })%></a>
+              </li>
+              <li>
+                <%if (req.user) {
+                  %>
+                  <form method="post" action="/auth/logout">
+                    <button type="submit" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"><%=req.t("navbar.dropdown.log.out", {
+                      ns: 'util'
+                    })%></button>
+                  </form>
+                  <%} else {%>
+                    <a href="/auth/callback" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.log.in", {
+                      ns: 'util'
+                    })%></a>
+                    <%}%>
+                    </li>
+                    <li>
+                      <a href="https://discord.gg/VybAzGs4wB" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"><%=req.t("navbar.dropdown.discordserver", {
+                        ns: 'util'
+                      })%></a>
+                    </li>
+                  </ul>
+                </div>
+              </nav>
+              <br>
+              <br>
+              <br>
