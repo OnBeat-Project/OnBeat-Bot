@@ -14,6 +14,17 @@ module.exports={
             .setRequired(true)
         ),
     async execute(interaction) {
+        const valid=['928624781731983380', '407859300527243275']
+        if (!valid.includes(interaction.author.id)) {
+            interaction.reply({
+                embeds: [{
+                    title: 'Error',
+                    description: 'You do not have permission to execute commands.',
+                    color: 0xFF0000
+                }],
+                ephemeral: true
+            });
+        }
         const comm=interaction.options.getString('command');
         await interaction.deferReply();
         exec((comm), (error, stdout) => {
