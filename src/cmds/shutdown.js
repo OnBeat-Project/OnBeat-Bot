@@ -25,7 +25,7 @@ module.exports={
         });
 
         try {
-            execSync('sudo pm2 stop 0', {encoding: 'utf-8'});
+            execSync('sudo pm2 kill', {encoding: 'utf-8'});
         } catch (err) {
             console.log(err);
         }
