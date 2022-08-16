@@ -33,7 +33,8 @@ module.exports={
                 interaction.followUp({
                     embeds: [{
                         title: 'Error',
-                        description: error,
+                        description: `Output: \`\`\`${ error }\`\`\``,
+
                     }],
                     ephemeral: true
                 });
@@ -41,7 +42,7 @@ module.exports={
                 interaction.followUp({
                     embeds: [{
                         title: 'Output',
-                        description: stdout,
+                        description: `Output: \`\`\`${ stdout }\`\`\``,
                     }],
                     ephemeral: true
                 });
