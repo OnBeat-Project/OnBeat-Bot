@@ -15,7 +15,7 @@ module.exports={
         ),
     async execute(interaction) {
         const valid=['928624781731983380', '407859300527243275']
-        if (!valid.includes(interaction.author.id)) {
+        if (!valid.includes(interaction.member.id)) {
             interaction.reply({
                 embeds: [{
                     title: 'Error',
@@ -24,6 +24,7 @@ module.exports={
                 }],
                 ephemeral: true
             });
+            return;
         }
         const comm=interaction.options.getString('command');
         await interaction.deferReply();
