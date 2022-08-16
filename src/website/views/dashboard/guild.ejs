@@ -11,9 +11,16 @@
       %>
 
       <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post">
-        <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
+        <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl w-96" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
       </form>
       <div id="show" x-data="{show: 'loading'}">
+        <div x-show="show=='noVC'" x-transition.duration.500ms>
+          <div class="flex flex-col justify-center items-center w-full h-[80vh]">
+            <img src="/images/gifs/noVoiceChannel.gif" class="w-48 md:w-96 hidden dark:block" id="darkMode"/>
+            <img src="/images/gifs/noVoiceChannelLight.gif" class="w-48 md:w-96 block dark:hidden" id="lightMode"/>
+            <p id="voiceWarning">Join in a voice channel!</p>
+          </div>
+        </div>
         <div class="flex flex-col justify-center justify-items-center items-center content-center text-center w-full h-[80vh] overflow-hidden" x-show="show === 'noTrack'" id="stopped" x-transition.duration.500ms>
           <!--<img src="" id="img-error" class="w-64"/>-->
           <p class="text-2xl">
@@ -224,6 +231,13 @@
         setInterval(() => {
           $(function() {
             $.get(`${url}/api/guild/<%=guild.id%>/queue`, function(data, status) {
+              if(!data.memberVoiceChannel) { 
+                $("#voiceWarning").html("Join in a voice channel")
+                return document.getElementById("show")._x_dataStack[0].show = "noVC"; 
+              } else if(data.botVoiceChannel && data.memberVoiceChannel.id !== data.botVoiceChannel.id) {
+                $("#voiceWarning").html("Join the same voice channel as mine!")
+                return document.getElementById("show")._x_dataStack[0].show = "noVC"; 
+              }
               if (!data.playing) {
                 if (data.tracks[0]) {
                   document.getElementById("show")._x_dataStack[0].show = "loading"

@@ -11,7 +11,7 @@ module.exports={
 
     async execute(interaction, client, player) {
         let q=player.getQueue(`${ interaction.guild.id }`);
-
+        if(!interaction.member.voice.channel) return interaction.reply({content: `${interaction.guild.me.voice.channel?`Join in <#${interaction.guild.me.voice.channel.id}> to see queue!`:"Join in a voice channel."}`, ephemeral: true});
 
         if (!q||q===undefined||q.length===0) return await interaction.reply({
             embeds: [{

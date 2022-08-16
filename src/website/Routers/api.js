@@ -26,12 +26,16 @@ router.get("/", (req, res) => {
 
 router.get("/guild/:id/queue", async function(req, res) {
   let q = client.player.getQueue(req.params.id);
+  const member = client.guilds.cache.get(req.params.id).members.cache.get(req.user?req.user.id:"")?client.guilds.cache.get(req.params.id).members.cache.get(req.user?req.user.id:""):null;
+  const botMember = client.guilds.cache.get(req.params.id).me?client.guilds.cache.get(req.params.id).me:null;
    try {
     res.json({
       track: q?q.nowPlaying():false,
       tracks: q?q.tracks:[],
       paused: q?q.connection.paused:true,
-      playing: q?q.playing:false
+      playing: q?q.playing:false,
+      memberVoiceChannel: member.voice.channel?member.voice.channel:null,
+      botVoiceChannel: botMember.voice.channel?botMember.voice.channel:null
     });
    } catch(e) {
      console.error(e);
