@@ -8,6 +8,7 @@ require('dotenv').config();
 const chalk=require("chalk");
 const {Player}=require("discord-player");
 require("discord-player/smoothVolume");
+require("@discord-player/extractor")
 
 const intents=new Intents();
 intents.add(
@@ -45,8 +46,6 @@ player.on("trackStart", (queue, track) => queue.metadata.channel?queue.metadata.
     },
   }],
 }):"");
-player.on("error", console.error);
-player.on("connectionError", console.error);
 player.on("trackAdd", (queue, track) => queue.metadata.channel?queue.metadata.channel.send({
   embeds: [{
     title: `Added to queue:`,
