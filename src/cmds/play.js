@@ -3,6 +3,8 @@ const {
     MessageEmbed, Modal, MessageActionRow, TextInputComponent, MessageButton,
 }=require('discord.js');
 const chalk=require('chalk');
+require("@discord-player/extractor")
+
 
 module.exports={
     data: new SlashCommandBuilder()
