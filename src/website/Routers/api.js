@@ -87,6 +87,52 @@ router.post("/guild/:id/queue/clear", async(req,res) => {
   });
 });
 
+router.get("/guild/:id/track/search", async function (req, res) {
+  const player = client.player;
+  const body = req.query;
+  //const body = req.user
+  if (!body) return;
+
+  const guild = client.guilds.cache.get(req.params.id);
+
+  const member = guild.members.cache.get(req.user?req.user.id:"");
+  if(!member) return res.json({
+    errCode:2,
+    err: "Log into your Discord Account."
+  });
+  if(!member.voice.channel) return res.json({
+    errCode: 1,
+    err: "User aren't in voice channel"
+  });
+  const queue = player.createQueue(req.params.id, {
+    metadata: {
+      
+    },
+    spotifyBridge: true,
+  });
+  try {
+    if (!queue.connection) await queue.connect(member.voice.channel);
+  } catch(e) {
+    queue.destroy();
+    console.log(e);
+    res.json({
+      errCode: 500,
+      err: "Internal Server Error"
+    });
+  }
+
+  const track = await player.search(body.query, {
+    requestedBy: member
+  });
+ res.json(track);
+ /* if (!track[0]) return res.json({
+    errCode: 1,
+    err: "Not found"
+  }); */
+  
+});
+
+
 router.post("/guild/:id/track/add", async function (req, res) {
   const player = client.player;
   const body = req.query;
@@ -123,7 +169,7 @@ router.post("/guild/:id/track/add", async function (req, res) {
   }).then(x => x.tracks[0]);
 
   if (!track) return res.json({
-    errCode: 1,
+    errCode: 0,
     err: "Not found"
   });
 

@@ -1,0 +1,78 @@
+<script>
+  $('#skip').click(function() {
+    $.post(`${url}/api/guild/<%=guild.id%>/track/skip?user=<%=req.user.id%>`, {}, function(data,
+      status) {
+      if (data.errCode === 1) {
+        $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+        document.getElementById("toast-data")._x_dataStack[0].toast = true;
+        setTimeout(() => {
+          document.getElementById("toast-data")._x_dataStack[0].toast = false;
+        }, 3000);
+      }
+      document.getElementById("queue")._x_dataStack[0].tab = ""
+      setTimeout(() => {
+        document.getElementById("queue")._x_dataStack[0].tab = "track"
+      },
+        2000)
+
+      console.log(data);
+      console.log(status);
+    });
+  });
+  $('#clear').click(function() {
+    $.post(`${url}/api/guild/<%=guild.id%>/queue/clear?user=<%=req.user.id%>`,
+      {},
+      function(data,
+        status) {
+        if (data.errCode === 1) {
+          $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          document.getElementById("toast-data")._x_dataStack[0].toast = true;
+          setTimeout(() => {
+            document.getElementById("toast-data")._x_dataStack[0].toast = false;
+          }, 3000);
+        }
+        document.getElementById("queue")._x_dataStack[0].tab = ""
+        setTimeout(() => {
+          document.getElementById("queue")._x_dataStack[0].tab = "track"
+        },
+          2000)
+
+        console.log(data);
+        console.log(status);
+      });
+  });
+  $('#play').click(function() {
+    $.post(`${url}/api/guild/<%=guild.id%>/track/pause?user=<%=req.user.id%>`,
+      {},
+      function(data, status) {
+        if (data.errCode === 1) {
+          $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          document.getElementById("toast-data")._x_dataStack[0].toast = true;
+          setTimeout(() => {
+            document.getElementById("toast-data")._x_dataStack[0].toast = false;
+          }, 3000);
+        }
+        console.log(data);
+        console.log(status);
+      });
+  });
+  $('#shuffle').click(function() {
+    $.post(`${url}/api/guild/<%=guild.id%>/queue/shuffle?user=<%=req.user.id%>`,
+      {},
+      function(data, status) {
+        if (data.errCode === 1) {
+          $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          document.getElementById("toast-data")._x_dataStack[0].toast = true;
+          setTimeout(() => {
+            document.getElementById("toast-data")._x_dataStack[0].toast = false;
+          }, 3000);
+        }
+        document.getElementById("queue")._x_dataStack[0].tab = ""
+        setTimeout(() => {
+          document.getElementById("queue")._x_dataStack[0].tab = "queue"
+        }, 2000)
+        console.log(data);
+        console.log(status);
+      });
+  });
+</script>

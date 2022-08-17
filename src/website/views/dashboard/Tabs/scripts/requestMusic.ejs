@@ -1,0 +1,93 @@
+<script>
+  $(function() {
+    $("#requestMusic").submit((e) => {
+      e.preventDefault()
+      $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
+        // document.getElementById("show")._x_dataStack[0].show = "loading"
+
+        if (data.errCode === 1) {
+          $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          document.getElementById("toast-data")._x_dataStack[0].toast = true;
+          setTimeout(() => {
+            document.getElementById("toast-data")._x_dataStack[0].toast = false;
+          }, 3000);
+        }
+        console.log(data);
+        console.log(status);
+      });
+      query.value = ""
+      // return false;
+    })
+    $("#requestMusic2").submit((e) => {
+      e.preventDefault()
+      $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`,
+        {},
+        function(data, status) {
+          // document.getElementById("show")._x_dataStack[0].show = "loading"
+
+          if (data.errCode === 1) {
+            $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+            document.getElementById("toast-data")._x_dataStack[0].toast = true;
+            setTimeout(() => {
+              document.getElementById("toast-data")._x_dataStack[0].toast = false;
+            }, 3000);
+          }
+          console.log(data);
+          console.log(status);
+        });
+      query.value = ""
+    })
+    $("#requestMusic2").keyup((e) => {
+      e.preventDefault()
+      $.get(`${url}/api/guild/<%=guild.id%>/track/search?query=${query2.value}`,
+        {},
+        function(data, status) {
+
+          const tracksmap = data.tracks.map((track, i) => {
+            var trackName = data.tracks[i]?data.tracks[i].title: "";
+            if (trackName && trackName.length > 43) trackName = trackName.slice(0, 43) + "..."
+            console.log(i)
+            return `<li id="queueSearch-${i}" class="cursor-pointer" x-transition><div class="flex gap-x-2 items-center"><img src="${track.thumbnail?track.thumbnail: ""}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
+          });
+          $("#queueSearch").html(tracksmap)
+
+          data.tracks.map((track, i) => {
+            $(`#queueSearch-${i}`).click(function(e) {
+              console.log(i)
+              $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${data.tracks[i].url}`,
+                {},
+                function(data, status) {
+                  // document.getElementById("show")._x_dataStack[0].show = "loading"
+
+                  if (data.errCode === 1) {
+                    $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+                    document.getElementById("toast-data")._x_dataStack[0].toast = true;
+                    setTimeout(() => {
+                      document.getElementById("toast-data")._x_dataStack[0].toast = false;
+                    }, 3000);
+                  }
+                  console.log(data);
+                  console.log(status);
+                });
+            });
+          });
+        });
+    })
+
+    /*$.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query2.value}`, {}, function(data, status) {
+        // document.getElementById("show")._x_dataStack[0].show = "loading"
+
+        if (data.errCode === 1) {
+          $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
+          document.getElementById("toast-data")._x_dataStack[0].toast = true;
+          setTimeout(() => {
+            document.getElementById("toast-data")._x_dataStack[0].toast = false;
+          }, 3000);
+        }
+        console.log(data);
+        console.log(status);
+      });
+      query2.value = ""*/
+    // return false;
+  })
+</script>

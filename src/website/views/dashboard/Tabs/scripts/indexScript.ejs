@@ -1,0 +1,19 @@
+<script>
+  const url = "https://onbeat.me"
+  const music = {
+    img: document.getElementById("track-image"),
+    title: document.getElementById("track-name"),
+    artist: document.getElementById("track-artist"),
+    time: document.getElementById("time"),
+    progress: document.getElementById("time-progress"),
+    user: document.getElementById("track-userRequest"),
+  }
+  const request = document.getElementById("requestMusic");
+  const query = document.getElementById("music"); 
+  const query2 = document.getElementById("music2");
+  const notrack = document.getElementById("stopped");
+  const trackEl = document.getElementById("queue");
+</script>
+<%-include("./requestMusic.ejs", {g, guild});%>
+<%-include("./playerButtons.ejs", {g, guild});%>
+<%-include("./autoUpdate.ejs", {g, guild});%>

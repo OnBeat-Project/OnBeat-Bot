@@ -1,0 +1,81 @@
+<script>
+  setInterval(() => {
+    $(function() {
+      $.get(`${url}/api/guild/<%=guild.id%>/queue`, function(data, status) {
+        if (!data.memberVoiceChannel) {
+          $("#voiceWarning").html("Join in a voice channel")
+          return document.getElementById("show")._x_dataStack[0].show = "noVC";
+        } else if (data.botVoiceChannel && data.memberVoiceChannel.id !== data.botVoiceChannel.id) {
+          $("#voiceWarning").html("Join the same voice channel as mine!")
+          return document.getElementById("show")._x_dataStack[0].show = "noVC";
+        }
+        if (!data.playing) {
+          if (data.tracks[0]) {
+            document.getElementById("show")._x_dataStack[0].show = "loading"
+          } else {
+            document.getElementById("show")._x_dataStack[0].show = "noTrack"
+          }
+          return;
+        } else {
+          document.getElementById("show")._x_dataStack[0].show = "withTrack"
+          music.img.src = data.track.thumbnail;
+          music.title.textContent = data.track.title;
+          music.artist.textContent = data.track.author;
+
+
+          const tracksmap = data.tracks.map((track, i) => {
+            var trackName = data.tracks[i]?data.tracks[i].title: {}
+            if (trackName && trackName.length > 43) trackName = trackName.slice(0, 43) + "..."
+
+              // console.log(status)
+              var thumbnail;
+              const thumb = document.createElement("img").src = track.thumbnail;
+              if (thumb.complete) thumbnail = track.thumbnail; else thumbnail = "/images/favicon.ico";
+              // console.log(thumbnailData);
+              return `<li id="li" class="cursor-pointer" x-transition><div id="queueTrack-${i}" class="flex gap-x-2 items-center"><span class="ml-2 bg-blue-500/50 p-1 pl-3 pr-3 rounded-full">${i+1}</span><img src="${thumbnail}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
+            })
+            $("#queueMusic0").html(tracksmap)
+            if (!data.paused) {
+              $("#icon").html(feather.icons["pause"].toSvg())
+            } else {
+              $("#icon").html(feather.icons["play"].toSvg())
+            }
+            data.tracks.map((track, i) => {
+              if (!data.tracks) {
+                document.getElementById("queueNone").classList.remove("hidden")
+              } else {
+                document.getElementById("queueNone").classList.add("hidden")
+              }
+
+              $(`#queueTrack-${i}`).click(function() {
+                location.href = "#";
+                document.getElementById("queue")._x_dataStack[0].tab = "track"
+                console.log(e)
+                $.post(`${url}/api/guild/<%=guild.id%>/queue/skip/${i}?user=<%=req.user.id%>`, {}, function(data, status) {
+                  console.log(data);
+                  console.log(status);
+                });
+              })
+            })
+          }
+            // music.time.textContent = `${info.perc.current}`
+          })
+        $.get(`${url}/api/guild/<%=guild.id%>/queue/progress`, function(data,
+          status) {
+          if (data.progress > 100) {
+            music.progress.style.width = `100%`;
+          } else {
+            music.progress.style.width = `${data.progress}%`
+          }
+        })
+      })
+      $("#myInput").on("keyup", function() {
+        setInterval(() => {
+          var value = $(this).val().toLowerCase();
+          $("#queueMusic0 #li").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+          })
+        });
+      });
+    }, 1000);
+  </script>

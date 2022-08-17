@@ -1,0 +1,29 @@
+<%-include("./TabPartials/withTracknav.ejs", {
+  g, guild
+})%>
+<!--<div class="m-16"></div>--->
+<div id="queueList" class="m-12" x-show="tab === 'queue'" x-transition:enter.delay.500ms.duration.500ms
+  x-transition:leave>
+  <%-include("./TabPartials/queueList.ejs", {
+    g, guild
+  })%>
+</div>
+<div id="track" class="flex flex-col items-center justify-center h-[80vh] w-full transition-all" x-show="tab === 'track'"
+  x-transition:enter.delay.500ms.duration.500ms
+  x-transition:leave
+  >
+  <%-include("./TabPartials/track.ejs", {
+    g, guild
+  })%>
+</div>
+<div id="search" class="w-full transition-all mt-12" x-show="tab === 'search'"
+  x-transition:enter.delay.500ms.duration.500ms
+  x-transition:leave
+  >
+  <%-include("./TabPartials/search.ejs", {
+    g, guild
+  })%>
+</div>
+<div class="fixed w-full top-0 bg-zinc-700 rounded-full h-4 dark:bg-zinc-200" x-show="show==='withTrack'" x-transition.delay.1s.duration.500ms>
+  <div class="bg-rose-700 dark:bg-fuchsia-400 h-4 rounded-full" id="time-progress" style="width: 0%"></div>
+</div>
