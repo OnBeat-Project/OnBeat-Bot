@@ -5,6 +5,15 @@ const {
   passport
 } = require('../../app');
 
+app.use("*", (req,res,next) => {
+  if(req.hostname === "mars.dnsbox.me") {
+    res.render("503.ejs");
+  } else {
+    next();
+  }
+});
+
+
 app.use("/", checkUrl, require('./Routers'));
 app.use("/dashboard", checkUrl, require('./Routers/dashboard'));
 app.use("/api", require('./Routers/api'));
