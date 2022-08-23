@@ -9,6 +9,7 @@ const chalk=require("chalk");
 const {Player}=require("discord-player");
 require("discord-player/smoothVolume");
 require("@discord-player/extractor")
+const playdl=require("play-dl");
 
 const intents=new Intents();
 intents.add(

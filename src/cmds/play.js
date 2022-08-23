@@ -1,10 +1,6 @@
 const {SlashCommandBuilder}=require('@discordjs/builders');
-const {
-    MessageEmbed, Modal, MessageActionRow, TextInputComponent, MessageButton,
-}=require('discord.js');
-const chalk=require('chalk');
 require("@discord-player/extractor")
-
+const playdl=require("play-dl");
 
 module.exports={
     data: new SlashCommandBuilder()
@@ -39,6 +35,11 @@ module.exports={
                 channel: interaction.channel
             },
             spotifyBridge: true,
+            async onBeforeCreateStream(track, source, _queue) {
+                if (source==="youtube") {
+                    return (await playdl.stream(track.url, {discordPlayerCompatibility: true})).stream;
+                }
+            }
         });
         try {
             if (!queue.connection) await queue.connect(interaction.member.voice.channel);
