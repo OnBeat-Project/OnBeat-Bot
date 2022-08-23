@@ -13,7 +13,8 @@
           if (data.tracks[0]) {
             document.getElementById("show")._x_dataStack[0].show = "loading"
           } else {
-            document.getElementById("show")._x_dataStack[0].show = "noTrack"
+            document.getElementById("show")._x_dataStack[0].show = "withTrack"
+            document.getElementById("queue")._x_dataStack[0].tab = "search"
           }
           return;
         } else {

@@ -11,13 +11,12 @@ require("discord-player/smoothVolume");
 require("@discord-player/extractor")
 const playdl=require("play-dl");
 
-const intents=new Intents();
-intents.add(
+/*intents.add(
   Intents.FLAGS.GUILDS,
   Intents.FLAGS.GUILD_MEMBERS,
   Intents.FLAGS.GUILD_VOICE_STATES
-);
-const client=new Client({intents, partials: ['MESSAGE', 'REACTION'], allowedMentions: {parse: ['users']}});
+);*/
+const client=new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_VOICE_STATES], partials: ['MESSAGE', 'REACTION'], allowedMentions: {parse: ['users']}});
 
 
 const player=new Player(client);

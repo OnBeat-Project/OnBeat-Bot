@@ -19,7 +19,7 @@
           %>
           <img class="w-10 h-10 rounded-full" src="<%=`${process.env.cdnurl}/avatars/${req.user.id}/${req.user.avatar}`%>" alt="" />
         <%} else {%>
-          <div class="flex w-10 h-10 rounded-full bg-slate-600 hover:bg-blue-600 transition-all items-center justify-center text-white text-4xl drop-shadow-lg text-center">
+          <div class="flex w-10 h-10 rounded-full bg-slate-600 hover:bg-blue-600 transition-all items-center justify-center text-white text-2xl drop-shadow-lg text-center">
             <%=req.user.username.toLowerCase().replace(/'s /g, ' ').replace(/\w+/g, e => e[0]).replace(/\s/g, ''); %>
           </div>
           <%}%>

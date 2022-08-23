@@ -3,7 +3,7 @@
     $("#requestMusic").submit((e) => {
       e.preventDefault()
       $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`, {}, function(data, status) {
-        // document.getElementById("show")._x_dataStack[0].show = "loading"
+         document.getElementById("show")._x_dataStack[0].show = "loading"
 
         if (data.errCode === 1) {
           $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")
@@ -23,7 +23,8 @@
       $.post(`${url}/api/guild/<%=guild.id%>/track/add?user=<%=req.user.id%>&query=${query.value}`,
         {},
         function(data, status) {
-          // document.getElementById("show")._x_dataStack[0].show = "loading"
+          
+          document.getElementById("show")._x_dataStack[0].show = "loading"
 
           if (data.errCode === 1) {
             $("#toast-data #toast-music #toast-music-text").html("Join in a voice channel!")

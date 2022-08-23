@@ -15,7 +15,8 @@
     <%req.user.guilds.forEach(g => {
       %>
       <%if (!cli.guilds.cache.get(g.id)) return; %>
-            <button class="relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all bg-zinc-200 text-black dark:bg-gray-800 dark:text-white" name="guild" value="<%=g.id%>" onclick="location.href='/dashboard/guild/<%=g.id%>'">
+      
+            <div class="relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all bg-zinc-200 text-black dark:bg-gray-800 dark:text-white <%=g.owner?"bg-gray-100 dark:bg-gray-900":""%>" name="guild" value="<%=g.id%>" onclick="location.href='/dashboard/guild/<%=g.id%>'">
               <%if (g.icon) {
         %> <img src = "<%=cli.guilds.cache.get(g.id).iconURL({ size: 4096, dynamic: true })%>" class="w-24 rounded-full drop-shadow-lg" />
                 <%} else {%>
@@ -27,7 +28,7 @@
                     <p>
                       <%=g.name%>
                     </p>
-                  </button>
+                  </div>
                   <%})%>
                     <button class="relative left-0 right-0 z-[2] flex flex-col justify-center items-center w-96 h-52 p-3 m-3 bg-zinc-200 text-black dark:bg-gray-800 dark:text-white drop-shadow-xl rounded-2xl hover:-translate-y-2 hover:drop-shadow-2xl transition-all" onclick='location.href="https://top.gg/bot/930117271802773514/invite"'>
                       <div class="flex justify-center text-center items-center border-4 border-gray-600 hover:border-green-600 border-dashed hover:border-solid hover:bg-green-600 w-24 h-24 rounded-full duration-300 transition-all">
