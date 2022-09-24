@@ -1,4 +1,4 @@
 <ul class="" id="queueSearch"></ul>
-<form id="requestMusic2" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post" x-show="show==='withTrack';">
+<form id="requestMusic2" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post" x-show="show==='';">
   <input name="music" id="music2" class="text-slate-900 text-center p-1 drop-shadow rounded-xl w-96" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
 </form>

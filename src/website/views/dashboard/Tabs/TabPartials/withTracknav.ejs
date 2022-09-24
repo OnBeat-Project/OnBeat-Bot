@@ -1,11 +1,11 @@
 <nav class="fixed z-[3] top-16 bg-white/70 dark:bg-gray-900/70 mb-4 border-b border-gray-200 dark:border-gray-700 w-full backdrop-blur-lg" x-show="show==='withTrack'" x-transition.opacity.delay.1s.duration.500ms>
   <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
-    <li class="w-1/3"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'track'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='track'}" x-transition><%=req.t("logged.guild.overview.tabName", {
+    <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'track'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='track'}" x-transition><%=req.t("logged.guild.overview.tabName", {
       ns: "dashboard", server_name: guild.name
     })%></button></li>
-    <li class="w-1/3"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'queue'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='queue'}" x-transition><%=req.t("logged.guild.queue.tabName", {
+    <li class="w-1/2"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'queue'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='queue'}" x-transition><%=req.t("logged.guild.queue.tabName", {
       ns: "dashboard"
     })%><span class="ml-2 bg-blue-500/50 p-1 rounded-full">Beta</span></button></li>
-    <li class="w-1/3"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'search'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='search'}" x-transition>Search</button></li>
+    <!--<li class="w-1/3"><button class="inline-block p-4 rounded-t-lg border-b-2 border-transparent transition-all w-full" x-on:click="tab = 'search'" x-bind:class="{'text-blue-700 border-blue-700 dark:border-blue-300 dark:text-blue-300':tab==='search'}" x-transition>Search</button></li>-->
   </ul>
 </nav>

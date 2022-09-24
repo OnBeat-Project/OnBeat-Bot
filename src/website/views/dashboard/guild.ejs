@@ -10,7 +10,7 @@
     if (g.id === guild.id) {
       %>
       <div id="show" x-data="{show: 'loading'}">
-        <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post" x-show="show==='noTrack';" x-transition.opacity.delay.1s.duration.500ms>
+        <form id="requestMusic" class="fixed z-[1] bottom-0 flex w-full justify-center mb-3" action="https://api.onbeat.me/api/guild/<%=guild.id%>/track/add" method="post" x-show="show===''" x-transition.opacity.delay.1s.duration.500ms>
         <input name="music" id="music" class="text-slate-900 text-center p-1 drop-shadow rounded-xl w-96" placeholder="<%=req.t("logged.guild.search", { ns: "dashboard", server_name: guild.name })%>" autocomplete="off"></input>
       </form>
         <div x-show="show==='noVC'" x-transition.duration.500ms>

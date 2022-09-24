@@ -109,6 +109,11 @@ router.get("/guild/:id/track/search", async function (req, res) {
       
     },
     spotifyBridge: true,
+    async onBeforeCreateStream(track, source, _queue) {
+                if (source==="youtube") {
+                    return (await playdl.stream(track.url, {discordPlayerCompatibility: true})).stream;
+                }
+            }
   });
   try {
     if (!queue.connection) await queue.connect(member.voice.channel);
@@ -124,11 +129,11 @@ router.get("/guild/:id/track/search", async function (req, res) {
   const track = await player.search(body.query, {
     requestedBy: member
   });
- res.json(track);
  /* if (!track[0]) return res.json({
     errCode: 1,
     err: "Not found"
   }); */
+ res.json(track);
   
 });
 
@@ -152,6 +157,11 @@ router.post("/guild/:id/track/add", async function (req, res) {
       
     },
     spotifyBridge: true,
+    async onBeforeCreateStream(track, source, _queue) {
+                if (source==="youtube") {
+                    return (await playdl.stream(track.url, {discordPlayerCompatibility: true})).stream;
+                }
+            }
   });
   try {
     if (!queue.connection) await queue.connect(member.voice.channel);

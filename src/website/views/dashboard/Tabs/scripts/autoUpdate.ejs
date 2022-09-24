@@ -13,8 +13,8 @@
           if (data.tracks[0]) {
             document.getElementById("show")._x_dataStack[0].show = "loading"
           } else {
-            document.getElementById("show")._x_dataStack[0].show = "withTrack"
-            document.getElementById("queue")._x_dataStack[0].tab = "search"
+            document.getElementById("show")._x_dataStack[0].show = "noTrack"
+            //document.getElementById("queue")._x_dataStack[0].tab = "search"
           }
           return;
         } else {
@@ -33,7 +33,7 @@
               const thumb = document.createElement("img").src = track.thumbnail;
               if (thumb.complete) thumbnail = track.thumbnail; else thumbnail = "/images/favicon.ico";
               // console.log(thumbnailData);
-              return `<li id="li" class="cursor-pointer" x-transition><div id="queueTrack-${i}" class="flex gap-x-2 items-center"><span class="ml-2 bg-blue-500/50 p-1 pl-3 pr-3 rounded-full">${i+1}</span><img src="${thumbnail}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
+              return `<li id="li" class="cursor-pointer" x-transition><div id="queueTrack-${i}" class="flex gap-x-2 items-center"><span class="ml-2 bg-blue-500/50 p-1 pl-3 pr-3 rounded-full">${i+1}</span><img src="${track.thumbnail}" class="rounded-xl drop-shadow w-32"/> <div class="flex-row"><p id="musicName" class="text-lg">${trackName}</p> <span class="text-sm text-slate-800 dark:text-slate-300">${data.tracks[i]?data.tracks[i].author: ""}</span></div></div></li><br>`;
             })
             $("#queueMusic0").html(tracksmap)
             if (!data.paused) {

@@ -40,7 +40,7 @@
                 <li>
                   <%if (req.user) {
                     %>
-                    <form method="post" action="/auth/logout">
+                    <form id="logout" method="post" action="/auth/logout">
                       <button type="submit" class="no-underline block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"><%=req.t("navbar.dropdown.log.out", {
                         ns: 'util'
                       })%></button>

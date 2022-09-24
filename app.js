@@ -14,7 +14,13 @@ const server = http.createServer(app);
 const client = require('./index.js');
 const url = require("url");
 const path = require("node:path");
+const cors = require('cors')
 
+
+app.use(cors({
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+}))
 
 app.use(session({
   secret: 'keyboard cat',
@@ -69,40 +75,6 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use(express.static(__dirname + "/public"));
 
-app.get("/auth/login", passport.authenticate('discord', {}), function(req, res, next) {
-	next();
-});
-
-app.get('/auth/callback', passport.authenticate('discord', {
-    failureRedirect: '/'}), function(req, res, next) {
-      var redirectUrl = '/';
-
-		if (!req.user) { return res.redirect('/'); }
-		if (req.session.backURL) {
-			redirectUrl = req.session.backURL;
-			//req.session.redirectUrl = null;
-		}
-		req.logIn(req.user, function(err) {
-			if (err) { return next(err); }
-		});
-		res.redirect(redirectUrl);
-      // res.redirect(req.session.checkURL)
-});
-
-app.post('/auth/logout', function(req, res) {
-  req.logout(function(err) {
-    if (err) {
-      return next(err);
-    }
-    res.redirect('/');
-  });
-});
-
-app.get('/auth/info', function(req, res) {
-  // console.log(req.user)
-  res.json(req.user);
-});
-
 module.exports = {
   express,
   app,
@@ -111,9 +83,7 @@ module.exports = {
   client,
   passport
 };
-
+require('./src/website/index.js');
 server.listen(80, () => {
   console.log("Running on port 80");
 });
-
-require('./src/website/index.js');
