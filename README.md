@@ -1,5 +1,7 @@
 <img width="400" src="/public/images/Header.png"/>
 
+**THIS PROJECT IS ARCHIVED**
+
 ----
 OnBeat is a music bot for Discord made with JS and other stuff.
 
